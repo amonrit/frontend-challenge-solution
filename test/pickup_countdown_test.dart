@@ -6,15 +6,20 @@ void main() {
   Future<void> pumpCountdowns(
     WidgetTester tester, {
     int count = 1,
+    DateTime Function()? now,
   }) {
-    final pickupStart = DateTime.now().add(const Duration(minutes: 1));
+    final pickupStart =
+        (now?.call() ?? DateTime.now()).add(const Duration(minutes: 1));
     return tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
         child: Column(
           children: List.generate(
             count,
-            (_) => PickupCountdown(pickupStart: pickupStart),
+            (_) => PickupCountdown(
+              pickupStart: pickupStart,
+              now: now ?? DateTime.now,
+            ),
           ),
         ),
       ),
@@ -31,9 +36,11 @@ void main() {
   });
 
   testWidgets('updates its visible countdown while mounted', (tester) async {
-    await pumpCountdowns(tester);
+    var currentTime = DateTime.utc(2026, 1, 1, 12);
+    await pumpCountdowns(tester, now: () => currentTime);
     final before = tester.widget<Text>(find.byType(Text)).data;
 
+    currentTime = currentTime.add(const Duration(seconds: 1));
     await tester.pump(const Duration(seconds: 1));
     final after = tester.widget<Text>(find.byType(Text)).data;
 

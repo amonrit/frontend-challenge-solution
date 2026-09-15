@@ -7,8 +7,13 @@ import '../../../app_config.dart';
 /// Live countdown until the pickup window opens.
 class PickupCountdown extends StatefulWidget {
   final DateTime pickupStart;
+  final DateTime Function() now;
 
-  const PickupCountdown({super.key, required this.pickupStart});
+  const PickupCountdown({
+    super.key,
+    required this.pickupStart,
+    this.now = DateTime.now,
+  });
 
   @override
   State<PickupCountdown> createState() => _PickupCountdownState();
@@ -33,7 +38,7 @@ class _PickupCountdownState extends State<PickupCountdown> {
 
   @override
   Widget build(BuildContext context) {
-    final remaining = widget.pickupStart.difference(DateTime.now());
+    final remaining = widget.pickupStart.difference(widget.now());
     final String text;
     if (remaining.isNegative) {
       text = 'Pickup window is open';
