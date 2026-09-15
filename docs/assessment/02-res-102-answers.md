@@ -18,6 +18,8 @@ This file answers only questions supported by the ticket, current source, or pri
 | --- | --- | --- |
 | 2.1 | Yes. A temporary widget reproduction on the current revision mounted `PickupCountdown`, removed it from the tree, and advanced fake time by one second. Flutter produced the reported `setState() called after dispose()` error. | Flutter 3.27.0 widget-test run, 2026-09-16. |
 | 2.2 | Three bundled active orders should render countdowns: IDs 9001 (`READY`, pickup in 18 minutes), 9002 (`CONFIRMED`, 47 minutes), and 9003 (`CONFIRMED`, 132 minutes). | `assets/data/orders.json`; `OrderModel.isActive`; `orders_screen.dart`. |
+| 2.3 | In the manual smoke test, the user left My orders and waited one minute without an app crash or post-disposal timer error. | User-run manual smoke test, 2026-09-16. |
+| 2.4 | The manual route smoke test passed for the documented back-navigation flow. The automated route-pop test also passed. | User-run manual smoke test and `pickup_countdown_test.dart`. |
 | 2.5 | The app-bar back action and a standard back gesture both remove the pushed route through Flutter navigation. The ticket explicitly names back navigation; other route-removal paths need a scope decision before being acceptance criteria. | `PROBLEM.md`, RES-102; `routes.dart`. |
 | 2.6 | The defect applies to multiple instances. A temporary test mounted and disposed three countdowns; the next tick produced three post-disposal `setState()` errors. | Flutter 3.27.0 widget-test run, 2026-09-16. |
 | 2.9 | The only callback that directly calls `setState()` in the orders countdown path is the callback passed to `Timer.periodic` in `PickupCountdown.initState()`. | `pickup_countdown.dart`; repository search for `Timer.periodic` and `setState`. |
@@ -84,7 +86,7 @@ This file answers only questions supported by the ticket, current source, or pri
 
 The following are intentionally unanswered until the next investigation phase:
 
-- Runtime observations in the full My orders route: 2.3, 2.4, 2.7–2.8.
+- Runtime observations for other navigation/list behaviors: 2.7–2.8.
 - Edge cases 5.1–5.2, 5.4–5.6, and 5.8–5.9.
 - Solution comparison questions 6.6–6.8.
 - Test-tool and test-design questions 7.3, 7.6, and 8.1, 8.5–8.9.

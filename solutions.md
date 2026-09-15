@@ -4,7 +4,7 @@ This is the delivery summary. Investigation questions, research, and task compar
 
 ## RES-102 — Crash after leaving My orders
 
-**Status:** Automated verification complete. The fixed app launches on the iPhone Simulator; a manual My orders route smoke check remains pending because this environment has no iOS UI automation.
+**Status:** Complete. Automated verification and manual My orders route smoke test passed.
 
 ### Diagnosis
 
@@ -42,7 +42,7 @@ The first visible-countdown test used `DateTime.now()` directly. `tester.pump(Du
 | Full test suite | `flutter test`: 5 passed. |
 | Static analysis | `flutter analyze`: no issues. |
 | Fixed app launch | Home screen launched on iPhone 17 Pro Simulator. |
-| My orders → back → wait | Pending manual smoke check. |
+| My orders → back → wait one minute | Passed by user: returned to Home, waited one minute, and observed no crash or post-disposal timer error. |
 
 For the complete requirement questions, evidence, research, and method comparison, see:
 

@@ -24,8 +24,8 @@ Working assumption for planning: any disposal path of `PickupCountdown` should r
 | T3 | Write the focused regression test before changing production code. | Baseline failed with the intended framework error and pending timers. | Complete |
 | T4 | Compare implementation approaches. | Widget-state timer cancellation selected. | Complete |
 | T5 | Implement the smallest selected change. | Timer cancellation and a default production clock seam. | Complete |
-| T6 | Verify behavior and regressions. | Focused tests, suite, analyzer, and Simulator launch passed; manual Orders interaction pending. | Complete with limitation |
-| T7 | Document the final diagnosis and commit. | `solutions.md` is updated; ticket commit pending. | In progress |
+| T6 | Verify behavior and regressions. | Focused tests, suite, analyzer, Simulator launch, and manual Orders interaction passed. | Complete |
+| T7 | Document the final diagnosis and commit. | `solutions.md` and this evidence record are updated; RES-102 commits are complete. | Complete |
 
 ## T2 — Compare Reproduction and Regression-Test Approaches
 
@@ -149,7 +149,7 @@ These are the concrete tasks after selecting widget-owned timer cancellation. Th
 | Regression suite | `flutter test` | All tests pass. |
 | Diff scope | `git diff --check` and review | No protected files or unrelated changes. |
 
-**Result:** Single disposal, multiple disposal, route pop, and visible mounted countdown tests passed (4 focused tests). `flutter test` passed 5 tests, `flutter analyze` reported no issues, and `git diff --check` passed. The fixed app launched on iPhone 17 Pro Simulator. Manual My orders interaction is pending because the environment has no iOS UI automation.
+**Result:** Single disposal, multiple disposal, route pop, and visible mounted countdown tests passed (4 focused tests). `flutter test` passed 5 tests, `flutter analyze` reported no issues, and `git diff --check` passed. The fixed app launched on iPhone 17 Pro Simulator. The user then opened the three active orders, returned to Home, waited one minute, and observed no crash or post-disposal timer error.
 
 ## T7 — Delivery Evidence
 
@@ -159,7 +159,7 @@ Record the following after verification:
 - Chosen implementation and why it owns the timer correctly.
 - Rejected `mounted`-only approach and why it leaves periodic work alive.
 - Single/multiple countdown test results.
-- Manual route smoke-check result.
+- Manual route smoke-check result: passed after returning from My orders and waiting one minute.
 - Analyzer and full test-suite results.
 
 **Recorded in:** [`solutions.md`](../../solutions.md).
