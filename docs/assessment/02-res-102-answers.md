@@ -16,6 +16,7 @@ This file answers only questions supported by the ticket, current source, or pri
 
 | Question | Answer | Evidence |
 | --- | --- | --- |
+| 2.1 | Yes. A temporary widget reproduction on the current revision mounted `PickupCountdown`, removed it from the tree, and advanced fake time by one second. Flutter produced the reported `setState() called after dispose()` error. | Flutter 3.27.0 widget-test run, 2026-09-16. |
 | 2.2 | Three bundled active orders should render countdowns: IDs 9001 (`READY`, pickup in 18 minutes), 9002 (`CONFIRMED`, 47 minutes), and 9003 (`CONFIRMED`, 132 minutes). | `assets/data/orders.json`; `OrderModel.isActive`; `orders_screen.dart`. |
 | 2.5 | The app-bar back action and a standard back gesture both remove the pushed route through Flutter navigation. The ticket explicitly names back navigation; other route-removal paths need a scope decision before being acceptance criteria. | `PROBLEM.md`, RES-102; `routes.dart`. |
 | 2.9 | The only callback that directly calls `setState()` in the orders countdown path is the callback passed to `Timer.periodic` in `PickupCountdown.initState()`. | `pickup_countdown.dart`; repository search for `Timer.periodic` and `setState`. |
@@ -32,6 +33,7 @@ This file answers only questions supported by the ticket, current source, or pri
 | 3.6 | Each countdown instance has independent lifecycle responsibility because each creates its own periodic timer. | `orders_screen.dart`; `pickup_countdown.dart`. |
 | 3.7 | The route and `OrdersController` can outlive an individual list child; the countdown widget is a descendant of the list. | `orders_screen.dart`; Flutter widget-tree ownership model. |
 | 3.8 | In the current orders feature, the only repeating callback found is the countdown’s `Timer.periodic`. The controller does not create a timer, Worker, subscription, or animation controller. | Repository search of `lib/feature/order/`. |
+| 3.9 | Yes. The reproduction removed the state, then the next periodic tick called its callback. The captured stack trace ends at `PickupCountdown.initState` line 22 and Flutter reported the state as `defunct, not mounted`. | Flutter 3.27.0 widget-test run, 2026-09-16. |
 
 ## 4. Scope and Constraints
 
@@ -49,19 +51,31 @@ This file answers only questions supported by the ticket, current source, or pri
 | --- | --- | --- |
 | 7.1 | Flutter documents `dispose()` as the terminal lifecycle stage. A disposed state is unmounted, may not receive `setState()`, and should release retained resources. | [Flutter `State.dispose`](https://api.flutter.dev/flutter/widgets/State/dispose.html). |
 | 7.2 | Dart documents that periodic timers repeat until cancellation; scheduling timing is not guaranteed to be exact. | [Dart `Timer.periodic`](https://api.dart.dev/dart-async/Timer/Timer.periodic.html). |
+| 7.4 | Flutter widget tests provide deterministic fake time through `WidgetTester.pump(Duration)`. Advancing one second fired the periodic callback without a real one-second wait. | Flutter 3.27.0 widget-test run, 2026-09-16. |
+
+## 8. Verification and Comparison
+
+| Question | Answer | Evidence |
+| --- | --- | --- |
+| 8.2 | The baseline failure signal is the framework error `setState() called after dispose()` and Flutter’s separate pending-periodic-timer diagnostic. | Flutter 3.27.0 widget-test run, 2026-09-16. |
+| 8.3 | A focused widget test can fail before the fix by mounting, disposing, and advancing fake time. After a correct fix, the same sequence must complete without framework errors or pending timers. | Temporary reproduction test, 2026-09-16. |
+| 8.4 | Advance one periodic tick with `tester.pump(const Duration(seconds: 1))`. | Temporary reproduction test, 2026-09-16. |
 
 ## Questions Still Requiring Evidence or a Scope Decision
 
 The following are intentionally unanswered until the next investigation phase:
 
-- Runtime observations: 2.1, 2.3, 2.4, 2.6–2.8.
-- Disposal timing and race behavior: 3.9.
+- Runtime observations in the full My orders route: 2.3, 2.4, 2.6–2.8.
 - All edge-case questions in section 5.
 - The complete solution comparison in section 6.
-- Test-tool and test-design questions 7.3–7.6 and section 8.
+- Test-tool and test-design questions 7.3, 7.5–7.6, and 8.1, 8.5–8.9.
 
 ## Scope Decision Needed
 
 Should RES-102’s acceptance criteria cover **every path that disposes a `PickupCountdown`** (including removal from the list during rebuild), or only the documented action of navigating back from My orders?
 
 My recommendation is every disposal path, because the same widget-owned callback can survive any disposal path. However, I will not turn that recommendation into a requirement without your direction.
+
+## Baseline Test Suite
+
+The existing project test suite passed with Flutter 3.27.0 after the temporary reproduction test was removed: `flutter test -r expanded` → `1 test passed`.
