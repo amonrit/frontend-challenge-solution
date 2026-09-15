@@ -30,6 +30,17 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('updates its visible countdown while mounted', (tester) async {
+    await pumpCountdowns(tester);
+    final before = tester.widget<Text>(find.byType(Text)).data;
+
+    await tester.pump(const Duration(seconds: 1));
+    final after = tester.widget<Text>(find.byType(Text)).data;
+
+    expect(after, isNot(before));
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('stops every countdown callback when multiple are disposed',
       (tester) async {
     await pumpCountdowns(tester, count: 3);
