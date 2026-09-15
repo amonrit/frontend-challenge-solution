@@ -20,12 +20,12 @@ Working assumption for planning: any disposal path of `PickupCountdown` should r
 | ID | Task | Output | Depends on |
 | --- | --- | --- | --- |
 | T1 | Record the current baseline failure. | Saved test command, error, stack trace, and pending-timer evidence. | Complete |
-| T2 | Compare reproduction and regression-test approaches. | Chosen test level and reason. | T1 |
-| T3 | Write the focused regression test before changing production code. | A test that fails on the current implementation for the intended reason. | T2 |
-| T4 | Compare implementation approaches. | Decision table and selected approach. | T1, T3 |
-| T5 | Implement the smallest selected change. | Production change limited to RES-102 scope. | T4 |
-| T6 | Verify behavior and regressions. | Targeted test, full suite, analyzer, and manual route result. | T5 |
-| T7 | Document the final diagnosis and commit. | `solutions.md` content and one logical ticket commit. | T6 |
+| T2 | Compare reproduction and regression-test approaches. | Focused widget test selected; manual app run retained as a smoke check. | Complete |
+| T3 | Write the focused regression test before changing production code. | Baseline failed with the intended framework error and pending timers. | Complete |
+| T4 | Compare implementation approaches. | Widget-state timer cancellation selected. | Complete |
+| T5 | Implement the smallest selected change. | Timer cancellation and a default production clock seam. | Complete |
+| T6 | Verify behavior and regressions. | Focused tests, suite, analyzer, and Simulator launch passed; manual Orders interaction pending. | Complete with limitation |
+| T7 | Document the final diagnosis and commit. | `solutions.md` is updated; ticket commit pending. | In progress |
 
 ## T2 — Compare Reproduction and Regression-Test Approaches
 
@@ -43,7 +43,7 @@ Working assumption for planning: any disposal path of `PickupCountdown` should r
 3. Choose option B if it captures the acceptance-critical failure without route setup.
 4. Retain option A as a manual smoke check after the fix.
 
-**Current evidence:** Option B already reproduced one and three disposed countdown failures deterministically. T2 is ready to select option B once T3 writes the permanent test.
+**Result:** Option B reproduced one and three disposed countdown failures deterministically, so it was selected. A route-pop widget test was also added to cover the navigation lifecycle without adding an integration-test dependency.
 
 ## T3 — Regression Test Design
 
@@ -66,7 +66,7 @@ Working assumption for planning: any disposal path of `PickupCountdown` should r
 
 ### T3 Comparison Task
 
-Compare the first two assertion styles on the baseline. Choose the style that produces a stable failure message and still fails if a timer survives disposal. Do not introduce a clock/ticker abstraction unless testing the existing widget proves impossible.
+**Result:** The framework’s normal failure and pending-timer invariant provided the baseline failure. Direct `DateTime.now()` prevented a deterministic visible-text assertion, so a narrow injected clock was added with `DateTime.now` as its production default. A real-time wait was rejected as timing-sensitive.
 
 ## T4 — Compare Implementation Approaches
 
@@ -91,6 +91,43 @@ Evaluate each option against these non-negotiable criteria:
 
 Select an option only after T3 exists. If option A meets every criterion, reject B–E with the table’s evidence instead of combining approaches without a need.
 
+**Result:** Option A met every criterion and was implemented. B only hides `setState`; C misses early navigation; D and E widen ownership beyond RES-102.
+
+## Pre-Execution TDD and Readiness Checklists
+
+### TDD Checklist
+
+- [x] Acceptance criterion: no callback, framework error, or pending timer after countdown disposal.
+- [x] Test level: focused widget test, plus a route-pop widget test.
+- [x] Deterministic inputs: `WidgetTester.pump(Duration)` for timer ticks and an injected clock for visible countdown time.
+- [x] Red baseline: one and three countdown tests failed with `setState() called after dispose()` and pending timers.
+- [x] Failure signal: stack trace pointed to `PickupCountdown`’s periodic callback, not test setup.
+- [x] Green assertions: mounted label changes; single disposal, multiple disposal, and route pop finish without exceptions or pending timers.
+
+### Execution Readiness Checklist
+
+- [x] Root cause: uncancelled timer created by widget state was reproduced and traced.
+- [x] Constraints: Flutter 3.27.0; no changes to simulated backend or asset data.
+- [x] Approaches compared: widget-owned cancellation, `mounted` guard, terminal-time cancellation, controller ticker, and shared ticker.
+- [x] Decision recorded: cancel the state-owned timer in `dispose()`; reject alternatives for the documented reasons.
+- [x] Edge cases planned: mounted updates, one/multiple disposal, route removal, and app backgrounding boundary.
+- [x] Expected files and checks listed: countdown widget, focused test, analyzer, full suite, diff check, and manual route smoke flow.
+- [x] Commit scope: one RES-102 lifecycle fix with its regression tests and documentation.
+
+## Chosen Implementation — Execution Tasks
+
+These are the concrete tasks after selecting widget-owned timer cancellation. They are intentionally separate from the comparison tasks above.
+
+| ID | Implementation task | Why it exists | Completion evidence | Status |
+| --- | --- | --- | --- | --- |
+| I1 | Add an optional clock dependency that defaults to `DateTime.now`. | The countdown display needs a controllable source of time in widget tests. | A mounted-countdown test advances the injected clock and observes a new label. | Complete |
+| I2 | Keep the `Timer.periodic` reference in `_PickupCountdownState`. | The state cannot cancel a timer it does not retain. | The timer is stored in a private state field. | Complete |
+| I3 | Cancel the retained timer in `dispose()` before `super.dispose()`. | Stop future callbacks when the state’s lifecycle ends. | Single-disposal test has no framework error or pending timer. | Complete |
+| I4 | Preserve normal mounted behavior. | The lifecycle fix must not turn the countdown into static text. | Controlled-clock widget test confirms the displayed remaining time changes after one tick. | Complete |
+| I5 | Cover independent timer ownership for multiple tiles. | Each active order creates its own countdown and timer. | Three-countdown disposal test passes without errors or pending timers. | Complete |
+| I6 | Cover route removal. | The ticket’s reported trigger is leaving My orders. | Route push/pop test passes after a tick. | Complete |
+| I7 | Run focused tests, analyzer, full suite, and diff check. | Confirm the change is isolated and does not regress existing behavior. | 4 focused tests, 5 full-suite tests, analyzer, and diff check pass. | Complete |
+
 ## T5 — Implementation Choices
 
 | Work item | Options | Selection rule |
@@ -112,6 +149,8 @@ Select an option only after T3 exists. If option A meets every criterion, reject
 | Regression suite | `flutter test` | All tests pass. |
 | Diff scope | `git diff --check` and review | No protected files or unrelated changes. |
 
+**Result:** Single disposal, multiple disposal, route pop, and visible mounted countdown tests passed (4 focused tests). `flutter test` passed 5 tests, `flutter analyze` reported no issues, and `git diff --check` passed. The fixed app launched on iPhone 17 Pro Simulator. Manual My orders interaction is pending because the environment has no iOS UI automation.
+
 ## T7 — Delivery Evidence
 
 Record the following after verification:
@@ -122,3 +161,5 @@ Record the following after verification:
 - Single/multiple countdown test results.
 - Manual route smoke-check result.
 - Analyzer and full test-suite results.
+
+**Recorded in:** [`solutions.md`](../../solutions.md).

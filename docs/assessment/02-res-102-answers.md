@@ -70,7 +70,7 @@ This file answers only questions supported by the ticket, current source, or pri
 | 7.1 | Flutter documents `dispose()` as the terminal lifecycle stage. A disposed state is unmounted, may not receive `setState()`, and should release retained resources. | [Flutter `State.dispose`](https://api.flutter.dev/flutter/widgets/State/dispose.html). |
 | 7.2 | Dart documents that periodic timers repeat until cancellation; scheduling timing is not guaranteed to be exact. | [Dart `Timer.periodic`](https://api.dart.dev/dart-async/Timer/Timer.periodic.html). |
 | 7.5 | `WidgetTester.takeException()` returns the latest exception caught by the Flutter framework. It can make the regression test assert the expected pre-fix framework error rather than relying only on console output. | [Flutter `WidgetTester.takeException`](https://api.flutter.dev/flutter/flutter_test/WidgetTester/takeException.html). |
-| 7.4 | Flutter widget tests provide deterministic fake time through `WidgetTester.pump(Duration)`. Advancing one second fired the periodic callback without a real one-second wait. | Flutter 3.27.0 widget-test run, 2026-09-16. |
+| 7.4 | `WidgetTester.pump(Duration)` advances periodic timers deterministically, but it does not advance direct `DateTime.now()` calls in this widget. An injected clock is required to verify visible countdown text without waiting in real time. | Flutter 3.27.0 widget-test run, 2026-09-16. |
 
 ## 8. Verification and Comparison
 

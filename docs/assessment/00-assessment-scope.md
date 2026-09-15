@@ -12,9 +12,33 @@ Each ticket or feature will have its own file and follow this sequence:
 4. Compare possible fixes, including trade-offs and rejected options.
 5. Research framework or platform guidance when a choice depends on it.
 6. Define fair tests and measurements before implementation.
-7. Implement only after the approach and success criteria are clear.
+7. Complete the TDD and execution-readiness checklists.
+8. Implement only after the approach and success criteria are clear.
 
 The files record plans and evidence. They do not claim a root cause or a completed fix until the behavior has been reproduced and verified.
+
+## Required Pre-Execution Gates
+
+Every selected ticket or feature must include these sections before its execution tasks:
+
+### TDD Checklist
+
+- [ ] A testable acceptance criterion is written in plain language.
+- [ ] The test level is chosen: unit, widget, route-level widget, integration, or manual.
+- [ ] A deterministic test input exists, including controlled time, API response, or state where needed.
+- [ ] The test fails before the fix or feature implementation for the intended reason.
+- [ ] The failure signal identifies the required behavior, not an unrelated setup failure.
+- [ ] The post-change assertion proves the requested behavior and relevant cleanup or rollback.
+
+### Execution Readiness Checklist
+
+- [ ] Root cause or required behavior is supported by source and reproduction evidence.
+- [ ] Constraints and protected files are identified.
+- [ ] Candidate approaches are compared against correctness, lifecycle, performance, scope, and testability.
+- [ ] The chosen approach and rejected alternatives have written reasons.
+- [ ] Edge cases and failure states have planned checks.
+- [ ] Expected files, test commands, and manual verification flow are listed.
+- [ ] The work is small enough for one logical ticket commit.
 
 ## Assessment Requirements
 
