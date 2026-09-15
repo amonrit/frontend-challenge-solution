@@ -64,7 +64,7 @@ At submission, create `solutions.md` at the repository root with:
 | File | Purpose | Status |
 | --- | --- | --- |
 | `00-assessment-scope.md` | Requirements and investigation workflow | Complete |
-| `01-res-101-search-race.md` | First ticket investigation plan | Not started |
+| `01-res-102-questions.md` | RES-102 questions before task breakdown | Complete |
 | Later files | One file per selected ticket or feature | Not started |
 
-The next file will begin with RES-101 and will cover questions, reproduction, edge cases, possible solutions, research targets, and a test plan before any code changes.
+The next RES-102 file will cover reproduction, solution options, research, and test design only after these questions are answered.
