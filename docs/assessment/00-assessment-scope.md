@@ -66,6 +66,7 @@ At submission, create `solutions.md` at the repository root with:
 | `00-assessment-scope.md` | Requirements and investigation workflow | Complete |
 | `01-res-102-questions.md` | RES-102 questions before task breakdown | Complete |
 | `02-res-102-answers.md` | Evidence-backed RES-102 answers before task breakdown | In progress |
+| `03-res-102-task-breakdown.md` | RES-102 tasks and method-comparison plan | Complete |
 | Later files | One file per selected ticket or feature | Not started |
 
 The next RES-102 file will cover reproduction, solution options, research, and test design only after the remaining questions have evidence or an explicit scope decision.
