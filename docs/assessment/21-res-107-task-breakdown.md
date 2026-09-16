@@ -12,7 +12,7 @@ they do not change production code.
 | T3 | Preserve the model-argument fast path and initialize dependent observers safely. | `lib/feature/deal/deal_details_controller.dart` | T2 | Card navigation does not make an unnecessary initial fetch; cart observer starts only with a loaded model. | Complete; focused tests passed |
 | T4 | Render loading and error states while retaining the existing loaded page. | `lib/feature/deal/deal_details_screen.dart` | T2 | Deep link shows loading, then details or an understandable retryable error. | Complete; focused controller/deep-link checks passed |
 | T5 | Add regression coverage for valid ID, normal argument, invalid ID, and failure paths. | `test/deal_details_deep_link_test.dart`, `test/deal_details_controller_test.dart` | T2–T4 | Focused tests prove all acceptance paths and no late state mutation after close. | Complete; 6 focused tests passed |
-| T6 | Run project checks and manual deep-link verification. | tests, `solutions.md`, assessment evidence | T5 | Focused/full tests, analyzer, diff check, and deal-42 simulator flow pass. | Next |
+| T6 | Run project checks and manual deep-link verification. | tests, `solutions.md`, assessment evidence | T5 | Focused/full tests, analyzer, diff check, and deal-42 simulator flow pass. | Complete |
 
 ## C1 — Route-resolution alternatives
 
@@ -73,6 +73,15 @@ transitions so the screen only renders state and does not own repository work.
   suite, giving 6 passing tests across the two files.
 - Failure coverage checks that loading ends, no deal is exposed, and the
   retryable user-facing message is set.
+
+## T6 verification evidence
+
+- Full Flutter test suite passed: 13 tests.
+- `flutter analyze` passed with no issues.
+- `git diff --check` passed.
+- On iPhone 17 Pro Simulator, opening
+  `rescu://open/deal?id=42&source=push` displayed “Mystery Japanese Basket”,
+  matching catalog deal 42. Screenshot: [`res-107-deal-42-runtime.png`](evidence/res-107-deal-42-runtime.png).
 
 ## T2 implementation evidence
 

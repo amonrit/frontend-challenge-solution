@@ -221,6 +221,12 @@ passes 6 tests. Failure coverage verifies that loading ends with no exposed deal
 and a retryable user-facing message; full analyzer and runtime verification are
 reserved for T6.
 
+T6 completed the final checks: the full Flutter suite passed 13 tests, analyzer
+reported no issues, and `git diff --check` passed. On an iPhone 17 Pro Simulator,
+opening `rescu://open/deal?id=42&source=push` reached the details page for
+“Mystery Japanese Basket”, matching catalog deal 42. The runtime screenshot is
+stored at `docs/assessment/evidence/res-107-deal-42-runtime.png`.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)

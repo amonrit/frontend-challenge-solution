@@ -36,8 +36,8 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: T5 complete; valid, invalid, failure, model fast-path, and
-  observer lifecycle regression tests pass.
-- Next phase: execute T6, final project checks and manual deep-link verification.
-- Production code and focused coverage are complete; final analyzer and runtime
-  evidence remain for T6.
+- Current phase: T6 complete; automated checks and runtime deep-link evidence
+  are recorded.
+- Next phase: RES-107 workflow complete; review the commit and evidence history.
+- Production code, regression coverage, analyzer, and deal-42 runtime flow are
+  complete for this ticket.
