@@ -116,10 +116,16 @@ text comparison was rejected because identical text can belong to different
 requests; debounce was rejected as a correctness mechanism because it cannot
 invalidate an already-started response.
 
+The focused RED test now reproduces the visible overwrite deterministically:
+`bakery` completes first, then older `sushi` completes and replaces it in the
+current controller. The monotonic generation guard has not been implemented
+yet.
+
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)
 - [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
 - [RES-101 options and decision](docs/assessment/13-res-101-options.md)
+- [RES-101 TDD readiness and RED evidence](docs/assessment/14-res-101-tdd-readiness.md)
 
 ## AI Usage Log
 
