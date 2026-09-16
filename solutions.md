@@ -75,7 +75,9 @@ fix.
 E1 now retains the `Worker` returned by `ever(...)` and disposes it in
 `onClose()`. The focused GREEN test passes: a live controller refreshes once,
 then a cart change after `onClose()` creates no additional repository request.
-Multi-controller and full verification remain pending.
+The multi-controller regression test also passes: closing controller A does
+not prevent live controller B from refreshing. Full verification remains
+pending.
 
 Detailed questions and evidence are kept in:
 

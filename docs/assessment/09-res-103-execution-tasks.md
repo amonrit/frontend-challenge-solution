@@ -7,8 +7,8 @@ only one task per user-approved `next`.
 | --- | --- | --- | --- | --- | --- |
 | E1 | Retain the Worker created by `ever(...)` and release it in the controller lifecycle hook. | `lib/feature/deal/deal_details_controller.dart` | RED test in `test/deal_details_controller_test.dart` | After `onClose()`, a cart change does not increment `fetchByIdCalls`. | Complete; GREEN verification pending E2 |
 | E2 | Run and record the focused GREEN test after E1. | `test/deal_details_controller_test.dart`, assessment evidence | E1 | `flutter test test/deal_details_controller_test.dart` passes. | Complete: 1 passed |
-| E3 | Add a multi-controller regression test. | `test/deal_details_controller_test.dart` | E2 | Closing controller A does not stop live controller B; cart change fetches only B. | Next |
-| E4 | Run targeted and project verification. | tests, `solutions.md` | E3 | Focused test, full suite, analyzer, and diff check pass. | Blocked by E3 |
+| E3 | Add a multi-controller regression test. | `test/deal_details_controller_test.dart` | E2 | Closing controller A does not stop live controller B; cart change fetches only B. | Complete: 2 focused tests passed |
+| E4 | Run targeted and project verification. | tests, `solutions.md` | E3 | Focused test, full suite, analyzer, and diff check pass. | Next |
 | E5 | Repeat the manual request-count flow. | `solutions.md`, assessment evidence | E4 | After deals 1–3 close and deal 4 adds to bag, only `GET /deals/4` appears. | Blocked by E4 |
 
 ## E1 implementation variants

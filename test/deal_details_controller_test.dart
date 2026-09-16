@@ -45,6 +45,29 @@ void main() {
     flashSaleEndsAt: null,
   );
 
+  final secondDeal = DealModel(
+    id: 2,
+    name: 'Second test deal',
+    description: '',
+    imageUrl: '',
+    originalPrice: 100,
+    price: 50,
+    currencyCode: 'THB',
+    quantityLeft: 5,
+    storeId: 2,
+    storeName: 'Second test store',
+    storeAddress: '',
+    lat: 0,
+    lng: 0,
+    rating: null,
+    tags: [],
+    pickupWindow: PickupWindowModel(
+      start: DateTime(2026, 1, 1, 12),
+      end: DateTime(2026, 1, 1, 13),
+    ),
+    flashSaleEndsAt: null,
+  );
+
   setUp(() {
     Get.testMode = true;
     Get.rootController.routing.args = deal;
@@ -70,5 +93,35 @@ void main() {
     await Future<void>.delayed(Duration.zero);
 
     expect(repo.fetchByIdCalls, 1);
+  });
+
+  test('keeps a different live controller subscribed after another closes',
+      () async {
+    final cart = CartService();
+    final firstRepo = _CountingDealRepo(deal);
+    final secondRepo = _CountingDealRepo(secondDeal);
+
+    Get.rootController.routing.args = deal;
+    final firstController = DealDetailsController(
+      dealRepo: firstRepo,
+      cartService: cart,
+      analytics: AnalyticsService(),
+    )..onInit();
+
+    Get.rootController.routing.args = secondDeal;
+    final secondController = DealDetailsController(
+      dealRepo: secondRepo,
+      cartService: cart,
+      analytics: AnalyticsService(),
+    )..onInit();
+
+    firstController.onClose();
+    cart.add(deal);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(firstRepo.fetchByIdCalls, 0);
+    expect(secondRepo.fetchByIdCalls, 1);
+
+    secondController.onClose();
   });
 }
