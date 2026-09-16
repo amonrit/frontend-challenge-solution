@@ -256,8 +256,13 @@ Full before/after and runtime checks remain for T5.
 T3 adds lifecycle guards and `finally` cleanup for refresh/load-more. A closed
 controller no longer accepts late responses, while only the current request
 round completes the shared refresh indicator. The focused suite now includes a
-late-refresh-after-close test and passes 2 tests. Failure-edge expansion and
-full before/after checks remain for T4 and T5.
+late-refresh-after-close test and passes 2 tests. Failure-edge expansion is
+covered by T4; full before/after checks remain for T5.
+
+T4 expands the deterministic suite to 6 tests: overlapping refreshes, stale
+load-more failure, wrong response page, final-page no-op, stale append, and
+late response after close. All focused tests pass. The same delayed repository
+seam will be reused for T5's before/after comparison.
 
 ### References
 

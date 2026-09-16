@@ -99,4 +99,80 @@ void main() {
 
     expect(controller.deals, isEmpty);
   });
+
+  test('keeps the newest result when two refreshes overlap', () async {
+    final repo = _ControlledHomeRepo();
+    final controller = HomeController(dealRepo: repo);
+
+    final initial = controller.refreshDeals();
+    repo.nextRequest(1).completer.complete(_page(1, [_deal(1)]));
+    await initial;
+
+    final olderRefresh = controller.refreshDeals();
+    final newestRefresh = controller.refreshDeals();
+    repo.requests[2].completer.complete(_page(1, [_deal(3)]));
+    await newestRefresh;
+    repo.requests[1].completer.complete(_page(1, [_deal(2)]));
+    await olderRefresh;
+
+    expect(controller.deals.map((deal) => deal.id), [3]);
+    controller.onClose();
+  });
+
+  test('does not let a stale load-more failure corrupt refreshed state', () async {
+    final repo = _ControlledHomeRepo();
+    final controller = HomeController(dealRepo: repo);
+
+    final initial = controller.refreshDeals();
+    repo.nextRequest(1).completer.complete(_page(1, [_deal(1)]));
+    await initial;
+
+    final loadMore = controller.loadMore();
+    final refresh = controller.refreshDeals();
+    repo.requests.last.completer.complete(_page(1, [_deal(3)]));
+    await refresh;
+    repo.nextRequest(2).completer.completeError(StateError('stale failure'));
+    await loadMore;
+
+    expect(controller.deals.map((deal) => deal.id), [3]);
+    controller.onClose();
+  });
+
+  test('ignores a response for a page different from the requested page',
+      () async {
+    final repo = _ControlledHomeRepo();
+    final controller = HomeController(dealRepo: repo);
+
+    final initial = controller.refreshDeals();
+    repo.nextRequest(1).completer.complete(_page(1, [_deal(1)]));
+    await initial;
+
+    final loadMore = controller.loadMore();
+    repo.nextRequest(2).completer.complete(_page(1, [_deal(9)]));
+    await loadMore;
+
+    expect(controller.deals.map((deal) => deal.id), [1]);
+    final retryLoadMore = controller.loadMore();
+    expect(repo.requests.where((request) => request.page == 2), hasLength(2));
+    repo.requests.last.completer.complete(_page(2, [_deal(2)]));
+    await retryLoadMore;
+    expect(controller.deals.map((deal) => deal.id), [1, 2]);
+    controller.onClose();
+  });
+
+  test('does not request another page after the final page', () async {
+    final repo = _ControlledHomeRepo();
+    final controller = HomeController(dealRepo: repo);
+
+    final initial = controller.refreshDeals();
+    repo.nextRequest(1).completer.complete(
+          PagedResponseModel(items: [_deal(1)], page: 1, totalPages: 1),
+        );
+    await initial;
+    await controller.loadMore();
+
+    expect(repo.requests, hasLength(1));
+    expect(controller.deals.map((deal) => deal.id), [1]);
+    controller.onClose();
+  });
 }

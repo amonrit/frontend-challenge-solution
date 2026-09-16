@@ -37,7 +37,7 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: T3 complete; late responses and indicator completion are
-  guarded by controller lifecycle and request round.
-- Next phase: Execute T4, expand regression coverage for failure and edge cases.
+- Current phase: T4 complete; overlap, stale failure, wrong-page, close, and
+  final-page regression tests pass.
+- Next phase: Execute T5, repeat before/after measurements and final checks.
 - Production code and tests: unchanged for RES-104.
