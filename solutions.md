@@ -306,6 +306,7 @@ No implementation or before/after DevTools evidence was produced for this ticket
 
 - `PROBLEM.md` RES-105 requirements
 - [RES-105 scope](docs/assessment/105/scope.md)
+- [RES-105 evidence-backed answers](docs/assessment/105/answers.md)
 
 ## RES-106 — Pickup time and today filter
 

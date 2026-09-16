@@ -37,6 +37,7 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 1 — performance requirement and evidence questions written.
-- Next phase: Phase 2 — collect source and baseline evidence.
+- Current phase: Phase 2 — source and automated baseline evidence collected.
+- Next phase: Phase 3 — compare performance approaches after obtaining runtime
+  measurements where the environment permits.
 - Production code and tests: unchanged for RES-105.
