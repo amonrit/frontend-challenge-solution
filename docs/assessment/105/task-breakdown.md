@@ -15,6 +15,8 @@ task records evidence before moving to the next one.
 | T3 | Add display-sized image decode hints | `lib/feature/shared_widget/the_network_image.dart`, `test/res_105_image_sizing_test.dart` | T0 | At DPR 2 and 160 px slot, `memCacheWidth/Height` are 320; placeholders/errors remain unchanged | Pass hints directly; derive a reusable size helper | Complete |
 | T4 | Compare after profile evidence | `docs/assessment/105/answers.md`, `solutions.md` | T1–T3 | Before/after frame, rebuild, and memory/image-cache metrics use the identical scenario; limitations remain explicit | DevTools trace; deterministic tests if profile unavailable | Complete (runtime limitation recorded) |
 | T5 | Run integrated verification | `docs/assessment/105/`, `solutions.md` | T4 | Focused tests, full suite, analyzer, diff check, and manual behavior checks pass | Local automated checks; simulator/device smoke check if available | Complete (manual/profile limitations recorded) |
+| F1 | Capture DevTools before/after on a mid-range Android device | `docs/assessment/105/profile-baseline.md`, `solutions.md` | Suitable device available | Identical profile-mode scenario records frame timing, rebuilds, and memory/image-cache metrics before and after | Physical device; configured Android emulator | Follow-up |
+| F2 | Add widget tests for rebuild scope and lazy construction | `test/`, Home widgets | Test seam design | Tests demonstrate scroll updates do not rebuild feed content and cards are built lazily | Rebuild counters; controlled builder instrumentation | Follow-up |
 
 ## Execution rules
 

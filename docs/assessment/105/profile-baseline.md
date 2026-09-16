@@ -29,6 +29,12 @@ bytes). Use the identical contract before and after each implementation task.
 T0 is complete with an explicit environment limitation. No performance number
 or improvement claim is made from this attempt.
 
+## Required follow-up
+
+- Capture DevTools before/after on a mid-range Android device (F1).
+- Add direct widget coverage for reactive rebuild scope and lazy construction
+  (F2).
+
 ## After-change profile status
 
 The same target inventory remained available after T1–T3, so a comparable

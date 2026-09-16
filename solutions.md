@@ -132,6 +132,9 @@ The first visible-countdown test used `DateTime.now()` directly. `tester.pump(Du
 ### Limitations or follow-up
 
 No known RES-102 limitation remains for the documented route-pop scenario.
+The focused/full counts in this section are historical measurements from the
+RES-102 verification point; the later project-wide suite count is recorded at
+the later ticket's measurement point and does not replace this history.
 
 ### References
 
@@ -333,9 +336,9 @@ Manual device behavior checks remain unperformed.
 The implementation has no comparable Android profile numbers because the
 device was unavailable. DevTools profiling on a suitable mid-range Android
 device remains the follow-up needed before claiming measured jank or memory
-improvement. Dedicated widget tests for rebuild scope and lazy construction are
-also follow-up coverage; the current automated test directly covers image
-decode sizing, while source review covers the structural changes.
+improvement. Dedicated widget tests for rebuild scope and lazy construction
+(RES-105 F2) are also follow-up coverage; the current automated test directly
+covers image decode sizing, while source review covers the structural changes.
 
 ### References
 
@@ -501,9 +504,9 @@ repository and state ownership.
 
 ### Limitations or follow-up
 
-Android intent verification and dedicated widget tests for loading/error
-rendering remain follow-up coverage. The controller paths and iPhone Simulator
-deal-42 flow are verified.
+Android intent verification (RES-107 follow-up) and dedicated widget tests for
+loading/error rendering remain follow-up coverage. The controller paths and
+iPhone Simulator deal-42 flow are verified.
 
 ### References
 
