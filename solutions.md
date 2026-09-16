@@ -69,7 +69,11 @@ shared cart-level ownership was rejected as broader than this ticket.
 
 The focused RED test confirms the selected lifecycle gap: after
 `DealDetailsController.onClose()`, a second cart change raises repository
-availability calls from one to two. No production fix has been applied yet.
+availability calls from one to two. This was recorded before the production
+fix.
+
+E1 now retains the `Worker` returned by `ever(...)` and disposes it in
+`onClose()`. Focused GREEN and regression verification remain pending in E2.
 
 Detailed questions and evidence are kept in:
 
