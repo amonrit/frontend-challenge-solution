@@ -37,6 +37,6 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: Phase 1 — requirement and evidence questions recorded.
-- Next phase: Phase 2 — collect evidence-backed answers.
+- Current phase: Phase 2 — pre-change evidence and measurements recorded.
+- Next phase: Phase 3 — compare request-round and serialization approaches.
 - Production code and tests: unchanged for RES-104.
