@@ -37,6 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 0 — performance scope initialized.
-- Next phase: Phase 1 — write requirement and evidence questions.
+- Current phase: Phase 1 — performance requirement and evidence questions written.
+- Next phase: Phase 2 — collect source and baseline evidence.
 - Production code and tests: unchanged for RES-105.
