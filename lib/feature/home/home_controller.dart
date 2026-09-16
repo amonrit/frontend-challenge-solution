@@ -75,16 +75,16 @@ class HomeController extends GetxController {
     }
     _isFetchingMore = true;
     final round = _requestRound;
-    _page++;
+    final requestedPage = _page + 1;
     try {
-      final res = await dealRepo.fetchDeals(page: _page);
-      if (round == _requestRound) {
+      final res = await dealRepo.fetchDeals(page: requestedPage);
+      if (round == _requestRound && res.page == requestedPage) {
+        _page = requestedPage;
         _totalPages = res.totalPages;
         deals.addAll(res.items);
       }
     } catch (e) {
       LogService.error('loadMore failed', e);
-      if (round == _requestRound) _page--;
     }
     _isFetchingMore = false;
     refreshController.loadComplete();

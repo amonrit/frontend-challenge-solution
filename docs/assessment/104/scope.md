@@ -37,7 +37,7 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: T1 complete; refresh request-round invalidation is implemented
-  and the RED regression is GREEN.
-- Next phase: Execute T2, guard expected page acceptance and advancement.
+- Current phase: T2 complete; load-more accepts only the current round and
+  expected response page.
+- Next phase: Execute T3, completion state and controller-close safety.
 - Production code and tests: unchanged for RES-104.

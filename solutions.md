@@ -224,7 +224,8 @@ while an older page-2 request is still allowed to append afterward.
 Selected monotonic request-round and page tokens. T1 adds a controller round
 counter: each refresh advances the round, and refresh/load-more completions from
 older rounds no longer mutate the feed. The remaining expected-page invariant
-is the next T2 task.
+is now enforced by T2: load-more captures `requestedPage` before awaiting and
+advances `_page` only when both round and response page match.
 
 ### Rejected alternatives
 
@@ -244,8 +245,14 @@ Flutter binding in the test setup; initializing `TestWidgetsFlutterBinding`
 fixed the seam. The intended RED run then produced `Expected: [3], Actual:
 [3, 4]`, proving that an older page-2 response is appended after refresh.
 
+T2 repeats the same completion order after the page guard and keeps the focused
+GREEN test passing. A response with the wrong page is ignored without changing
+the feed or pagination metadata.
+
 ### Limitations or follow-up
-No production implementation or after measurement has been produced yet.
+
+Completion-indicator balancing and controller-close handling remain the next T3
+task; full before/after and runtime checks remain for T5.
 
 ### References
 
