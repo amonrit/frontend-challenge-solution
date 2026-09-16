@@ -88,36 +88,45 @@ class HomeScreen extends GetView<HomeController> {
         ],
       );
     }
+    final deals = controller.visibleDeals;
+    final hasFlashDeals = controller.flashDeals.isNotEmpty;
+    final headerIndex = hasFlashDeals ? 1 : 0;
+    final dealStartIndex = headerIndex + 1;
+    final footerIndex = dealStartIndex + deals.length;
     return SmartRefresher(
       controller: controller.refreshController,
       enablePullDown: true,
       enablePullUp: true,
       onRefresh: controller.refreshDeals,
       onLoading: controller.loadMore,
-      child: ListView(
+      child: ListView.builder(
         controller: controller.scrollController,
-        children: [
-          if (controller.flashDeals.isNotEmpty)
-            FlashDealsSection(deals: controller.flashDeals),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-            child: Row(
-              children: [
-                const Text('Nearby deals',
-                    style:
-                        TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                const Spacer(),
-                FilterChip(
-                  label: const Text('Pickup today'),
-                  selected: controller.todayOnly.value,
-                  onSelected: (v) => controller.todayOnly.value = v,
-                ),
-              ],
-            ),
-          ),
-          ...controller.visibleDeals.map((deal) => DealCard(deal: deal)),
-          const SizedBox(height: 24),
-        ],
+        itemCount: footerIndex + 1,
+        itemBuilder: (context, index) {
+          if (hasFlashDeals && index == 0) {
+            return FlashDealsSection(deals: controller.flashDeals);
+          }
+          if (index == headerIndex) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+              child: Row(
+                children: [
+                  const Text('Nearby deals',
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                  const Spacer(),
+                  FilterChip(
+                    label: const Text('Pickup today'),
+                    selected: controller.todayOnly.value,
+                    onSelected: (v) => controller.todayOnly.value = v,
+                  ),
+                ],
+              ),
+            );
+          }
+          if (index == footerIndex) return const SizedBox(height: 24);
+          return DealCard(deal: deals[index - dealStartIndex]);
+        },
       ),
     );
   }

@@ -37,6 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T1 reactive boundary split complete.
-- Next task: T2 — make the main feed lazy.
+- Current phase: Phase 6 — T2 lazy main-feed construction complete.
+- Next task: T3 — add display-sized image decode hints.
 - Production code and tests: unchanged for RES-105.

@@ -305,7 +305,9 @@ The selected plan is to split reactive boundaries, use lazy feed construction,
 and pass display-sized image decode hints. T1 moved scroll observation into
 separate app-bar and FAB `Obx` wrappers; the body observer reads feed state but
 does not depend on scroll offset. Lazy construction and image sizing remain for
-later tasks.
+later tasks. T2 replaced the main feed's eager `children + map` with
+`ListView.builder`, preserving the flash rail, header/filter, footer, and
+existing refresher callbacks.
 
 ### Rejected alternatives
 
@@ -321,7 +323,8 @@ The Phase 2 baseline has 28 passing tests, a clean analyzer, and Flutter 3.27.0
 with DevTools 2.40.2. No profile-mode before/after DevTools measurements have
 been captured yet, so no performance improvement is claimed. After T1,
 `flutter analyze` passed with no issues and the existing Home controller suite
-passed 6 tests.
+passed 6 tests. After T2, the same analyzer and Home regression suite passed;
+runtime performance impact remains unmeasured.
 
 ### Limitations or follow-up
 TDD readiness and a repeatable profile scenario are still required before
