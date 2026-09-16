@@ -5,6 +5,7 @@ import 'package:rescu/model/deal_model.dart';
 import 'package:rescu/model/pickup_window_model.dart';
 import 'package:rescu/repository/deal_repo.dart';
 import 'package:rescu/service/analytics_service.dart';
+import 'package:rescu/service/api_exception.dart';
 import 'package:rescu/service/cart_service.dart';
 import 'package:rescu/service/fake_api_service.dart';
 
@@ -18,6 +19,15 @@ class _DeepLinkDealRepo extends DealRepo {
   Future<DealModel> fetchById(int id) async {
     requestedId = id;
     return loadedDeal;
+  }
+}
+
+class _FailingDealRepo extends DealRepo {
+  _FailingDealRepo() : super(api: FakeApiService());
+
+  @override
+  Future<DealModel> fetchById(int id) async {
+    throw const ApiException('Deal not found', statusCode: 404);
   }
 }
 
@@ -47,6 +57,8 @@ DealModel _deal(int id) {
 }
 
 void main() {
+  tearDown(Get.reset);
+
   test('loads a deal by route id when no model argument is supplied', () async {
     Get.testMode = true;
     Get.rootController.routing.args = null;
@@ -64,6 +76,40 @@ void main() {
     expect(repo.requestedId, 42);
     expect(controller.deal.id, 42);
     controller.onClose();
-    Get.reset();
+  });
+
+  test('maps an invalid route id to an error without fetching', () {
+    Get.testMode = true;
+    Get.rootController.routing.args = null;
+    Get.rootController.routing.current = '/deal?id=not-a-number';
+    final repo = _DeepLinkDealRepo(_deal(42));
+    final controller = DealDetailsController(
+      dealRepo: repo,
+      cartService: CartService(),
+      analytics: AnalyticsService(),
+    )..onInit();
+
+    expect(controller.errorMessage.value, 'This deal link is invalid.');
+    expect(repo.requestedId, isNull);
+    controller.onClose();
+  });
+
+  test('maps repository failures to a retryable error state', () async {
+    Get.testMode = true;
+    Get.rootController.routing.args = null;
+    Get.rootController.routing.current = '/deal?id=42';
+    final controller = DealDetailsController(
+      dealRepo: _FailingDealRepo(),
+      cartService: CartService(),
+      analytics: AnalyticsService(),
+    )..onInit();
+
+    await Future<void>.delayed(Duration.zero);
+
+    expect(controller.loadedDeal, isNull);
+    expect(controller.isLoading.value, isFalse);
+    expect(controller.errorMessage.value,
+        'Unable to load this deal. Please try again.');
+    controller.onClose();
   });
 }

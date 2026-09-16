@@ -36,8 +36,8 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: T4 complete; details loading, error, and retry rendering are
-  implemented around controller-owned state.
-- Next phase: execute T5, broaden regression coverage for all resolution paths.
-- Production code: controller resolution and observer lifecycle are complete;
-  the screen now safely branches before accessing an unloaded deal.
+- Current phase: T5 complete; valid, invalid, failure, model fast-path, and
+  observer lifecycle regression tests pass.
+- Next phase: execute T6, final project checks and manual deep-link verification.
+- Production code and focused coverage are complete; final analyzer and runtime
+  evidence remain for T6.

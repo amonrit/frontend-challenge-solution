@@ -215,6 +215,12 @@ normal model navigation keeps the existing details layout. Retry remains
 controller-owned so the screen does not perform repository work. Focused
 controller/deep-link checks pass; widget rendering coverage is deferred to T5.
 
+T5 adds regression coverage for valid route ID loading, normal model arguments,
+invalid IDs, repository failures, and observer cleanup. The focused suite now
+passes 6 tests. Failure coverage verifies that loading ends with no exposed deal
+and a retryable user-facing message; full analyzer and runtime verification are
+reserved for T6.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)
