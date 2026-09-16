@@ -51,6 +51,23 @@ For the complete requirement questions, evidence, research, and method compariso
 - [RES-102 evidence-backed answers](docs/assessment/02-res-102-answers.md)
 - [RES-102 task and option comparison](docs/assessment/03-res-102-task-breakdown.md)
 
+## RES-103 — Request accumulation (investigation in progress)
+
+Phase 2 runtime evidence reproduced the reported behavior on the iPhone 17 Pro
+Simulator. In a clean run, four detail controllers were opened; the first
+three were closed, then the fourth remained open while **Add to bag** was
+tapped. One cart change logged four refresh callbacks and four requests:
+`GET /deals/3`, `/deals/4`, `/deals/2`, and `/deals/1`. This confirms that
+closed detail-page observers still participate in the cart-change refresh path.
+The root-cause fix, option comparison, TDD, and final verification are not
+complete yet.
+
+Detailed questions and evidence are kept in:
+
+- [RES-103 scope](docs/assessment/04-res-103-scope.md)
+- [RES-103 questions](docs/assessment/05-res-103-questions.md)
+- [RES-103 evidence-backed answers](docs/assessment/06-res-103-answers.md)
+
 ## AI Usage Log
 
 | Tool | Use | Verification |
