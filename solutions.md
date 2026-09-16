@@ -327,6 +327,7 @@ No implementation or evidence was produced for this ticket.
 
 - `PROBLEM.md` RES-106 requirements
 - [RES-106 scope](docs/assessment/106/scope.md)
+- [RES-106 questions](docs/assessment/106/questions.md)
 
 ## RES-107 — Deep-link details loading (Complete)
 
