@@ -87,7 +87,7 @@ At submission, create `solutions.md` at the repository root with:
 
 | File | Purpose | Status |
 | --- | --- | --- |
-| `00-assessment-scope.md` | Requirements and investigation workflow | Complete |
+| `assessment-scope.md` | Requirements and investigation workflow | Complete |
 | `01-res-102-questions.md` | RES-102 questions before task breakdown | Complete |
 | `02-res-102-answers.md` | Evidence-backed RES-102 answers before task breakdown | Complete |
 | `03-res-102-task-breakdown.md` | RES-102 tasks and method-comparison plan | Complete |

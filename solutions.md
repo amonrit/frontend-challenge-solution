@@ -69,7 +69,7 @@ No known RES-102 limitation remains for the documented route-pop scenario.
 
 For the complete requirement questions, evidence, research, and method comparison, see:
 
-- [Assessment scope](docs/assessment/00-assessment-scope.md)
+- [Assessment scope](docs/assessment/assessment-scope.md)
 - [RES-102 questions](docs/assessment/102/questions.md)
 - [RES-102 evidence-backed answers](docs/assessment/102/answers.md)
 - [RES-102 task and option comparison](docs/assessment/102/task-breakdown.md)
