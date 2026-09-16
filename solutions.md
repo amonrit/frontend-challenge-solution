@@ -100,6 +100,20 @@ Detailed questions and evidence are kept in:
 - [RES-103 TDD readiness and RED evidence](docs/assessment/08-res-103-tdd-readiness.md)
 - [RES-103 execution tasks](docs/assessment/09-res-103-execution-tasks.md)
 
+## RES-101 — Search result ordering (investigation in progress)
+
+Source inspection shows that every keystroke starts an independent search, and
+each completion writes to the same `results` and `isLoading` state. No value
+identifies the latest query, so completion order can determine what the user
+sees. Runtime logs confirmed that an older query can complete after the final
+query; the manually observed sequence had identical empty-result states, so a
+deterministic controller test will supply the visible overwrite proof. Option
+comparison, TDD, and implementation remain pending.
+
+- [RES-101 scope](docs/assessment/10-res-101-scope.md)
+- [RES-101 questions](docs/assessment/11-res-101-questions.md)
+- [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
+
 ## AI Usage Log
 
 | Tool | Use | Verification |
