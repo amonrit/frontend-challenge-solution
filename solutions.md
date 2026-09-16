@@ -171,10 +171,16 @@ The selected design is controller-owned resolution: preserve a valid
 binding resolution, and screen-owned `FutureBuilder` were rejected because they
 broaden route plumbing or split state/data ownership.
 
+The first RED test now reproduces the crash deterministically: with
+`Get.arguments == null` and route ID 42, `DealDetailsController.onInit()` throws
+`type 'Null' is not a subtype of type 'DealModel' in type cast` before the fake
+repository can load the deal.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)
 - [RES-107 options and decision](docs/assessment/19-res-107-options.md)
+- [RES-107 TDD readiness and RED test](docs/assessment/20-res-107-tdd-readiness.md)
 
 | Tool | Use | Verification |
 | --- | --- | --- |

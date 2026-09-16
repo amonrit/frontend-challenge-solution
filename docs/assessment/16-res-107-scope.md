@@ -36,7 +36,7 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: Phase 3 complete; implementation options compared and the
-  controller-owned resolver selected.
-- Next phase: define the TDD readiness gate and write the first RED test.
+- Current phase: Phase 4 complete; readiness criteria and the first RED test
+  are recorded.
+- Next phase: run the focused RED test and record its failure before coding.
 - Production code and tests: unchanged for RES-107.
