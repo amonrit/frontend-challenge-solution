@@ -51,36 +51,45 @@ For the complete requirement questions, evidence, research, and method compariso
 - [RES-102 evidence-backed answers](docs/assessment/02-res-102-answers.md)
 - [RES-102 task and option comparison](docs/assessment/03-res-102-task-breakdown.md)
 
-## RES-103 — Request accumulation (investigation in progress)
+## RES-103 — Requests pile up while browsing
 
-Phase 2 runtime evidence reproduced the reported behavior on the iPhone 17 Pro
-Simulator. In a clean run, four detail controllers were opened; the first
-three were closed, then the fourth remained open while **Add to bag** was
-tapped. One cart change logged four refresh callbacks and four requests:
-`GET /deals/3`, `/deals/4`, `/deals/2`, and `/deals/1`. This confirms that
-closed detail-page observers still participate in the cart-change refresh path.
-The root-cause fix, option comparison, TDD, and final verification are not
-complete yet.
+**Status:** Complete for the documented back-navigation flow.
 
-The current design comparison selects retaining the GetX `Worker` returned by
-`ever(...)` and disposing it from `DealDetailsController.onClose()`. A
-mounted/closed guard was rejected because it leaves the subscription alive;
-shared cart-level ownership was rejected as broader than this ticket.
+### Diagnosis
 
-The focused RED test confirms the selected lifecycle gap: after
-`DealDetailsController.onClose()`, a second cart change raises repository
-availability calls from one to two. This was recorded before the production
-fix.
+Every `DealDetailsController` created an `ever(cartService.itemCount, ...)`
+observer but discarded its GetX `Worker`. When a detail route closed, that
+observer remained subscribed. The next cart change therefore invoked
+`fetchById` once for every detail controller opened earlier in the session.
 
-E1 now retains the `Worker` returned by `ever(...)` and disposes it in
-`onClose()`. The focused GREEN test passes: a live controller refreshes once,
-then a cart change after `onClose()` creates no additional repository request.
-The multi-controller regression test also passes: closing controller A does
-not prevent live controller B from refreshing. Full verification remains
-complete. In the final manual flow, deals 1–3 were closed, deal 4 remained
-open, and **Add to bag** produced exactly one `GET /deals/4` request. Focused
-controller tests passed 2 tests, the full suite passed 7 tests, and `flutter
-analyze` reported no issues.
+The pre-fix manual reproduction opened deals 1–3 and closed them, then opened
+deal 4 and added it to the bag. One cart change logged four requests:
+`GET /deals/3`, `/deals/4`, `/deals/2`, and `/deals/1`.
+
+### Fix and decision
+
+The controller now stores the `Worker` returned by `ever(...)` and disposes it
+in `onClose()` before calling `super.onClose()`. This gives the subscription
+the same owner and lifetime as the controller that created it.
+
+A mounted/closed guard was rejected because it leaves the subscription alive.
+Moving availability refresh to a shared cart-level service was rejected because
+it changes ownership and scope beyond this ticket.
+
+### Verification and limits
+
+| Check | Result |
+| --- | --- |
+| RED controller test | After `onClose()`, a second cart mutation produced a second repository call: expected 1, actual 2. |
+| Focused GREEN tests | 2 passed: closed controller stays silent; a separate live controller still refreshes. |
+| Full suite | 7 passed. |
+| Static analysis | `flutter analyze`: no issues. |
+| Manual comparison | After closing deals 1–3, adding deal 4 logged exactly `GET /deals/4`; no request for deals 1–3. |
+
+The fix prevents future callbacks after cleanup. It does not cancel an
+availability request that began before `onClose()`; no runtime evidence showed
+that an in-flight response caused a visible error, so cancellation was kept out
+of this focused ticket.
 
 Detailed questions and evidence are kept in:
 

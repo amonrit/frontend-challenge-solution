@@ -1,8 +1,7 @@
 # RES-103 — Evidence-Backed Answers
 
 This document records answers supported by the current source, dependency
-inspection, or read-only test runs. Runtime request-count observations remain
-pending until the app is exercised with logs.
+inspection, automated tests, and runtime logs.
 
 ## Required outcome and current source behavior
 
@@ -29,7 +28,7 @@ pending until the app is exercised with logs.
 | Question | Current answer | Evidence |
 | --- | --- | --- |
 | 6.3 | A fake `DealRepo` can count `fetchById` calls, and a controllable `CartService`/observable can trigger the observer without real network latency. | Constructor injection in `DealDetailsController`; `DealRepo` API. |
-| 6.5 | The expected RED signal is an additional `fetchById` call after a controller has been disposed and the cart changes. | Source behavior and RES-103 acceptance intent; reproduction run pending. |
+| 6.5 | The RED signal occurred as expected: after `onClose()`, a second cart mutation increased the counted `fetchById` calls from one to two. | Focused controller test before the fix, 2026-09-16. |
 | 6.9 | The existing full suite passes before RES-103 work: `flutter test` completed with 5 passing tests. | Flutter 3.27.0 run, 2026-09-16. |
 
 ## Read-only evidence collection run
@@ -45,13 +44,9 @@ pending until the app is exercised with logs.
 | Manual request reproduction | In a clean app run, the user opened deal 1, 2, and 3 and backed out of each, then opened deal 4 and tapped **Add to bag**. One cart change logged four refresh callbacks and four requests: `GET /deals/3`, `/deals/4`, `/deals/2`, and `/deals/1`. | Interactive Flutter run terminal output, 2026-09-16; output captured in the session transcript. |
 
 These checks establish the observer/resource facts, a clean baseline, and a
-successful iOS runtime launch. The Simulator UI automation available in this
-environment did not activate a deal-card tap, so the exact runtime request
-burst and count remain pending. They require manually opening and closing
-several detail pages while watching `GET /deals/:id` logs. The controlled
-manual flow successfully reproduced the request accumulation: one cart change
-triggered one request for each of four detail controllers, including the three
-routes that had already been closed.
+successful iOS runtime launch. The controlled manual flow reproduced the
+request accumulation: one cart change triggered one request for each of four
+detail controllers, including the three routes that had already been closed.
 
 ## Runtime facts still pending
 
@@ -59,11 +54,12 @@ routes that had already been closed.
 - Whether every navigation-removal path disposes the controller.
 - Behavior of in-flight availability requests during controller disposal.
 - Additional console log captures for other navigation paths.
-- Route-level and multi-controller regression-test results.
+- Route-level automated coverage beyond the documented Back flow.
 
 ## Scope decisions still requiring evidence or user input
 
-- Whether to assert cancellation of in-flight requests, or only prevent new
-  callbacks after controller disposal.
-- Whether list-child removal and app background/resume are acceptance criteria
-  for this ticket.
+- In-flight request cancellation is deliberately out of scope: this fix stops
+  future observer callbacks, and no evidence showed a visible error from an
+  already-started response.
+- List-child removal and app background/resume were not made acceptance
+  criteria because the ticket documents the Back-navigation flow.
