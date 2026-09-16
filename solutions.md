@@ -286,27 +286,49 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Not started in this submission.
+**Status:** Assessment complete; implementation not started.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
 
+### Diagnosis
+
+Source evidence identifies three candidate contributors: the entire Home screen
+is inside one scroll-sensitive `Obx`, the main feed eagerly maps all loaded
+deals into a `ListView(children: ...)`, and the shared cached-image wrapper has
+no decode-size hints. These are confirmed code facts; frame and memory impact
+still require a profile-mode trace.
+
+### Implementation
+
+The selected plan is to split reactive boundaries, use lazy feed construction,
+and pass display-sized image decode hints. Work will be staged so each change
+can be profiled independently. Production code has not been changed yet.
+
 ### Rejected alternatives
 
-No approach was selected because implementation was not started.
+- A widget-local reactive listener was deferred to keep the existing GetX state
+  pattern until measurements justify a broader change.
+- A full sliver rewrite was rejected as unnecessary scope and higher refresher
+  integration risk.
+- Backend or asset resizing was rejected because those files are protected.
 
 ### Verification and evidence
 
-No before/after DevTools measurements were produced for this ticket.
+The Phase 2 baseline has 28 passing tests, a clean analyzer, and Flutter 3.27.0
+with DevTools 2.40.2. No profile-mode before/after DevTools measurements have
+been captured yet, so no performance improvement is claimed.
 
 ### Limitations or follow-up
-No implementation or before/after DevTools evidence was produced for this ticket.
+TDD readiness and a repeatable profile scenario are still required before
+implementation. The device and runtime trace remain an explicit limitation.
 
 ### References
 
 - `PROBLEM.md` RES-105 requirements
 - [RES-105 scope](docs/assessment/105/scope.md)
 - [RES-105 evidence-backed answers](docs/assessment/105/answers.md)
+- [RES-105 options and trade-offs](docs/assessment/105/options.md)
 
 ## RES-106 — Pickup time and today filter
 

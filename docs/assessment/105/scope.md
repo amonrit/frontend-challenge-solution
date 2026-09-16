@@ -37,7 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 2 — source and automated baseline evidence collected.
-- Next phase: Phase 3 — compare performance approaches after obtaining runtime
-  measurements where the environment permits.
+- Current phase: Phase 3 — performance approaches compared and selected.
+- Next phase: Phase 4 — TDD readiness and RED tests.
 - Production code and tests: unchanged for RES-105.
