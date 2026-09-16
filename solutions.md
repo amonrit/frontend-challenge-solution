@@ -15,7 +15,7 @@ updated alongside each ticket rather than after all implementation work.
 6. **RES-104** — protect Home refresh and pagination from stale responses.
 7. **RES-106** — normalize pickup display and today filtering to Bangkok time.
 8. **RES-105** — split Home reactivity, lazy feed construction, and image
-   decoding; runtime profiling remains a documented limitation.
+   decoding; required runtime profiling evidence remains unavailable.
 9. **F-1, F-2, F-3** — not started in this submission; retained as follow-up
    work from the assignment.
 
@@ -73,18 +73,9 @@ were rejected for the reasons recorded above and in the linked options document.
 ### Limitations or follow-up
 
 The UI currently logs stale search errors rather than rendering a user-facing
-error state; that behavior was outside RES-101.
-
-**Final diagnosis:** independent Futures shared the same observable state, so
-completion order could override input order. **Fix:** each input event advances
-an integer generation; only the matching latest generation may mutate
-post-await state. **Rejected alternatives:** query equality fails for repeated
-identical input; debounce does not invalidate work already in flight; a
-cancellable stream refactor exceeds the existing Future-based repository
-contract. **Edge cases covered:** late success after a newer query, late
-success after clear, and stale loading ownership. Stale errors are also ignored
-by the same generation gate, though the UI currently logs errors rather than
-rendering an error state.
+error state; that behavior was outside RES-101. Edge cases covered are late
+success after a newer query, late success after clear, and stale loading
+ownership. Stale errors are ignored by the same generation gate.
 
 ### References
 
@@ -147,8 +138,11 @@ No known RES-102 limitation remains for the documented route-pop scenario.
 For the complete requirement questions, evidence, research, and method comparison, see:
 
 - [Assessment scope](docs/assessment/assessment-scope.md)
+- [RES-102 scope](docs/assessment/102/scope.md)
 - [RES-102 questions](docs/assessment/102/questions.md)
 - [RES-102 evidence-backed answers](docs/assessment/102/answers.md)
+- [RES-102 options and decision](docs/assessment/102/options.md)
+- [RES-102 TDD readiness](docs/assessment/102/tdd-readiness.md)
 - [RES-102 task and option comparison](docs/assessment/102/task-breakdown.md)
 
 
@@ -288,7 +282,7 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Implementation complete; verification passed. Documentation audit complete.
+**Status:** Partial. Implementation complete and automated checks passed; required comparable Android DevTools evidence is unavailable.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -339,7 +333,9 @@ Manual device behavior checks remain unperformed.
 The implementation has no comparable Android profile numbers because the
 device was unavailable. DevTools profiling on a suitable mid-range Android
 device remains the follow-up needed before claiming measured jank or memory
-improvement.
+improvement. Dedicated widget tests for rebuild scope and lazy construction are
+also follow-up coverage; the current automated test directly covers image
+decode sizing, while source review covers the structural changes.
 
 ### References
 
