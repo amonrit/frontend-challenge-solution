@@ -17,7 +17,9 @@ class DealDetailsController extends GetxController {
     required this.analytics,
   });
 
-  late final DealModel deal;
+  DealModel? _deal;
+  DealModel get deal => _deal!;
+  DealModel? get loadedDeal => _deal;
   int? _routeDealId;
   int? get routeDealId => _routeDealId;
 
@@ -74,8 +76,12 @@ class DealDetailsController extends GetxController {
     }
   }
 
+  void retry() {
+    if (_routeDealId != null && !_isClosed) _loadDealById();
+  }
+
   void _initializeLoadedDeal(DealModel loadedDeal) {
-    deal = loadedDeal;
+    _deal = loadedDeal;
     _quantityLeft.value = loadedDeal.quantityLeft;
     analytics.logEvent('deal_details_view', {
       'deal_id': loadedDeal.id,

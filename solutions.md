@@ -208,6 +208,13 @@ disposed before re-initialization to prevent duplicate availability requests.
 The controller close and multi-controller regression tests remain green; the
 focused controller/deep-link suite now passes 4 tests.
 
+T4 updates `DealDetailsScreen` to observe loading, error, and loaded state
+before reading the controller's deal. Direct links therefore show a progress
+indicator while fetching, invalid or failed links show a retryable message, and
+normal model navigation keeps the existing details layout. Retry remains
+controller-owned so the screen does not perform repository work. Focused
+controller/deep-link checks pass; widget rendering coverage is deferred to T5.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)

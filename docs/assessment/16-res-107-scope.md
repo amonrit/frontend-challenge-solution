@@ -36,9 +36,8 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: T3 complete; model fast path and cart observer lifecycle are
-  covered by focused tests.
-- Next phase: execute T4, loading and error rendering in the details screen.
-- Production code: `DealDetailsController` resolves direct route IDs, maps
-  failures to state, and prevents duplicate cart observers; screen rendering
-  remains T4.
+- Current phase: T4 complete; details loading, error, and retry rendering are
+  implemented around controller-owned state.
+- Next phase: execute T5, broaden regression coverage for all resolution paths.
+- Production code: controller resolution and observer lifecycle are complete;
+  the screen now safely branches before accessing an unloaded deal.
