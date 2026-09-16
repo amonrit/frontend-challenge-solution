@@ -110,9 +110,16 @@ query; the manually observed sequence had identical empty-result states, so a
 deterministic controller test will supply the visible overwrite proof. Option
 comparison, TDD, and implementation remain pending.
 
+The selected design is a monotonic request generation in the controller. Every
+input change, including clearing the field, invalidates older requests. Query
+text comparison was rejected because identical text can belong to different
+requests; debounce was rejected as a correctness mechanism because it cannot
+invalidate an already-started response.
+
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)
 - [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
+- [RES-101 options and decision](docs/assessment/13-res-101-options.md)
 
 ## AI Usage Log
 
