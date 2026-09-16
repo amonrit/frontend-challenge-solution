@@ -41,6 +41,6 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 2 — pre-change evidence and measurements recorded.
-- Next phase: Phase 3 — compare timezone and date-comparison approaches.
+- Current phase: Phase 3 — timezone and date-comparison approaches compared.
+- Next phase: Phase 4 — write deterministic RED tests and TDD readiness.
 - Production code and tests: unchanged for RES-106.

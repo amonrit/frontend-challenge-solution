@@ -307,21 +307,46 @@ No implementation or before/after DevTools evidence was produced for this ticket
 
 ## RES-106 — Pickup time and today filter
 
-**Status:** Not started in this submission.
+**Status:** Assessment complete; implementation not started.
 
 ### Requirement
 Use the required Bangkok timezone and compare complete calendar dates for pickup and today filtering.
 
+### Diagnosis
+
+The API supplies UTC instants, but the model currently formats those instants
+directly and derives `isToday` from only the numeric day. That creates a wrong
+displayed pickup time and false matches across month or year boundaries. The
+device timezone is also an implicit input, so the result can differ from the
+Bangkok market date.
+
+### Planned implementation
+
+The selected approach is a centralized Bangkok market-time conversion seam with
+a fixed UTC+7 offset. API values remain UTC instants; display and calendar-date
+comparisons project them into Bangkok time. The current-time provider will be
+injectable so boundary tests do not depend on the wall clock. Production code
+has not been changed yet.
+
 ### Rejected alternatives
 
-No approach was selected because implementation was not started.
+- An IANA timezone package was deferred because this product currently has one
+  fixed-offset market and no daylight-saving or multi-market requirement.
+- Storing converted local values in the model was rejected because it blurs the
+  distinction between an instant and a wall-clock representation.
+- Converting independently in widgets and filters was rejected because policy
+  would be duplicated and could drift between screens.
 
 ### Verification and evidence
 
-No tests or runtime evidence were produced for this ticket.
+The evidence phase recorded the current direct-UTC label and day-only
+comparison, plus a baseline of 19 passing tests and a clean analyzer run. The
+RED tests, implementation, after measurements, and runtime verification are
+pending the next phases.
 
 ### Limitations or follow-up
-No implementation or evidence was produced for this ticket.
+No production fix has been made yet. The next phase writes deterministic RED
+tests for UTC-to-Bangkok display and complete date comparison.
 
 ### References
 
@@ -329,6 +354,7 @@ No implementation or evidence was produced for this ticket.
 - [RES-106 scope](docs/assessment/106/scope.md)
 - [RES-106 questions](docs/assessment/106/questions.md)
 - [RES-106 evidence-backed answers](docs/assessment/106/answers.md)
+- [RES-106 options and trade-offs](docs/assessment/106/options.md)
 
 ## RES-107 — Deep-link details loading (Complete)
 
