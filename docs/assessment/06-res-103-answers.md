@@ -48,15 +48,17 @@ successful iOS runtime launch. The controlled manual flow reproduced the
 request accumulation: one cart change triggered one request for each of four
 detail controllers, including the three routes that had already been closed.
 
-## Runtime facts still pending
+## Follow-up limits outside the completed ticket flow
 
-- Reliability across repeated runs and request counts for other page counts.
-- Whether every navigation-removal path disposes the controller.
-- Behavior of in-flight availability requests during controller disposal.
-- Additional console log captures for other navigation paths.
-- Route-level automated coverage beyond the documented Back flow.
+- Repetition across other page counts and additional navigation paths was not
+  needed after the documented four-page manual flow reproduced and then passed
+  after the fix.
+- Route-level automated coverage beyond the documented Back flow remains a
+  follow-up opportunity.
+- In-flight responses are not cancelled; the ticket prevents future observer
+  callbacks after controller cleanup.
 
-## Scope decisions still requiring evidence or user input
+## Scope decisions recorded
 
 - In-flight request cancellation is deliberately out of scope: this fix stops
   future observer callbacks, and no evidence showed a visible error from an

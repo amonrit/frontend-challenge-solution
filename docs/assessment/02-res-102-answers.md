@@ -82,20 +82,23 @@ This file answers only questions supported by the ticket, current source, or pri
 | 8.3 | A focused widget test can fail before the fix by mounting, disposing, and advancing fake time. After a correct fix, the same sequence must complete without framework errors or pending timers. | Temporary reproduction test, 2026-09-16. |
 | 8.4 | Advance one periodic tick with `tester.pump(const Duration(seconds: 1))`. Flutter documents that this advances fake time in a typical widget test. | [Flutter `WidgetTester.pump`](https://api.flutter.dev/flutter/flutter_test/WidgetTester/pump.html). |
 
-## Questions Still Requiring Evidence or a Scope Decision
+## Scope Completed and Follow-up Limits
 
-The following are intentionally unanswered until the next investigation phase:
+RES-102 is complete for the documented My orders → Back flow. The implemented
+acceptance boundary is any `PickupCountdown` disposal path: the timer belongs
+to that widget state and is cancelled in `dispose()`. Focused tests cover one
+instance, three independent instances, and route pop; the user also completed
+the My orders manual smoke test.
 
-- Runtime observations for other navigation/list behaviors: 2.7–2.8.
-- Edge cases 5.1–5.2, 5.4–5.6, and 5.8–5.9.
-- Solution comparison questions 6.6–6.8.
-- Test-tool and test-design questions 7.3, 7.6, and 8.1, 8.5–8.9.
+The following remain deliberate follow-up observations, not open RES-102 work:
 
-## Scope Decision Needed
+- List replacement while a countdown is visible, app background/resume, and
+  order-loading failure behavior.
+- Whether ticking should stop after the pickup window opens.
+- Route patterns beyond the documented Back action.
 
-Should RES-102’s acceptance criteria cover **every path that disposes a `PickupCountdown`** (including removal from the list during rebuild), or only the documented action of navigating back from My orders?
-
-My recommendation is every disposal path, because the same widget-owned callback can survive any disposal path. However, I will not turn that recommendation into a requirement without your direction.
+These scenarios do not alter the lifecycle diagnosis or the verified ticket
+flow, so they were not expanded into additional production behavior.
 
 ## Baseline Test Suite
 

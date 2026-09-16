@@ -144,7 +144,7 @@ These are the concrete tasks after selecting widget-owned timer cancellation. Th
 | Mounted behavior | Focused widget test with fake time | Visible remaining-time text changes after one tick. |
 | Single disposal | Focused widget test | No framework exception and no pending timer. |
 | Multiple disposal | Focused widget test | No error and no pending timers for all instances. |
-| Manual route smoke check | My orders → back → wait two seconds | No debug error. |
+| Manual route smoke check | My orders → back → wait one minute | No debug error. |
 | Static analysis | `flutter analyze` | No issues. |
 | Regression suite | `flutter test` | All tests pass. |
 | Diff scope | `git diff --check` and review | No protected files or unrelated changes. |
