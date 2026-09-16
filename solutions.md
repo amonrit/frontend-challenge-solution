@@ -329,6 +329,7 @@ implementation. The device and runtime trace remain an explicit limitation.
 - [RES-105 scope](docs/assessment/105/scope.md)
 - [RES-105 evidence-backed answers](docs/assessment/105/answers.md)
 - [RES-105 options and trade-offs](docs/assessment/105/options.md)
+- [RES-105 TDD readiness and RED result](docs/assessment/105/tdd-readiness.md)
 
 ## RES-106 — Pickup time and today filter
 

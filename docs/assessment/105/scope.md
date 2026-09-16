@@ -37,6 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 3 — performance approaches compared and selected.
-- Next phase: Phase 4 — TDD readiness and RED tests.
+- Current phase: Phase 4 — TDD readiness and RED test written.
+- Next phase: Phase 5 — split the selected performance plan into execution tasks.
 - Production code and tests: unchanged for RES-105.
