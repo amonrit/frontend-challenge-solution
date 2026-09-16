@@ -36,8 +36,8 @@ clock-controlled boundary tests must also pass.
 ## Files and commands
 
 - Test: `test/res_106_pickup_window_test.dart`
-- Planned production seam: `lib/model/pickup_window_model.dart` and a small
-  market-time utility if needed.
+- Production seam: `lib/service/bangkok_time_policy.dart`, integrated by
+  `lib/model/pickup_window_model.dart`.
 - Protected: `lib/service/fake_api_service.dart`, `assets/data/`.
 - Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/res_106_pickup_window_test.dart`
 

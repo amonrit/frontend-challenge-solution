@@ -39,8 +39,8 @@ years. A fixed-clock test must compare the complete Bangkok calendar date.
 | --- | --- | --- |
 | Full test suite | 19 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
 | Static analysis | No issues | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
-| RES-106 focused regression | Not available; no test exists before Phase 4 | To be added under `test/` after options are selected |
-| Runtime display/filter measurement | Not run yet | Requires a deterministic clock/timezone seam |
+| RES-106 focused regression | Not available; no test exists before Phase 4 | `test/res_106_pickup_window_test.dart` |
+| Runtime display/filter measurement | Not run manually | Unit evidence uses the deterministic policy seam |
 
 ## Protected files and unresolved questions
 
@@ -53,11 +53,12 @@ years. A fixed-clock test must compare the complete Bangkok calendar date.
   represented in the current catalog and require an explicit decision in the
   options phase.
 
-## Follow-up evidence needed
+## Follow-up evidence resolved
 
-1. Compare named `Asia/Bangkok` conversion, fixed UTC+7 conversion, and
-   repository-side normalization under the package constraints.
-2. Build a fixed-clock test seam covering normal conversion, midnight,
-   overnight, month-end, and year-end boundaries.
-3. Capture the same before/after label and filter membership with the selected
-   implementation.
+1. The options phase compared fixed UTC+7, IANA timezone, model normalization,
+   and widget-level conversion; fixed UTC+7 was selected for the current
+   Bangkok-only scope.
+2. `BangkokTimePolicy` provides the fixed-clock seam, with tests for normal
+   conversion, midnight, month-end, year-end, and local-timezone independence.
+3. The focused suite passes after implementation; no manual runtime claim is
+   made because a separate runtime measurement was not performed.

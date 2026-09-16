@@ -41,8 +41,8 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 7 — T5 verification complete.
-- Next phase: Phase 8 — documentation currency audit.
+- Current phase: Phase 8 — documentation currency audit complete.
+- Next phase: None for RES-106; ready for delivery.
 - Production model behavior: all observed label and Home-filter consumers route
   through `PickupWindowModel`; instant-based open/until calculations remain
   unchanged. Focused and full verification passed.

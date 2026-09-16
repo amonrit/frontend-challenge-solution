@@ -13,8 +13,9 @@ updated alongside each ticket rather than after all implementation work.
 4. **RES-101** — ignore stale search responses with request generations.
 5. **RES-107** — resolve deep links by ID and render loading/error states.
 6. **RES-104** — protect Home refresh and pagination from stale responses.
-7. **RES-105, RES-106, F-1, F-2, F-3** — not started in this submission;
-   retained as follow-up work from the assignment.
+7. **RES-106** — normalize pickup display and today filtering to Bangkok time.
+8. **RES-105, F-1, F-2, F-3** — not started in this submission; retained as
+   follow-up work from the assignment.
 
 Each completed ticket below follows the same summary format: status, diagnosis
 or requirement, fix or implementation, rejected alternatives, verification and
@@ -307,7 +308,7 @@ No implementation or before/after DevTools evidence was produced for this ticket
 
 ## RES-106 — Pickup time and today filter
 
-**Status:** Implementation complete; verification passed. Phase 8 documentation audit pending.
+**Status:** Implementation complete; verification passed. Documentation audit complete.
 
 ### Requirement
 Use the required Bangkok timezone and compare complete calendar dates for pickup and today filtering.
@@ -355,7 +356,9 @@ clock, and all six focused RES-106 tests pass. T4 audited card, map, details,
 and Home filtering: they read model properties and contain no duplicate
 timezone arithmetic. `isOpenNow` and `untilStart` remain instant comparisons
 and were left unchanged. T5 verification on 2026-09-17 passed: focused RES-106
-tests (6), full Flutter suite (28), analyzer, and `git diff --check`.
+tests (6), full Flutter suite (28), analyzer, and `git diff --check`. Manual
+runtime display measurement was not performed; the recorded evidence is unit
+and source based.
 
 ### References
 
