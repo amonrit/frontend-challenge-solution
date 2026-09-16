@@ -286,7 +286,7 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Assessment complete; implementation not started.
+**Status:** Implementation in progress; T1–T4 complete, integrated verification pending.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -326,8 +326,10 @@ with DevTools 2.40.2. No profile-mode before/after DevTools measurements have
 been captured yet, so no performance improvement is claimed. After T1,
 `flutter analyze` passed with no issues and the existing Home controller suite
 passed 6 tests. After T2, the same analyzer and Home regression suite passed;
-after T3, the image sizing test passed and analyzer reported no issues. Runtime
-performance impact remains unmeasured.
+after T3, the image sizing test passed and analyzer reported no issues. T4
+compared the source-level before/after behavior and recorded that no Android
+profile trace was possible in this environment; runtime performance impact
+remains unmeasured.
 
 ### Limitations or follow-up
 TDD readiness and a repeatable profile scenario are still required before

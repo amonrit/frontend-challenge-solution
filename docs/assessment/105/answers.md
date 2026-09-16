@@ -26,6 +26,15 @@
   device pixel ratio. The focused widget test passes with 320-pixel hints for
   a 160-pixel slot at DPR 2.
 
+## Before/after comparison
+
+| Concern | Before | After | Evidence type |
+| --- | --- | --- | --- |
+| Scroll reactivity | One `Obx` covered the whole `Scaffold` and read scroll offset. | App bar and FAB observe scroll offset in separate wrappers; body does not read it. | Source diff and analyzer |
+| Feed construction | Main feed used `ListView(children: [...map(...)])`. | Main feed uses `ListView.builder` with the same item order and callbacks. | Source diff and Home regression tests |
+| Image decode sizing | No `memCacheWidth/Height` values were passed. | Finite layout dimensions are scaled by device pixel ratio and passed as hints. | Focused widget test |
+| Runtime frame/memory metrics | Not captured. | Not captured; no comparable Android target was available. | Explicit limitation |
+
 ## Confirmed versus unconfirmed
 
 - Confirmed by source: the broad `Obx` dependency set, per-scroll observable

@@ -28,3 +28,10 @@ bytes). Use the identical contract before and after each implementation task.
 
 T0 is complete with an explicit environment limitation. No performance number
 or improvement claim is made from this attempt.
+
+## After-change profile status
+
+The same target inventory remained available after T1–T3, so a comparable
+Android profile trace still could not be captured. Source-level changes and
+automated behavior evidence are recorded in `answers.md`; runtime performance
+improvement remains unclaimed.

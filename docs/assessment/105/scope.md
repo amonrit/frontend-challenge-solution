@@ -37,6 +37,7 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T3 image decode sizing complete.
-- Next task: T4 — compare after-profile evidence and record limitations.
+- Current phase: Phase 6 — T4 before/after comparison recorded with runtime
+  limitation.
+- Next task: T5 — run integrated verification.
 - Production code and tests: unchanged for RES-105.
