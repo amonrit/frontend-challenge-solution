@@ -187,6 +187,11 @@ the parsed route ID. The forced cast is gone; ID fetching and loading/error
 rendering remain the next tasks. The existing details-controller regression
 tests continue to pass.
 
+C2 selected separate GetX observables for nullable loaded deal, loading, and a
+user-facing error message. This keeps the existing architecture and makes the
+screen's loading/loaded/error branches explicit; a new sealed async abstraction
+or screen-owned `FutureBuilder` would add ownership and lifecycle complexity.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)

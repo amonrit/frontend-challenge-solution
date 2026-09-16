@@ -7,7 +7,7 @@ they do not change production code.
 | --- | --- | --- | --- | --- | --- |
 | C1 | Compare route-resolution ownership and record the selected controller path. | `19-res-107-options.md` | Phase 3 | The chosen owner and rejected alternatives are explicit. | Complete in Phase 3 |
 | T1 | Make details input model-or-ID aware without a forced cast. | `lib/feature/deal/deal_details_controller.dart` | RED test | A model argument remains valid; a missing argument proceeds to ID resolution. | Complete; controller regression check passed |
-| C2 | Compare async state representations for loading, loaded, and error. | `21-res-107-task-breakdown.md`, `solutions.md` | T1 design | Select a state shape that keeps screen rendering and lifecycle ownership clear. | Next |
+| C2 | Compare async state representations for loading, loaded, and error. | `21-res-107-task-breakdown.md`, `solutions.md` | T1 design | Select a state shape that keeps screen rendering and lifecycle ownership clear. | Complete; separate Rx state selected |
 | T2 | Implement ID parsing and guarded repository loading. | `lib/feature/deal/deal_details_controller.dart` | T1, C2 | Valid ID 42 calls `fetchById`; invalid/missing input and failures become state, not crashes. | Blocked by T1/C2 |
 | T3 | Preserve the model-argument fast path and initialize dependent observers safely. | `lib/feature/deal/deal_details_controller.dart` | T2 | Card navigation does not make an unnecessary initial fetch; cart observer starts only with a loaded model. | Blocked by T2 |
 | T4 | Render loading and error states while retaining the existing loaded page. | `lib/feature/deal/deal_details_screen.dart` | T2 | Deep link shows loading, then details or an understandable retryable error. | Blocked by T2 |
@@ -30,6 +30,22 @@ they do not change production code.
 | Separate Rx state | `Rxn<DealModel>`, `isLoading`, and `errorMessage` are owned by the controller. | Selected: matches existing GetX observables and keeps screen branches explicit. |
 | Single sealed async state | One `AsyncState<DealModel>` value represents loading/data/error. | Rejected for this scope: introduces a new abstraction not used elsewhere. |
 | `FutureBuilder` state | A Future is passed to the screen and rendered there. | Rejected: duplicates route/data ownership and complicates controller cleanup. |
+
+## C2 decision details
+
+Use three controller-owned pieces of state: nullable loaded deal, boolean
+`isLoading`, and nullable user-facing `errorMessage`. The intended transitions
+are:
+
+```text
+route input → loading → loaded(deal)
+                  └──→ error(message)
+```
+
+The model-argument fast path starts directly at `loaded`. A valid ID starts at
+`loading`; invalid input can enter `error` without a repository call. A retry
+clears the previous error and returns to `loading`. The controller owns these
+transitions so the screen only renders state and does not own repository work.
 
 ## T1 implementation variants
 

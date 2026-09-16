@@ -36,7 +36,7 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: T1 complete; the controller now distinguishes a typed model
-  argument from a route ID without a forced cast.
-- Next phase: execute C2, the async-state representation comparison.
+- Current phase: C2 complete; controller-owned nullable model, loading flag,
+  and error message state selected.
+- Next phase: execute T2, ID parsing and guarded repository loading.
 - Production code and tests: unchanged for RES-107.
