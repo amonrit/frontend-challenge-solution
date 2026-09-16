@@ -330,6 +330,8 @@ implementation. The device and runtime trace remain an explicit limitation.
 - [RES-105 evidence-backed answers](docs/assessment/105/answers.md)
 - [RES-105 options and trade-offs](docs/assessment/105/options.md)
 - [RES-105 TDD readiness and RED result](docs/assessment/105/tdd-readiness.md)
+- [RES-105 execution task breakdown](docs/assessment/105/task-breakdown.md)
+- [RES-105 profile baseline record](docs/assessment/105/profile-baseline.md)
 
 ## RES-106 — Pickup time and today filter
 

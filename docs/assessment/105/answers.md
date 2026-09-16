@@ -18,7 +18,7 @@
 | Flutter toolchain | Flutter 3.27.0, Dart 3.6.0, DevTools 2.40.2 | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter --version` |
 | Full test suite | 28 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
 | Static analysis | No issues found | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
-| Profile DevTools baseline | Pending | No comparable mid-range Android profile trace has been captured yet |
+| Profile DevTools baseline | Not captured; environment limitation recorded | [Profile baseline record](profile-baseline.md) |
 
 ## Confirmed versus unconfirmed
 
@@ -30,8 +30,9 @@
 
 ## Follow-up limits
 
-1. Capture a profile-mode trace on one repeatable device with fixed item count,
-   image inputs, and scroll gesture before selecting an optimization.
+1. Capture a profile-mode trace on one repeatable mid-range Android device with
+   fixed item count, image inputs, and scroll gesture before selecting an
+   optimization.
 2. Measure frame timing, widget rebuilds, and image/memory cache behavior in
    DevTools; do not infer those numbers from debug mode or source inspection.
 3. Verify that any list/image change preserves refresh, pagination, filter,

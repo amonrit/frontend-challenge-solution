@@ -37,6 +37,7 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 4 — TDD readiness and RED test written.
-- Next phase: Phase 5 — split the selected performance plan into execution tasks.
+- Current phase: Phase 6 — T0 profile baseline attempt completed with an explicit
+  device-availability limitation.
+- Next task: T1 — split scroll reactivity from feed rendering.
 - Production code and tests: unchanged for RES-105.
