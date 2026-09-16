@@ -36,7 +36,7 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: Phase 0 complete.
-- Next phase: create `docs/assessment/17-res-107-questions.md` containing
-  questions only.
-- Production code and tests: unchanged in this phase.
+- Current phase: Phase 2 complete; source answers recorded and runtime facts
+  remain explicitly pending.
+- Next phase: compare implementation options in the task-breakdown document.
+- Production code and tests: unchanged for RES-107.
