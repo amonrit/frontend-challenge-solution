@@ -78,6 +78,7 @@ Detailed questions and evidence are kept in:
 - [RES-103 evidence-backed answers](docs/assessment/06-res-103-answers.md)
 - [RES-103 options and decision](docs/assessment/07-res-103-options.md)
 - [RES-103 TDD readiness and RED evidence](docs/assessment/08-res-103-tdd-readiness.md)
+- [RES-103 execution tasks](docs/assessment/09-res-103-execution-tasks.md)
 
 ## AI Usage Log
 
