@@ -237,6 +237,11 @@ alone was rejected because it cannot restore ordering or identify stale rounds.
 Before measurement is recorded in the answers document. The deterministic RED
 test, change, and after measurement remain pending until the next phases.
 
+Phase 4 added a delayed repository test seam. The first run exposed a missing
+Flutter binding in the test setup; initializing `TestWidgetsFlutterBinding`
+fixed the seam. The intended RED run then produced `Expected: [3], Actual:
+[3, 4]`, proving that an older page-2 response is appended after refresh.
+
 ### Limitations or follow-up
 No production implementation or after measurement has been produced yet.
 
@@ -247,6 +252,7 @@ No production implementation or after measurement has been produced yet.
 - [RES-104 questions](docs/assessment/104/questions.md)
 - [RES-104 evidence-backed answers](docs/assessment/104/answers.md)
 - [RES-104 options and trade-offs](docs/assessment/104/options.md)
+- [RES-104 TDD readiness](docs/assessment/104/tdd-readiness.md)
 
 ## RES-105 — Home feed performance
 
