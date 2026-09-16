@@ -40,7 +40,7 @@ be required for the RED test.
 | Full test suite | 13 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
 | Static analysis | No issues | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` (previous project baseline) |
 | RES-104 focused regression | Not available yet; no test exists before Phase 4 | `test/home_controller_test.dart` to be added later |
-| Runtime request measurement | Pending; no RES-104 runtime trace recorded yet | Home overlap flow to be run after implementation |
+| Pre-change runtime request measurement | Not run; deterministic test seam was selected as the primary race evidence | Manual Home overlap flow remains follow-up |
 
 ## Protected files and limits
 
@@ -69,11 +69,7 @@ provides deterministic completion order and is the primary evidence for this
 race; runtime verification remains a follow-up if a production-like request
 logger is needed.
 
-## Next evidence needed
+## Historical phase notes
 
-1. Compare candidate request-round and serialization designs before choosing
-   the implementation.
-2. Use the delayed fake repository in the RED test to measure the duplicated
-   or stale final item IDs before the change.
-3. Repeat the same completion order after implementation and compare accepted
-   pages, final IDs, and list length. **Complete in T5.**
+The comparison, delayed repository RED test, and identical after-measurement
+rerun described above were completed in Phases 3–5.

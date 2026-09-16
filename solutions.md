@@ -12,8 +12,9 @@ updated alongside each ticket rather than after all implementation work.
 3. **RES-103** — dispose the detail controller's cart observer.
 4. **RES-101** — ignore stale search responses with request generations.
 5. **RES-107** — resolve deep links by ID and render loading/error states.
-6. **RES-104, RES-105, RES-106, F-1, F-2, F-3** — not started in this
-   submission; retained as follow-up work from the assignment.
+6. **RES-104** — protect Home refresh and pagination from stale responses.
+7. **RES-105, RES-106, F-1, F-2, F-3** — not started in this submission;
+   retained as follow-up work from the assignment.
 
 Each completed ticket below follows the same summary format: status, diagnosis
 or requirement, fix or implementation, rejected alternatives, verification and
@@ -208,7 +209,7 @@ Detailed questions and evidence are kept in:
 
 ## RES-104 — Home pagination and refresh consistency
 
-**Status:** Assessment complete; implementation not started.
+**Status:** Complete. Automated before/after verification passed.
 
 ### Requirement
 Prevent refresh and pagination responses from overwriting one another or duplicating feed items.
@@ -251,18 +252,20 @@ the feed or pagination metadata.
 
 ### Limitations or follow-up
 
-Full before/after and runtime checks remain for T5.
+A separate manual Home overlap run was not claimed; the deterministic injected
+repository is the primary race evidence. A production-like request logger could
+be added as follow-up evidence if needed.
 
-T3 adds lifecycle guards and `finally` cleanup for refresh/load-more. A closed
+T3 added lifecycle guards and `finally` cleanup for refresh/load-more. A closed
 controller no longer accepts late responses, while only the current request
 round completes the shared refresh indicator. The focused suite now includes a
 late-refresh-after-close test and passes 2 tests. Failure-edge expansion is
-covered by T4; full before/after checks remain for T5.
+covered by T4.
 
 T4 expands the deterministic suite to 6 tests: overlapping refreshes, stale
 load-more failure, wrong response page, final-page no-op, stale append, and
 late response after close. All focused tests pass. The same delayed repository
-seam will be reused for T5's before/after comparison.
+seam was reused for T5's before/after comparison.
 
 T5 reran the identical controlled completion order and recorded the change from
 `[3, 4]` before the guard to `[3]` after it. The focused RES-104 suite passed 6
@@ -545,9 +548,9 @@ implementations, focused and full verification, simulator validation, and
 documentation. The wall-clock window is longer because work was performed in
 separate review and testing sessions.
 
-With one additional day, I would finish RES-104 and RES-106 first because they
-are correctness and data-consistency risks, then capture the required
-before/after DevTools evidence and address RES-105. If time remained, I would
+With one additional day, I would finish RES-106 first because it is a
+correctness and data-consistency risk, then capture the required before/after
+DevTools evidence and address RES-105. If time remained, I would
 implement F-1 end to end before starting F-2 or F-3, keeping each feature
 fully tested rather than leaving several partial implementations.
 

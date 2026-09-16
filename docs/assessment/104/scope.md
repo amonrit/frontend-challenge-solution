@@ -39,4 +39,5 @@ stale data from a newer refresh round.
 
 - Current phase: T5 complete; before/after measurements and final checks pass.
 - Next phase: Phase 8 — documentation currency audit.
-- Production code and tests: unchanged for RES-104.
+- Production code and tests: RES-104 implementation and regression coverage are
+  complete; protected files remain unchanged.
