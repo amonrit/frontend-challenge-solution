@@ -78,6 +78,28 @@ void main() {
     controller.onClose();
   });
 
+  test('preserves the deep-link source when route parameters are unavailable',
+      () async {
+    Get.testMode = true;
+    Get.rootController.routing.args = null;
+    Get.rootController.routing.current = '/deal?id=42&source=push';
+    final analytics = AnalyticsService();
+    final controller = DealDetailsController(
+      dealRepo: _DeepLinkDealRepo(_deal(42)),
+      cartService: CartService(),
+      analytics: analytics,
+    );
+
+    controller.onInit();
+    await Future<void>.delayed(Duration.zero);
+
+    final event = analytics.events.singleWhere(
+      (event) => event.name == 'deal_details_view',
+    );
+    expect(event.properties['source'], 'push');
+    controller.onClose();
+  });
+
   test('maps an invalid route id to an error without fetching', () {
     Get.testMode = true;
     Get.rootController.routing.args = null;

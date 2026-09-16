@@ -36,8 +36,9 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: T6 complete; automated checks and runtime deep-link evidence
-  are recorded.
-- Next phase: RES-107 workflow complete; review the commit and evidence history.
+- Current phase: T6 complete; automated checks and iPhone/Android runtime
+  deep-link evidence are recorded.
+- Next phase: RES-107 workflow complete; dedicated loading/error widget tests
+  remain optional follow-up coverage.
 - Production code, regression coverage, analyzer, and deal-42 runtime flow are
   complete for this ticket.

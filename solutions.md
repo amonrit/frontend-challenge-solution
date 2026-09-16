@@ -495,11 +495,19 @@ passes 6 tests. Failure coverage verifies that loading ends with no exposed deal
 and a retryable user-facing message; full analyzer and runtime verification are
 reserved for T6.
 
-T6 completed the final checks: the full Flutter suite passed 13 tests, analyzer
-reported no issues, and `git diff --check` passed. On an iPhone 17 Pro Simulator,
-opening `rescu://open/deal?id=42&source=push` reached the details page for
-“Mystery Japanese Basket”, matching catalog deal 42. The runtime screenshot is
-stored at `docs/assessment/107/evidence/res-107-deal-42-runtime.png`.
+T6 completed the initial checks: the full Flutter suite passed 13 tests,
+analyzer reported no issues, and `git diff --check` passed. On an iPhone 17 Pro
+Simulator, opening `rescu://open/deal?id=42&source=push` reached the details
+page for “Mystery Japanese Basket”, matching catalog deal 42. The runtime
+screenshot is stored at `docs/assessment/107/evidence/res-107-deal-42-runtime.png`.
+
+Later Android verification established that an `adb shell` command must escape
+`&` for the device shell. With `\&source=push`, a cold start on Pixel 6 / API
+35 loaded deal 42 and logged `deal_details_view` with `source: push`. While
+adding coverage for routes where GetX parameters are unavailable, a RED
+regression test found that `id` had a current-URI fallback but `source` did
+not. The controller now uses one helper for both values. The full integrated
+suite subsequently passed 32 tests.
 
 ### Rejected alternatives
 
@@ -509,9 +517,9 @@ repository and state ownership.
 
 ### Limitations or follow-up
 
-Android intent verification (RES-107 follow-up) and dedicated widget tests for
-loading/error rendering remain follow-up coverage. The controller paths and
-iPhone Simulator deal-42 flow are verified.
+Dedicated widget tests for loading/error rendering and repeated deep-link
+navigation remain follow-up coverage. The controller paths and both iPhone and
+Android deal-42 flows are verified.
 
 ### References
 
@@ -599,7 +607,7 @@ accepted.
 | Tool | Use | Verification |
 | --- | --- | --- |
 | Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
-| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 30 full-suite tests passed; analyzer reported no issues. |
+| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 32 full-suite tests passed; analyzer reported no issues. |
 | `xcrun simctl` and `cliclick` | Opened the deep link and confirmed the loaded deal on iPhone 17 Pro Simulator. | Runtime screenshot matches catalog deal 42. |
 
 ### Incorrect or Misleading AI Suggestions

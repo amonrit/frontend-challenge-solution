@@ -46,12 +46,15 @@ class DealDetailsController extends GetxController {
   }
 
   int? _readRouteDealId() {
-    final parameterId = Get.parameters['id'];
-    if (parameterId != null) return int.tryParse(parameterId);
+    return int.tryParse(_readRouteParameter('id') ?? '');
+  }
+
+  String? _readRouteParameter(String name) {
+    final parameter = Get.parameters[name];
+    if (parameter != null) return parameter;
 
     final currentRoute = Get.rootController.routing.current;
-    final queryId = Uri.tryParse(currentRoute)?.queryParameters['id'];
-    return int.tryParse(queryId ?? '');
+    return Uri.tryParse(currentRoute)?.queryParameters[name];
   }
 
   Future<void> _loadDealById() async {
@@ -85,7 +88,7 @@ class DealDetailsController extends GetxController {
     _quantityLeft.value = loadedDeal.quantityLeft;
     analytics.logEvent('deal_details_view', {
       'deal_id': loadedDeal.id,
-      'source': Get.parameters['source'] ?? 'unknown',
+      'source': _readRouteParameter('source') ?? 'unknown',
     });
     // Whenever the cart changes, re-check this deal's remaining stock so the
     // details screen never shows stale availability.

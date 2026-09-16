@@ -10,7 +10,7 @@ task breakdown.
 | --- | --- | --- |
 | 1.1 | The documented URI is `rescu://open/deal?id=42&source=push`. The in-app simulator parses the URI and navigates using its path and query string. | `PROBLEM.md`; `lib/feature/home/home_screen.dart` |
 | 1.3 | A normal card navigation passes both `Routes.dealRoute(...)` and the `DealModel` in `Get.arguments`; the simulator route passes no model argument. | `lib/feature/shared_widget/deal_card.dart`; `lib/feature/home/widget/flash_deals_section.dart`; `home_screen.dart` |
-| 2.3 | `Get.parameters['source']` is available from the route query. A missing source currently falls back to `unknown` for analytics. | `lib/feature/deal/deal_details_controller.dart` |
+| 2.3 | Route query values are read from `Get.parameters` first and fall back to the current route URI. A missing source falls back to `unknown` for analytics. | `lib/feature/deal/deal_details_controller.dart`; source regression test |
 | 2.4 | At evidence-collection time, `DealDetailsController.onInit()` force-cast `Get.arguments` to `DealModel`, so a deep link with no arguments threw before a details page could render. This was the RES-107 RED condition and is now fixed. | `deal_details_controller.dart`; RED test |
 | 2.5 | The `/deal` route uses `DealDetailsBinding`, which lazily constructs a fresh `DealDetailsController` with the shared repository, cart service, and analytics service. | `lib/routes/routes.dart`; `lib/binding/deal_details_binding.dart` |
 | 1.5 | Deal 42 exists in the bundled catalog. | `assets/data/deals.json` line 602 (read-only) |
@@ -45,8 +45,6 @@ task breakdown.
 
 ## Follow-up limits
 
-- Android intent verification was not run; the completed runtime evidence is
-  from an iPhone 17 Pro Simulator.
-- Dedicated widget tests for loading/error rendering and repeated deep-link
-  navigation remain follow-up coverage; controller paths and one real deal-42
-  flow are verified.
+- Android cold-start intent verification and the iPhone Simulator flow both
+  cover deal 42. Dedicated widget tests for loading/error rendering and
+  repeated deep-link navigation remain follow-up coverage.

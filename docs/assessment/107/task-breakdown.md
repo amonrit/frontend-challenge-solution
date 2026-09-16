@@ -114,3 +114,7 @@ transitions so the screen only renders state and does not own repository work.
 - On iPhone 17 Pro Simulator, opening
   `rescu://open/deal?id=42&source=push` displayed “Mystery Japanese Basket”,
   matching catalog deal 42. Screenshot: [`res-107-deal-42-runtime.png`](evidence/res-107-deal-42-runtime.png).
+- On Android Pixel 6 / API 35, a cold start through
+  `adb shell am start -W -n dev.rescu.rescu/.MainActivity -a android.intent.action.VIEW -d "rescu://open/deal?id=42\&source=push"`
+  displayed the same deal. Runtime log confirms `GET /deals/42` and
+  `deal_details_view {deal_id: 42, source: push}`.
