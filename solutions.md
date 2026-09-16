@@ -122,7 +122,9 @@ current controller. E1 now increments a request generation for every input
 event, including clear, and gates post-await result/loading mutations against
 the latest generation. The original deterministic test is GREEN: after the
 latest `bakery` result arrives, a later completion from the older `sushi`
-request is ignored. E3 will add the separate clear-input regression case.
+request is ignored. The clear-input regression is also GREEN: a `sushi`
+response completing after the input is cleared cannot restore results,
+`hasSearched`, or `isLoading`.
 
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)

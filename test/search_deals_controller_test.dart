@@ -66,4 +66,19 @@ void main() {
 
     expect(controller.results, [bakery]);
   });
+
+  test('does not restore results when an in-flight search is cleared', () async {
+    final repo = _ControlledDealRepo();
+    final controller = SearchDealsController(dealRepo: repo);
+    final sushi = _deal(1, 'Sushi');
+
+    controller.onQueryChanged('sushi');
+    controller.onQueryChanged('');
+    repo.complete('sushi', [sushi]);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(controller.results, isEmpty);
+    expect(controller.hasSearched.value, isFalse);
+    expect(controller.isLoading.value, isFalse);
+  });
 }

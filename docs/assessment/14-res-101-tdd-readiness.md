@@ -56,5 +56,11 @@ Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/search_deals_
 
 After E1, the same deterministic completion order passed: `bakery` completed
 first, then the older `sushi` completion was ignored. The focused command
-completed with one passing test on 2026-09-16. The clear-input boundary remains
-the next dedicated regression test (E3).
+completed with one passing test on 2026-09-16.
+
+## Clear-input regression result
+
+E3 starts `sushi`, clears the query before its Future completes, then completes
+that Future. It verifies that results remain empty and that both `hasSearched`
+and `isLoading` remain false. The focused suite completed with two passing
+tests on 2026-09-16.
