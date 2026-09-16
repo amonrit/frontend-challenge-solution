@@ -228,6 +228,7 @@ No implementation or evidence was produced for this ticket.
 
 - `PROBLEM.md` RES-104 requirements
 - [RES-104 scope](docs/assessment/104/scope.md)
+- [RES-104 questions](docs/assessment/104/questions.md)
 
 ## RES-105 — Home feed performance
 

@@ -37,6 +37,6 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: Phase 0 — scope initialized.
-- Next phase: Phase 1 — write requirement and evidence questions.
+- Current phase: Phase 1 — requirement and evidence questions recorded.
+- Next phase: Phase 2 — collect evidence-backed answers.
 - Production code and tests: unchanged for RES-104.
