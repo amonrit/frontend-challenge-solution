@@ -36,7 +36,7 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: Phase 4 complete; readiness criteria and the first RED test
-  are recorded.
-- Next phase: run the focused RED test and record its failure before coding.
+- Current phase: Phase 5 complete; execution tasks and method comparisons are
+  recorded.
+- Next phase: execute T1, making controller input model-or-ID aware.
 - Production code and tests: unchanged for RES-107.
