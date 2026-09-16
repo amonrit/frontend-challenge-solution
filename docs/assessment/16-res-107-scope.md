@@ -36,7 +36,7 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: Phase 5 complete; execution tasks and method comparisons are
-  recorded.
-- Next phase: execute T1, making controller input model-or-ID aware.
+- Current phase: T1 complete; the controller now distinguishes a typed model
+  argument from a route ID without a forced cast.
+- Next phase: execute C2, the async-state representation comparison.
 - Production code and tests: unchanged for RES-107.

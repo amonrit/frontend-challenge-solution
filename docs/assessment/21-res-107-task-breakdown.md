@@ -6,8 +6,8 @@ they do not change production code.
 | ID | Task | Files | Dependency | Acceptance assertion | Status |
 | --- | --- | --- | --- | --- | --- |
 | C1 | Compare route-resolution ownership and record the selected controller path. | `19-res-107-options.md` | Phase 3 | The chosen owner and rejected alternatives are explicit. | Complete in Phase 3 |
-| T1 | Make details input model-or-ID aware without a forced cast. | `lib/feature/deal/deal_details_controller.dart` | RED test | A model argument remains valid; a missing argument proceeds to ID resolution. | Next |
-| C2 | Compare async state representations for loading, loaded, and error. | `21-res-107-task-breakdown.md`, `solutions.md` | T1 design | Select a state shape that keeps screen rendering and lifecycle ownership clear. | Planned |
+| T1 | Make details input model-or-ID aware without a forced cast. | `lib/feature/deal/deal_details_controller.dart` | RED test | A model argument remains valid; a missing argument proceeds to ID resolution. | Complete; controller regression check passed |
+| C2 | Compare async state representations for loading, loaded, and error. | `21-res-107-task-breakdown.md`, `solutions.md` | T1 design | Select a state shape that keeps screen rendering and lifecycle ownership clear. | Next |
 | T2 | Implement ID parsing and guarded repository loading. | `lib/feature/deal/deal_details_controller.dart` | T1, C2 | Valid ID 42 calls `fetchById`; invalid/missing input and failures become state, not crashes. | Blocked by T1/C2 |
 | T3 | Preserve the model-argument fast path and initialize dependent observers safely. | `lib/feature/deal/deal_details_controller.dart` | T2 | Card navigation does not make an unnecessary initial fetch; cart observer starts only with a loaded model. | Blocked by T2 |
 | T4 | Render loading and error states while retaining the existing loaded page. | `lib/feature/deal/deal_details_screen.dart` | T2 | Deep link shows loading, then details or an understandable retryable error. | Blocked by T2 |

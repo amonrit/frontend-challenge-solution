@@ -18,6 +18,8 @@ class DealDetailsController extends GetxController {
   });
 
   late final DealModel deal;
+  int? _routeDealId;
+  int? get routeDealId => _routeDealId;
 
   final _quantityLeft = RxnInt();
   int? get quantityLeft => _quantityLeft.value;
@@ -27,10 +29,20 @@ class DealDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    deal = Get.arguments as DealModel;
-    _quantityLeft.value = deal.quantityLeft;
+    final argument = Get.arguments;
+    if (argument is DealModel) {
+      _initializeLoadedDeal(argument);
+      return;
+    }
+
+    _routeDealId = int.tryParse(Get.parameters['id'] ?? '');
+  }
+
+  void _initializeLoadedDeal(DealModel loadedDeal) {
+    deal = loadedDeal;
+    _quantityLeft.value = loadedDeal.quantityLeft;
     analytics.logEvent('deal_details_view', {
-      'deal_id': deal.id,
+      'deal_id': loadedDeal.id,
       'source': Get.parameters['source'] ?? 'unknown',
     });
     // Whenever the cart changes, re-check this deal's remaining stock so the

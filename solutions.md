@@ -181,6 +181,12 @@ comparison, guarded ID loading, observer safety, screen states, regression
 coverage, and final verification. The next executable task is T1; no RES-107
 production implementation has started.
 
+T1 now treats `Get.arguments` as a runtime value: a `DealModel` keeps the
+existing fast path, while other values leave the controller ready to resolve
+the parsed route ID. The forced cast is gone; ID fetching and loading/error
+rendering remain the next tasks. The existing details-controller regression
+tests continue to pass.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)
