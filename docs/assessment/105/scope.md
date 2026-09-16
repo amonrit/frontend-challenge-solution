@@ -37,7 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T0 profile baseline attempt completed with an explicit
-  device-availability limitation.
-- Next task: T1 — split scroll reactivity from feed rendering.
+- Current phase: Phase 6 — T1 reactive boundary split complete.
+- Next task: T2 — make the main feed lazy.
 - Production code and tests: unchanged for RES-105.

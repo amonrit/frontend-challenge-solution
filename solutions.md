@@ -302,8 +302,10 @@ still require a profile-mode trace.
 ### Implementation
 
 The selected plan is to split reactive boundaries, use lazy feed construction,
-and pass display-sized image decode hints. Work will be staged so each change
-can be profiled independently. Production code has not been changed yet.
+and pass display-sized image decode hints. T1 moved scroll observation into
+separate app-bar and FAB `Obx` wrappers; the body observer reads feed state but
+does not depend on scroll offset. Lazy construction and image sizing remain for
+later tasks.
 
 ### Rejected alternatives
 
@@ -317,7 +319,9 @@ can be profiled independently. Production code has not been changed yet.
 
 The Phase 2 baseline has 28 passing tests, a clean analyzer, and Flutter 3.27.0
 with DevTools 2.40.2. No profile-mode before/after DevTools measurements have
-been captured yet, so no performance improvement is claimed.
+been captured yet, so no performance improvement is claimed. After T1,
+`flutter analyze` passed with no issues and the existing Home controller suite
+passed 6 tests.
 
 ### Limitations or follow-up
 TDD readiness and a repeatable profile scenario are still required before
