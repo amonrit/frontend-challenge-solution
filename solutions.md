@@ -126,6 +126,11 @@ request is ignored. The clear-input regression is also GREEN: a `sushi`
 response completing after the input is cleared cannot restore results,
 `hasSearched`, or `isLoading`.
 
+Automated verification on 2026-09-16 passed: the focused RES-101 suite (2
+tests), the full suite (9 tests), `flutter analyze`, and `git diff --check`.
+The remaining E5 comparison is a manual rapid-input check against the running
+app.
+
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)
 - [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
