@@ -154,7 +154,7 @@ rendering an error state.
 
 ## AI Usage Log
 
-## RES-107 — Deep-link details loading (Phase 2)
+## RES-107 — Deep-link details loading (Complete)
 
 Source evidence confirms that the in-app URI becomes the `/deal` route with
 query parameters, while normal card navigation additionally supplies a
@@ -162,8 +162,8 @@ query parameters, while normal card navigation additionally supplies a
 that optional argument before the screen can render. `DealRepo.fetchById` and
 the simulated API already provide ID lookup, latency, and a 404 exception; deal
 42 exists in the catalog. The baseline full suite passed 9 tests and analyzer
-reported no issues on 2026-09-16. Runtime crash reproduction remains pending
-for a later verification phase.
+reported no issues on 2026-09-16. Final verification later passed 13 tests and
+included a real simulator deep-link flow.
 
 The selected design is controller-owned resolution: preserve a valid
 `DealModel` argument, otherwise parse the route ID and fetch through
@@ -176,16 +176,13 @@ The first RED test now reproduces the crash deterministically: with
 `type 'Null' is not a subtype of type 'DealModel' in type cast` before the fake
 repository can load the deal.
 
-The execution plan is now split into controller input resolution, async-state
+The execution plan was split into controller input resolution, async-state
 comparison, guarded ID loading, observer safety, screen states, regression
-coverage, and final verification. T1 and C2 are complete; the next executable
-task is T3 after the guarded loading work recorded below.
+coverage, and final verification. All listed execution tasks are complete.
 
-T1 now treats `Get.arguments` as a runtime value: a `DealModel` keeps the
-existing fast path, while other values leave the controller ready to resolve
-the parsed route ID. The forced cast is gone; ID fetching and loading/error
-rendering remain the next tasks. The existing details-controller regression
-tests continue to pass.
+T1 treated `Get.arguments` as a runtime value: a `DealModel` keeps the existing
+fast path, while other values resolve the parsed route ID. The forced cast was
+removed.
 
 C2 selected separate GetX observables for nullable loaded deal, loading, and a
 user-facing error message. This keeps the existing architecture and makes the
@@ -198,22 +195,23 @@ A valid ID sets `isLoading`, calls `DealRepo.fetchById`, and reuses the
 loaded-deal initialization path. Missing or invalid IDs and repository errors
 become retryable `errorMessage` state instead of cast or async exceptions. A
 closed-controller guard prevents late responses from mutating disposed state.
-The focused deep-link and controller regression tests pass (3 tests). Screen
-branches and retry UI remain deferred to T4.
+The focused deep-link and controller regression tests passed at that stage
+(3 tests); later T5 expanded the final focused suite to 6 tests.
 
 T3 keeps the normal card-navigation fast path: a supplied `DealModel` is used
 immediately and does not trigger an initial repository fetch. The cart `ever`
 worker is created only after a loaded deal exists, and any previous worker is
 disposed before re-initialization to prevent duplicate availability requests.
 The controller close and multi-controller regression tests remain green; the
-focused controller/deep-link suite now passes 4 tests.
+focused controller/deep-link suite passed 4 tests at that stage and 6 after T5.
 
 T4 updates `DealDetailsScreen` to observe loading, error, and loaded state
 before reading the controller's deal. Direct links therefore show a progress
 indicator while fetching, invalid or failed links show a retryable message, and
 normal model navigation keeps the existing details layout. Retry remains
 controller-owned so the screen does not perform repository work. Focused
-controller/deep-link checks pass; widget rendering coverage is deferred to T5.
+controller/deep-link checks pass. Dedicated widget rendering tests remain a
+follow-up limitation; the runtime simulator check covers the loaded page.
 
 T5 adds regression coverage for valid route ID loading, normal model arguments,
 invalid IDs, repository failures, and observer cleanup. The focused suite now

@@ -1,7 +1,8 @@
 # RES-107 — Evidence-Backed Answers
 
-This document separates source and test facts from runtime observations that
-still need to be reproduced. No production code has been changed for RES-107.
+This document records the source and test facts collected before implementation.
+Later execution and verification results are recorded in `solutions.md` and the
+task breakdown.
 
 ## Routing and current behavior
 
@@ -10,7 +11,7 @@ still need to be reproduced. No production code has been changed for RES-107.
 | 1.1 | The documented URI is `rescu://open/deal?id=42&source=push`. The in-app simulator parses the URI and navigates using its path and query string. | `PROBLEM.md`; `lib/feature/home/home_screen.dart` |
 | 1.3 | A normal card navigation passes both `Routes.dealRoute(...)` and the `DealModel` in `Get.arguments`; the simulator route passes no model argument. | `lib/feature/shared_widget/deal_card.dart`; `lib/feature/home/widget/flash_deals_section.dart`; `home_screen.dart` |
 | 2.3 | `Get.parameters['source']` is available from the route query. A missing source currently falls back to `unknown` for analytics. | `lib/feature/deal/deal_details_controller.dart` |
-| 2.4 | `DealDetailsController.onInit()` force-casts `Get.arguments` to `DealModel`, so a deep link with no arguments throws before a details page can render. | `deal_details_controller.dart` line 30 |
+| 2.4 | At evidence-collection time, `DealDetailsController.onInit()` force-cast `Get.arguments` to `DealModel`, so a deep link with no arguments threw before a details page could render. This was the RES-107 RED condition and is now fixed. | `deal_details_controller.dart`; RED test |
 | 2.5 | The `/deal` route uses `DealDetailsBinding`, which lazily constructs a fresh `DealDetailsController` with the shared repository, cart service, and analytics service. | `lib/routes/routes.dart`; `lib/binding/deal_details_binding.dart` |
 | 1.5 | Deal 42 exists in the bundled catalog. | `assets/data/deals.json` line 602 (read-only) |
 
@@ -21,7 +22,7 @@ still need to be reproduced. No production code has been changed for RES-107.
 | 4.1 | `DealRepo.fetchById` calls `FakeApiService.getDealById` and converts the response to `DealModel`. | `lib/repository/deal_repo.dart` |
 | 4.2 | The simulated API waits 200–700 ms, logs `GET /deals/:id`, returns the matching record, and throws `ApiException('Deal not found', statusCode: 404)` when there is no match. | `lib/service/fake_api_service.dart` (read-only) |
 | 4.3 | A valid ID lookup has simulated latency, so an ID-based details flow needs an explicit loading state before the model is available. | `fake_api_service.dart`; current screen reads `controller.deal` synchronously |
-| 4.4 | The current details screen has no loading or error branch; it assumes `controller.deal` is initialized and renders the model immediately. | `lib/feature/deal/deal_details_screen.dart` |
+| 4.4 | At evidence-collection time, the details screen had no loading or error branch. T4 added explicit loading, error, retry, and loaded branches. | `lib/feature/deal/deal_details_screen.dart`; T4 |
 | 3.6 | Analytics currently logs `deal_details_view` only after the model cast succeeds, using the model ID and route source. | `deal_details_controller.dart` |
 
 ## Lifecycle and compatibility facts
@@ -37,17 +38,15 @@ still need to be reproduced. No production code has been changed for RES-107.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Existing full suite | 9 tests passed on 2026-09-16 using Flutter 3.27.0. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
+| Baseline full suite | 9 tests passed on 2026-09-16 using Flutter 3.27.0. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
+| Final full suite | 13 tests passed after RES-107 implementation. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
 | Static analysis | No issues on 2026-09-16. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
-| Protected files | No RES-107 changes made; `fake_api_service.dart` and `assets/data/` remain read-only. | `git status`; source inspection |
+| Protected files | `fake_api_service.dart` and `assets/data/` remained unchanged throughout RES-107. | `git status`; source inspection |
 
-## Runtime facts still pending
+## Follow-up limits
 
-- Reproduce the documented in-app simulator flow and capture the actual cast
-  crash before implementation.
-- Verify the same URI through an Android intent if an Android device is
-  available; the current evidence is source-level only.
-- Confirm the loaded content and visible loading duration for deal 42 after an
-  ID-based implementation.
-- Exercise malformed, missing, unknown, and repeated deep links on a running
-  app and record the intended user-visible behavior before selecting the fix.
+- Android intent verification was not run; the completed runtime evidence is
+  from an iPhone 17 Pro Simulator.
+- Dedicated widget tests for loading/error rendering and repeated deep-link
+  navigation remain follow-up coverage; controller paths and one real deal-42
+  flow are verified.
