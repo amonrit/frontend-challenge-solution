@@ -77,9 +77,10 @@ E1 now retains the `Worker` returned by `ever(...)` and disposes it in
 then a cart change after `onClose()` creates no additional repository request.
 The multi-controller regression test also passes: closing controller A does
 not prevent live controller B from refreshing. Full verification remains
-pending only for the final manual request-count flow. Focused controller tests
-passed 2 tests, the full suite passed 7 tests, and `flutter analyze` reported
-no issues.
+complete. In the final manual flow, deals 1–3 were closed, deal 4 remained
+open, and **Add to bag** produced exactly one `GET /deals/4` request. Focused
+controller tests passed 2 tests, the full suite passed 7 tests, and `flutter
+analyze` reported no issues.
 
 Detailed questions and evidence are kept in:
 

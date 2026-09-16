@@ -9,7 +9,7 @@ only one task per user-approved `next`.
 | E2 | Run and record the focused GREEN test after E1. | `test/deal_details_controller_test.dart`, assessment evidence | E1 | `flutter test test/deal_details_controller_test.dart` passes. | Complete: 1 passed |
 | E3 | Add a multi-controller regression test. | `test/deal_details_controller_test.dart` | E2 | Closing controller A does not stop live controller B; cart change fetches only B. | Complete: 2 focused tests passed |
 | E4 | Run targeted and project verification. | tests, `solutions.md` | E3 | Focused test, full suite, analyzer, and diff check pass. | Complete: focused 2, full 7, analyzer clean |
-| E5 | Repeat the manual request-count flow. | `solutions.md`, assessment evidence | E4 | After deals 1–3 close and deal 4 adds to bag, only `GET /deals/4` appears. | Next |
+| E5 | Repeat the manual request-count flow. | `solutions.md`, assessment evidence | E4 | After deals 1–3 close and deal 4 adds to bag, only `GET /deals/4` appears. | Complete: only `/deals/4` logged |
 
 ## E1 implementation variants
 
@@ -53,3 +53,17 @@ git diff --check
 | Full project suite | 7 passed |
 | Static analysis | No issues found |
 | Diff check | Passed; `ios/Podfile.lock` remains an unrelated uncommitted user change and was not included in RES-103 commits. |
+
+## E5 manual result
+
+On the fixed app, deals 1, 2, and 3 were opened and closed. Deal 4 remained
+open and **Add to bag** was tapped. The log contained exactly:
+
+```text
+re-checking availability for deal 4
+GET /deals/4
+```
+
+No refresh callback or request was logged for deals 1–3. This is the intended
+contrast with the pre-fix run, where the same cart change produced four
+requests for deals 1–4.
