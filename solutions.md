@@ -62,11 +62,17 @@ closed detail-page observers still participate in the cart-change refresh path.
 The root-cause fix, option comparison, TDD, and final verification are not
 complete yet.
 
+The current design comparison selects retaining the GetX `Worker` returned by
+`ever(...)` and disposing it from `DealDetailsController.onClose()`. A
+mounted/closed guard was rejected because it leaves the subscription alive;
+shared cart-level ownership was rejected as broader than this ticket.
+
 Detailed questions and evidence are kept in:
 
 - [RES-103 scope](docs/assessment/04-res-103-scope.md)
 - [RES-103 questions](docs/assessment/05-res-103-questions.md)
 - [RES-103 evidence-backed answers](docs/assessment/06-res-103-answers.md)
+- [RES-103 options and decision](docs/assessment/07-res-103-options.md)
 
 ## AI Usage Log
 
