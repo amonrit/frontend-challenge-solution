@@ -37,6 +37,7 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: Phase 5 — execution tasks and implementation invariant planned.
-- Next phase: Execute T1, add request-round ownership for refresh.
+- Current phase: T1 complete; refresh request-round invalidation is implemented
+  and the RED regression is GREEN.
+- Next phase: Execute T2, guard expected page acceptance and advancement.
 - Production code and tests: unchanged for RES-104.

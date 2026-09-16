@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   int _page = 1;
   int _totalPages = 1;
   bool _isFetchingMore = false;
+  int _requestRound = 0;
 
   bool get hasMore => _page < _totalPages;
 
@@ -56,10 +57,13 @@ class HomeController extends GetxController {
   }
 
   Future<void> refreshDeals() async {
+    final round = ++_requestRound;
     _page = 1;
     final res = await dealRepo.fetchDeals(page: 1);
-    _totalPages = res.totalPages;
-    deals.assignAll(res.items);
+    if (round == _requestRound) {
+      _totalPages = res.totalPages;
+      deals.assignAll(res.items);
+    }
     refreshController.refreshCompleted();
   }
 
@@ -70,14 +74,17 @@ class HomeController extends GetxController {
       return;
     }
     _isFetchingMore = true;
+    final round = _requestRound;
     _page++;
     try {
       final res = await dealRepo.fetchDeals(page: _page);
-      _totalPages = res.totalPages;
-      deals.addAll(res.items);
+      if (round == _requestRound) {
+        _totalPages = res.totalPages;
+        deals.addAll(res.items);
+      }
     } catch (e) {
       LogService.error('loadMore failed', e);
-      _page--;
+      if (round == _requestRound) _page--;
     }
     _isFetchingMore = false;
     refreshController.loadComplete();

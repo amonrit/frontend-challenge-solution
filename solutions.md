@@ -221,9 +221,10 @@ while an older page-2 request is still allowed to append afterward.
 
 ### Implementation
 
-Selected monotonic request-round and page tokens. Each response will be accepted
-only for the current round and expected page; stale network completions will be
-ignored. This fits the existing Future-based repository contract.
+Selected monotonic request-round and page tokens. T1 adds a controller round
+counter: each refresh advances the round, and refresh/load-more completions from
+older rounds no longer mutate the feed. The remaining expected-page invariant
+is the next T2 task.
 
 ### Rejected alternatives
 
@@ -234,8 +235,9 @@ alone was rejected because it cannot restore ordering or identify stale rounds.
 
 ### Verification and evidence
 
-Before measurement is recorded in the answers document. The deterministic RED
-test, change, and after measurement remain pending until the next phases.
+Before measurement is recorded in the answers document. T1's after measurement
+uses the identical deterministic completion order: the focused test changed
+from `[3, 4]` before the guard to `[3]` after the guard.
 
 Phase 4 added a delayed repository test seam. The first run exposed a missing
 Flutter binding in the test setup; initializing `TestWidgetsFlutterBinding`
