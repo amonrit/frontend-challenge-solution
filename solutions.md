@@ -208,21 +208,37 @@ Detailed questions and evidence are kept in:
 
 ## RES-104 — Home pagination and refresh consistency
 
-**Status:** Not started in this submission.
+**Status:** Assessment complete; implementation not started.
 
 ### Requirement
 Prevent refresh and pagination responses from overwriting one another or duplicating feed items.
 
+### Diagnosis
+
+Pre-change source evidence identifies shared mutable page/list state across
+independent async completions as the bottleneck. A refresh can replace page 1
+while an older page-2 request is still allowed to append afterward.
+
+### Implementation
+
+Selected monotonic request-round and page tokens. Each response will be accepted
+only for the current round and expected page; stale network completions will be
+ignored. This fits the existing Future-based repository contract.
+
 ### Rejected alternatives
 
-No approach was selected because implementation was not started.
+Serializing all operations was rejected because a slow obsolete request delays
+refresh. A stream cancellation refactor was rejected because the repository
+returns Futures and cancellation may not stop the backend. ID deduplication
+alone was rejected because it cannot restore ordering or identify stale rounds.
 
 ### Verification and evidence
 
-No tests or runtime evidence were produced for this ticket.
+Before measurement is recorded in the answers document. The deterministic RED
+test, change, and after measurement remain pending until the next phases.
 
 ### Limitations or follow-up
-No implementation or evidence was produced for this ticket.
+No production implementation or after measurement has been produced yet.
 
 ### References
 
@@ -230,6 +246,7 @@ No implementation or evidence was produced for this ticket.
 - [RES-104 scope](docs/assessment/104/scope.md)
 - [RES-104 questions](docs/assessment/104/questions.md)
 - [RES-104 evidence-backed answers](docs/assessment/104/answers.md)
+- [RES-104 options and trade-offs](docs/assessment/104/options.md)
 
 ## RES-105 — Home feed performance
 
