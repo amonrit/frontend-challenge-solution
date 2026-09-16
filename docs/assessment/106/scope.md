@@ -41,6 +41,7 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 4 — deterministic RED tests and TDD readiness recorded.
-- Next phase: Phase 5 — split the selected implementation into execution tasks.
-- Production code: unchanged for RES-106. The focused RED test is now present.
+- Current phase: Phase 6 — T1 conversion seam and injectable clock complete.
+- Next task: T2 — apply the seam to pickup labels and `isToday`.
+- Production model behavior: unchanged for RES-106; the original focused RED
+  assertions remain the target for T2.

@@ -323,10 +323,10 @@ Bangkok market date.
 ### Planned implementation
 
 The selected approach is a centralized Bangkok market-time conversion seam with
-a fixed UTC+7 offset. API values remain UTC instants; display and calendar-date
-comparisons project them into Bangkok time. The current-time provider will be
-injectable so boundary tests do not depend on the wall clock. Production code
-has not been changed yet.
+a fixed UTC+7 offset. T1 added `BangkokTimePolicy`, which keeps API values as
+UTC instants, projects values into Bangkok time, compares complete market dates,
+and accepts an injectable clock. Pickup model consumers are still unchanged;
+T2 will apply the seam to their behavior.
 
 ### Rejected alternatives
 
@@ -344,7 +344,7 @@ comparison, plus a baseline of 19 passing tests and a clean analyzer run. The
 new focused RED run failed for the intended reasons: `10:30 – 14:00` instead of
 `17:30 – 21:00`, and `isToday == true` for a same-day-number date in the next
 month. Implementation, after measurements, and runtime verification are
-pending the next phases.
+pending the next phases. T1's three policy unit tests pass.
 
 ### Limitations or follow-up
 No production fix has been made yet. The next phase writes deterministic RED
@@ -358,6 +358,7 @@ tests for UTC-to-Bangkok display and complete date comparison.
 - [RES-106 evidence-backed answers](docs/assessment/106/answers.md)
 - [RES-106 options and trade-offs](docs/assessment/106/options.md)
 - [RES-106 TDD readiness and RED result](docs/assessment/106/tdd-readiness.md)
+- [RES-106 execution task breakdown](docs/assessment/106/task-breakdown.md)
 
 ## RES-107 — Deep-link details loading (Complete)
 
