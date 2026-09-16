@@ -126,6 +126,7 @@ yet.
 - [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
 - [RES-101 options and decision](docs/assessment/13-res-101-options.md)
 - [RES-101 TDD readiness and RED evidence](docs/assessment/14-res-101-tdd-readiness.md)
+- [RES-101 execution tasks](docs/assessment/15-res-101-execution-tasks.md)
 
 ## AI Usage Log
 
