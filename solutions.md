@@ -307,7 +307,7 @@ No implementation or before/after DevTools evidence was produced for this ticket
 
 ## RES-106 — Pickup time and today filter
 
-**Status:** Assessment complete; implementation not started.
+**Status:** In progress; T1 and T2 complete, boundary verification pending.
 
 ### Requirement
 Use the required Bangkok timezone and compare complete calendar dates for pickup and today filtering.
@@ -320,13 +320,14 @@ displayed pickup time and false matches across month or year boundaries. The
 device timezone is also an implicit input, so the result can differ from the
 Bangkok market date.
 
-### Planned implementation
+### Implementation
 
 The selected approach is a centralized Bangkok market-time conversion seam with
 a fixed UTC+7 offset. T1 added `BangkokTimePolicy`, which keeps API values as
 UTC instants, projects values into Bangkok time, compares complete market dates,
-and accepts an injectable clock. Pickup model consumers are still unchanged;
-T2 will apply the seam to their behavior.
+and accepts an injectable clock. T2 applies the policy to `PickupWindowModel`
+label formatting and complete-date `isToday` comparison. Other time-dependent
+behavior remains under review in later tasks.
 
 ### Rejected alternatives
 
@@ -344,11 +345,12 @@ comparison, plus a baseline of 19 passing tests and a clean analyzer run. The
 new focused RED run failed for the intended reasons: `10:30 – 14:00` instead of
 `17:30 – 21:00`, and `isToday == true` for a same-day-number date in the next
 month. Implementation, after measurements, and runtime verification are
-pending the next phases. T1's three policy unit tests pass.
+pending the next phases. T1's three policy unit tests and T2's two focused model
+tests pass.
 
 ### Limitations or follow-up
-No production fix has been made yet. The next phase writes deterministic RED
-tests for UTC-to-Bangkok display and complete date comparison.
+Midnight, year-end, and device-timezone coverage remains for T3. `isOpenNow`
+and `untilStart` still require the consumer audit planned in T4.
 
 ### References
 

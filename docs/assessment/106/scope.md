@@ -41,7 +41,8 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T1 conversion seam and injectable clock complete.
-- Next task: T2 — apply the seam to pickup labels and `isToday`.
-- Production model behavior: unchanged for RES-106; the original focused RED
-  assertions remain the target for T2.
+- Current phase: Phase 6 — T2 model integration complete.
+- Next task: T3 — add deterministic midnight, month-end, year-end, and device
+  timezone tests.
+- Production model behavior: label and `isToday` now use the centralized
+  Bangkok policy; broader boundary coverage remains for T3.
