@@ -37,6 +37,7 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 7 — T5 integrated verification complete.
-- Next phase: Phase 8 — documentation currency audit.
-- Production code and tests: unchanged for RES-105.
+- Current phase: Phase 8 — documentation currency audit complete.
+- Next phase: None for RES-105; ready for delivery with a profiling limitation.
+- Production code and tests: T1–T3 changed Home/image code and added the image
+  sizing test; integrated verification passed.

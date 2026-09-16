@@ -14,8 +14,10 @@ updated alongside each ticket rather than after all implementation work.
 5. **RES-107** — resolve deep links by ID and render loading/error states.
 6. **RES-104** — protect Home refresh and pagination from stale responses.
 7. **RES-106** — normalize pickup display and today filtering to Bangkok time.
-8. **RES-105, F-1, F-2, F-3** — not started in this submission; retained as
-   follow-up work from the assignment.
+8. **RES-105** — split Home reactivity, lazy feed construction, and image
+   decoding; runtime profiling remains a documented limitation.
+9. **F-1, F-2, F-3** — not started in this submission; retained as follow-up
+   work from the assignment.
 
 Each completed ticket below follows the same summary format: status, diagnosis
 or requirement, fix or implementation, rejected alternatives, verification and
@@ -286,7 +288,7 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Implementation complete; verification passed. Phase 8 documentation audit pending.
+**Status:** Implementation complete; verification passed. Documentation audit complete.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -591,7 +593,7 @@ accepted.
 | Tool | Use | Verification |
 | --- | --- | --- |
 | Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
-| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 13 full-suite tests passed; analyzer reported no issues. |
+| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 29 full-suite tests passed; analyzer reported no issues. |
 | `xcrun simctl` and `cliclick` | Opened the deep link and confirmed the loaded deal on iPhone 17 Pro Simulator. | Runtime screenshot matches catalog deal 42. |
 
 ### Incorrect or Misleading AI Suggestions
@@ -620,11 +622,19 @@ A `GetxController` follows its GetX registration and route binding. A widget `St
 
 ### Q2. When does a large Obx hurt performance?
 
-Pending RES-105 investigation and DevTools evidence.
+A large `Obx` rebuilds every descendant that depends on the same observable
+set, so a high-frequency value such as scroll offset can refresh stable feed
+cards, images, and controls unnecessarily. Scope each observer around the
+smallest subtree that reads the changing value: RES-105 keeps scroll-dependent
+app-bar/FAB observers separate from the feed observer. The exact frame-time
+benefit remains unmeasured without a comparable profile device.
 
 ### Q3. How would RES-106 be tested?
 
-Pending RES-106 investigation.
+Parse fixed UTC instants, inject a fixed Bangkok clock, and assert labels and
+complete year/month/day comparisons across midnight, month-end, and year-end.
+RES-106 added `BangkokTimePolicy` so tests do not depend on the host timezone or
+wall clock; its focused boundary suite passes.
 
 ## Time Spent and One More Day
 
@@ -634,12 +644,13 @@ implementations, focused and full verification, simulator validation, and
 documentation. The wall-clock window is longer because work was performed in
 separate review and testing sessions.
 
-With one additional day, I would finish RES-106 first because it is a
-correctness and data-consistency risk, then capture the required before/after
-DevTools evidence and address RES-105. If time remained, I would
-implement F-1 end to end before starting F-2 or F-3, keeping each feature
-fully tested rather than leaving several partial implementations.
+With one additional day, I would capture the required comparable Android
+DevTools traces for RES-105, then use the remaining time to implement F-1 end
+to end before starting F-2 or F-3.
 
 ## DevTools Evidence — RES-105
 
-Pending baseline and after-fix profile measurements.
+No comparable profile-mode baseline or after-fix trace was captured because no
+mid-range Android target was available. The limitation and reproducibility
+contract are recorded in [profile-baseline.md](docs/assessment/105/profile-baseline.md);
+source-level changes and automated evidence are recorded in the RES-105 section.
