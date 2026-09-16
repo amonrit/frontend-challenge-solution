@@ -128,8 +128,12 @@ response completing after the input is cleared cannot restore results,
 
 Automated verification on 2026-09-16 passed: the focused RES-101 suite (2
 tests), the full suite (9 tests), `flutter analyze`, and `git diff --check`.
-The remaining E5 comparison is a manual rapid-input check against the running
-app.
+The manual E5 comparison also passed on an iPhone 17 Pro simulator. An
+AppleScript-driven `sushi` then `bakery` sequence settled on Bakery deals and
+did not revert to Sushi; a `sushi` then clear sequence remained in the empty
+search state after the former request had time to complete. The deterministic
+controller tests remain the primary proof because the fake API timing is not a
+stable UI-level oracle.
 
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)

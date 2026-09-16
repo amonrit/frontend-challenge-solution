@@ -71,3 +71,14 @@ On 2026-09-16, the focused RES-101 suite passed two tests, the full suite
 passed nine tests, `flutter analyze` reported no issues, and `git diff --check`
 reported no whitespace errors. The separately modified `ios/Podfile.lock` was
 not part of this ticket or these checks.
+
+## Manual runtime result
+
+On an iPhone 17 Pro simulator on 2026-09-16, AppleScript drove the focused
+Search field through two sequences. `sushi` followed immediately by `bakery`
+settled on the `bakery` query and Bakery deal cards; the late older result did
+not replace the screen. A second sequence entered `sushi` and immediately
+cleared it. After the earlier response had time to complete, the field was
+empty and the screen still showed `Try "sushi", "bakery" or "vegan"`, with no
+stale Sushi cards. Screenshots were captured locally during the session for
+both settled states.
