@@ -264,6 +264,12 @@ load-more failure, wrong response page, final-page no-op, stale append, and
 late response after close. All focused tests pass. The same delayed repository
 seam will be reused for T5's before/after comparison.
 
+T5 reran the identical controlled completion order and recorded the change from
+`[3, 4]` before the guard to `[3]` after it. The focused RES-104 suite passed 6
+tests, the full project suite passed 19 tests, analyzer reported no issues, and
+`git diff --check` passed. A separate manual Home overlap run was not claimed;
+the deterministic injected repository is the primary race evidence.
+
 ### References
 
 - `PROBLEM.md` RES-104 requirements

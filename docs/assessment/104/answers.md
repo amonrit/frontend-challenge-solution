@@ -48,7 +48,26 @@ be required for the RED test.
 - The current source inspection does not establish whether the backend can
   return duplicate IDs across pages; that requires evidence or an injected test
   repository.
-- No change, after measurement, or post-fix result exists in this phase.
+- At the end of Phase 2, no change or after measurement existed; the later
+  after result is recorded below from T5.
+
+## After measurement
+
+The same controlled completion order was rerun after T1–T4:
+
+| Measurement | Before implementation | After implementation |
+| --- | --- | --- |
+| Final deal IDs after refresh/page-2 overlap | `[3, 4]` | `[3]` |
+| Accepted page state | Stale page-2 append was accepted | Wrong-round/wrong-page response ignored |
+| Focused regression suite | RED: 1 failing test after the test seam was corrected | GREEN: 6 passing tests |
+| Full project suite | Baseline: 13 passing tests | Final: 19 passing tests |
+| Static analysis | No issues | No issues |
+| Diff check | Not yet run in this evidence phase | Passed during T5 verification |
+
+No separate manual Home overlap trace was claimed. The injected repository
+provides deterministic completion order and is the primary evidence for this
+race; runtime verification remains a follow-up if a production-like request
+logger is needed.
 
 ## Next evidence needed
 
@@ -57,4 +76,4 @@ be required for the RED test.
 2. Use the delayed fake repository in the RED test to measure the duplicated
    or stale final item IDs before the change.
 3. Repeat the same completion order after implementation and compare accepted
-   pages, final IDs, and list length.
+   pages, final IDs, and list length. **Complete in T5.**

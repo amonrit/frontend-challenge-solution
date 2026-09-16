@@ -37,7 +37,6 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: T4 complete; overlap, stale failure, wrong-page, close, and
-  final-page regression tests pass.
-- Next phase: Execute T5, repeat before/after measurements and final checks.
+- Current phase: T5 complete; before/after measurements and final checks pass.
+- Next phase: Phase 8 — documentation currency audit.
 - Production code and tests: unchanged for RES-104.
