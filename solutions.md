@@ -118,8 +118,9 @@ invalidate an already-started response.
 
 The focused RED test now reproduces the visible overwrite deterministically:
 `bakery` completes first, then older `sushi` completes and replaces it in the
-current controller. The monotonic generation guard has not been implemented
-yet.
+current controller. E1 now increments a request generation for every input
+event, including clear, and gates post-await result/loading mutations against
+the latest generation. Focused GREEN verification remains pending in E2.
 
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)
