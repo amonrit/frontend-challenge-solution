@@ -1,6 +1,23 @@
 # Rescu Assessment Solutions
 
-This is the delivery summary. Investigation questions, research, and task comparisons are kept in [`docs/assessment/`](docs/assessment/) so this file stays focused on completed work and evidence.
+This is the delivery summary. Investigation questions, research, and task comparisons are kept in [`docs/assessment/`](docs/assessment/) so this file stays focused on completed work and evidence. The shared assessment format is documented in [`docs/assessment/README.md`](docs/assessment/README.md).
+
+## Work order
+
+The work was completed in this order. Documentation and verification were
+updated alongside each ticket rather than after all implementation work.
+
+1. Baseline checks, repository workflow, and assessment documentation setup.
+2. **RES-102** — cancel the pickup countdown timer on widget disposal.
+3. **RES-103** — dispose the detail controller's cart observer.
+4. **RES-101** — ignore stale search responses with request generations.
+5. **RES-107** — resolve deep links by ID and render loading/error states.
+6. **RES-104, RES-105, RES-106, F-1, F-2, F-3** — not started in this
+   submission; retained as follow-up work from the assignment.
+
+Each completed ticket below follows the same summary format: status, diagnosis
+or requirement, fix or implementation, rejected alternatives, verification and
+evidence, limitations, and references.
 
 ## RES-102 — Crash after leaving My orders
 
@@ -30,7 +47,7 @@ The first visible-countdown test used `DateTime.now()` directly. `tester.pump(Du
 | Assert only that a callback occurs | Rejected: does not prove the displayed value changes. |
 | Inject a clock that defaults to `DateTime.now` in production | Selected: makes display-time tests deterministic without changing production behavior. |
 
-### Edge Cases and Evidence
+### Verification and evidence
 
 | Case | Result |
 | --- | --- |
@@ -43,6 +60,12 @@ The first visible-countdown test used `DateTime.now()` directly. `tester.pump(Du
 | Static analysis | `flutter analyze`: no issues. |
 | Fixed app launch | Home screen launched on iPhone 17 Pro Simulator. |
 | My orders → back → wait one minute | Passed by user: returned to Home, waited one minute, and observed no crash or post-disposal timer error. |
+
+### Limitations or follow-up
+
+No known RES-102 limitation remains for the documented route-pop scenario.
+
+### References
 
 For the complete requirement questions, evidence, research, and method comparison, see:
 
@@ -66,7 +89,7 @@ The pre-fix manual reproduction opened deals 1–3 and closed them, then opened
 deal 4 and added it to the bag. One cart change logged four requests:
 `GET /deals/3`, `/deals/4`, `/deals/2`, and `/deals/1`.
 
-### Fix and decision
+### Fix
 
 The controller now stores the `Worker` returned by `ever(...)` and disposes it
 in `onClose()` before calling `super.onClose()`. This gives the subscription
@@ -76,7 +99,7 @@ A mounted/closed guard was rejected because it leaves the subscription alive.
 Moving availability refresh to a shared cart-level service was rejected because
 it changes ownership and scope beyond this ticket.
 
-### Verification and limits
+### Verification and evidence
 
 | Check | Result |
 | --- | --- |
@@ -91,6 +114,14 @@ availability request that began before `onClose()`; no runtime evidence showed
 that an in-flight response caused a visible error, so cancellation was kept out
 of this focused ticket.
 
+### Limitations or follow-up
+
+An in-flight availability request is allowed to finish after route closure;
+cancelling that request was outside the ticket and was not observed to cause a
+user-visible error.
+
+### References
+
 Detailed questions and evidence are kept in:
 
 - [RES-103 scope](docs/assessment/04-res-103-scope.md)
@@ -102,6 +133,10 @@ Detailed questions and evidence are kept in:
 
 ## RES-101 — Search result ordering
 
+**Status:** Complete. Automated and simulator verification passed.
+
+### Diagnosis
+
 Source inspection shows that every keystroke starts an independent search, and
 each completion writes to the same `results` and `isLoading` state. No value
 identifies the latest query, so completion order can determine what the user
@@ -109,11 +144,15 @@ sees. Runtime logs confirmed that an older query can complete after the final
 query; the manually observed sequence had identical empty-result states, so a
 deterministic controller test supplied the visible overwrite proof.
 
+### Fix
+
 The selected design is a monotonic request generation in the controller. Every
 input change, including clearing the field, invalidates older requests. Query
 text comparison was rejected because identical text can belong to different
 requests; debounce was rejected as a correctness mechanism because it cannot
 invalidate an already-started response.
+
+### Verification and evidence
 
 The focused RED test now reproduces the visible overwrite deterministically:
 `bakery` completes first, then older `sushi` completes and replaces it in the
@@ -134,6 +173,16 @@ search state after the former request had time to complete. The deterministic
 controller tests remain the primary proof because the fake API timing is not a
 stable UI-level oracle.
 
+### Rejected alternatives
+
+Query equality, debounce-only protection, and a stream cancellation refactor
+were rejected for the reasons recorded above and in the linked options document.
+
+### Limitations or follow-up
+
+The UI currently logs stale search errors rather than rendering a user-facing
+error state; that behavior was outside RES-101.
+
 **Final diagnosis:** independent Futures shared the same observable state, so
 completion order could override input order. **Fix:** each input event advances
 an integer generation; only the matching latest generation may mutate
@@ -145,6 +194,8 @@ success after clear, and stale loading ownership. Stale errors are also ignored
 by the same generation gate, though the UI currently logs errors rather than
 rendering an error state.
 
+### References
+
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)
 - [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
@@ -152,9 +203,12 @@ rendering an error state.
 - [RES-101 TDD readiness and RED evidence](docs/assessment/14-res-101-tdd-readiness.md)
 - [RES-101 execution tasks](docs/assessment/15-res-101-execution-tasks.md)
 
-## AI Usage Log
-
 ## RES-107 — Deep-link details loading (Complete)
+
+**Status:** Complete. Automated verification and iPhone Simulator deep-link
+verification passed.
+
+### Diagnosis
 
 Source evidence confirms that the in-app URI becomes the `/deal` route with
 query parameters, while normal card navigation additionally supplies a
@@ -165,11 +219,15 @@ the simulated API already provide ID lookup, latency, and a 404 exception; deal
 reported no issues on 2026-09-16. Final verification later passed 13 tests and
 included a real simulator deep-link flow.
 
+### Fix
+
 The selected design is controller-owned resolution: preserve a valid
 `DealModel` argument, otherwise parse the route ID and fetch through
 `DealRepo.fetchById`, with explicit loading and error state. Middleware, async
 binding resolution, and screen-owned `FutureBuilder` were rejected because they
 broaden route plumbing or split state/data ownership.
+
+### Verification and evidence
 
 The first RED test now reproduces the crash deterministically: with
 `Get.arguments == null` and route ID 42, `DealDetailsController.onInit()` throws
@@ -225,6 +283,20 @@ opening `rescu://open/deal?id=42&source=push` reached the details page for
 “Mystery Japanese Basket”, matching catalog deal 42. The runtime screenshot is
 stored at `docs/assessment/evidence/res-107-deal-42-runtime.png`.
 
+### Rejected alternatives
+
+Middleware resolution, async binding resolution, and screen-owned
+`FutureBuilder` were rejected because they broaden route plumbing or split
+repository and state ownership.
+
+### Limitations or follow-up
+
+Android intent verification and dedicated widget tests for loading/error
+rendering remain follow-up coverage. The controller paths and iPhone Simulator
+deal-42 flow are verified.
+
+### References
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)
@@ -232,9 +304,11 @@ stored at `docs/assessment/evidence/res-107-deal-42-runtime.png`.
 - [RES-107 TDD readiness and RED test](docs/assessment/20-res-107-tdd-readiness.md)
 - [RES-107 execution task breakdown](docs/assessment/21-res-107-task-breakdown.md)
 
+## AI Usage Log
+
 | Tool | Use | Verification |
 | --- | --- | --- |
-| Codex | Repository analysis, test design, implementation, and documentation. | Focused widget tests, full test suite, analyzer, and source review. |
+| Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
 | Flutter and Dart API documentation | Confirmed state disposal, timer cancellation, and fake-time test behavior. | Primary documentation and Flutter 3.27.0 runs. |
 
 ### Incorrect or Misleading AI Suggestions
@@ -244,7 +318,16 @@ stored at `docs/assessment/evidence/res-107-deal-42-runtime.png`.
    **How it was caught:** the new widget test failed before any change to countdown behavior.
    **Correction:** inject a clock that defaults to `DateTime.now`, then advance the controlled clock and the periodic tick together.
 
-Add one further real example before submission. Do not invent incidents.
+2. **Suggestion:** rely on `Get.parameters['id']` alone in the controller test
+   seam after assigning `Get.rootController.routing.current`.
+   **Why it was misleading:** the focused test showed that this direct routing
+   setup left `Get.parameters['id']` null, so the valid deep-link case became an
+   invalid-ID state.
+   **How it was caught:** the RED-to-GREEN test still had `requestedId == null`
+   after the first implementation.
+   **Correction:** keep GetX parameters as the production path and add a
+   current-route query fallback for direct deep-link entry and deterministic
+   tests.
 
 ## Design Questions
 
