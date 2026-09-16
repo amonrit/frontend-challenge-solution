@@ -65,24 +65,6 @@ transitions so the screen only renders state and does not own repository work.
 5. T6 performs final automated and runtime checks without changing the API or
    protected files.
 
-## T5 implementation evidence
-
-- Added tests for valid route ID loading, invalid route ID handling, and a
-  repository `ApiException` failure.
-- Existing model-argument and observer lifecycle tests remain in the focused
-  suite, giving 6 passing tests across the two files.
-- Failure coverage checks that loading ends, no deal is exposed, and the
-  retryable user-facing message is set.
-
-## T6 verification evidence
-
-- Full Flutter test suite passed: 13 tests.
-- `flutter analyze` passed with no issues.
-- `git diff --check` passed.
-- On iPhone 17 Pro Simulator, opening
-  `rescu://open/deal?id=42&source=push` displayed “Mystery Japanese Basket”,
-  matching catalog deal 42. Screenshot: [`res-107-deal-42-runtime.png`](evidence/res-107-deal-42-runtime.png).
-
 ## T2 implementation evidence
 
 - Parsed `id` from GetX parameters, with a fallback to the current route query
@@ -112,5 +94,23 @@ transitions so the screen only renders state and does not own repository work.
 - Invalid IDs and fetch failures render a concise error with a retry action;
   the existing details layout remains the loaded state.
 - Retry delegates to the controller, keeping repository ownership outside the
-  screen. Focused controller/deep-link checks passed (4 tests); widget-level
-  rendering coverage is part of T5.
+  screen. Focused controller/deep-link checks passed (4 tests); dedicated
+  widget-level rendering tests remain follow-up coverage.
+
+## T5 implementation evidence
+
+- Added tests for valid route ID loading, invalid route ID handling, and a
+  repository `ApiException` failure.
+- Existing model-argument and observer lifecycle tests remain in the focused
+  suite, giving 6 passing tests across the two files.
+- Failure coverage checks that loading ends, no deal is exposed, and the
+  retryable user-facing message is set.
+
+## T6 verification evidence
+
+- Full Flutter test suite passed: 13 tests.
+- `flutter analyze` passed with no issues.
+- `git diff --check` passed.
+- On iPhone 17 Pro Simulator, opening
+  `rescu://open/deal?id=42&source=push` displayed “Mystery Japanese Basket”,
+  matching catalog deal 42. Screenshot: [`res-107-deal-42-runtime.png`](evidence/res-107-deal-42-runtime.png).
