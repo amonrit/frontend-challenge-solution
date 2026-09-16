@@ -41,6 +41,6 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 3 — timezone and date-comparison approaches compared.
-- Next phase: Phase 4 — write deterministic RED tests and TDD readiness.
-- Production code and tests: unchanged for RES-106.
+- Current phase: Phase 4 — deterministic RED tests and TDD readiness recorded.
+- Next phase: Phase 5 — split the selected implementation into execution tasks.
+- Production code: unchanged for RES-106. The focused RED test is now present.

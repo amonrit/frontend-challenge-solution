@@ -341,7 +341,9 @@ has not been changed yet.
 
 The evidence phase recorded the current direct-UTC label and day-only
 comparison, plus a baseline of 19 passing tests and a clean analyzer run. The
-RED tests, implementation, after measurements, and runtime verification are
+new focused RED run failed for the intended reasons: `10:30 – 14:00` instead of
+`17:30 – 21:00`, and `isToday == true` for a same-day-number date in the next
+month. Implementation, after measurements, and runtime verification are
 pending the next phases.
 
 ### Limitations or follow-up
@@ -355,6 +357,7 @@ tests for UTC-to-Bangkok display and complete date comparison.
 - [RES-106 questions](docs/assessment/106/questions.md)
 - [RES-106 evidence-backed answers](docs/assessment/106/answers.md)
 - [RES-106 options and trade-offs](docs/assessment/106/options.md)
+- [RES-106 TDD readiness and RED result](docs/assessment/106/tdd-readiness.md)
 
 ## RES-107 — Deep-link details loading (Complete)
 
