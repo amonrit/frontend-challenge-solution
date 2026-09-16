@@ -41,7 +41,8 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T3 boundary and timezone-independence tests complete.
-- Next task: T4 — audit time-dependent consumers and preserve instant semantics.
-- Production model behavior: label and `isToday` now have deterministic
-  midnight, month-end, year-end, and local-timezone coverage.
+- Current phase: Phase 6 — T4 consumer audit complete.
+- Next task: T5 — run verification and collect before/after evidence.
+- Production model behavior: all observed label and Home-filter consumers route
+  through `PickupWindowModel`; instant-based open/until calculations remain
+  unchanged.

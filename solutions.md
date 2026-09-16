@@ -352,8 +352,10 @@ tests pass.
 T3 added fixed-clock coverage for Bangkok midnight, month-end, year-end, and
 device-timezone independence. The first run exposed that `isToday` still used
 the system clock directly; the model now delegates to the policy's injected
-clock, and all six focused RES-106 tests pass. `isOpenNow` and `untilStart`
-still require the consumer audit planned in T4.
+clock, and all six focused RES-106 tests pass. T4 audited card, map, details,
+and Home filtering: they read model properties and contain no duplicate
+timezone arithmetic. `isOpenNow` and `untilStart` remain instant comparisons
+and were left unchanged. The next task is T5 verification and evidence.
 
 ### References
 
