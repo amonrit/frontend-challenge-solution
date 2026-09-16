@@ -37,6 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T2 lazy main-feed construction complete.
-- Next task: T3 — add display-sized image decode hints.
+- Current phase: Phase 6 — T3 image decode sizing complete.
+- Next task: T4 — compare after-profile evidence and record limitations.
 - Production code and tests: unchanged for RES-105.

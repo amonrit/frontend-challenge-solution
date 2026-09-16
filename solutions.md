@@ -307,7 +307,9 @@ separate app-bar and FAB `Obx` wrappers; the body observer reads feed state but
 does not depend on scroll offset. Lazy construction and image sizing remain for
 later tasks. T2 replaced the main feed's eager `children + map` with
 `ListView.builder`, preserving the flash rail, header/filter, footer, and
-existing refresher callbacks.
+existing refresher callbacks. T3 added display-sized `memCacheWidth` and
+`memCacheHeight` hints using layout constraints and device pixel ratio, while
+leaving unconstrained dimensions unset.
 
 ### Rejected alternatives
 
@@ -324,7 +326,8 @@ with DevTools 2.40.2. No profile-mode before/after DevTools measurements have
 been captured yet, so no performance improvement is claimed. After T1,
 `flutter analyze` passed with no issues and the existing Home controller suite
 passed 6 tests. After T2, the same analyzer and Home regression suite passed;
-runtime performance impact remains unmeasured.
+after T3, the image sizing test passed and analyzer reported no issues. Runtime
+performance impact remains unmeasured.
 
 ### Limitations or follow-up
 TDD readiness and a repeatable profile scenario are still required before
