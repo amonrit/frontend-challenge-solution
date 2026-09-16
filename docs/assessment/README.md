@@ -3,18 +3,17 @@
 Use one document set per ticket:
 
 ```text
-<ticket>-scope.md
-<ticket>-questions.md
-<ticket>-answers.md
-<ticket>-options.md
-<ticket>-tdd-readiness.md
-<ticket>-task-breakdown.md
+<ticket>/
+├── scope.md
+├── questions.md
+├── answers.md
+├── options.md
+├── tdd-readiness.md
+└── task-breakdown.md
 ```
 
-The original RES-102 files use the established numeric names
-`01-res-102-questions.md`, `02-res-102-answers.md`, and
-`03-res-102-task-breakdown.md`; keep those names because they are linked from
-the submission, while applying the same content structure.
+The repository keeps the original RES-102 content under `102/` with the same
+standard filenames as the other ticket folders.
 
 ## Document roles
 

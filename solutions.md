@@ -70,9 +70,9 @@ No known RES-102 limitation remains for the documented route-pop scenario.
 For the complete requirement questions, evidence, research, and method comparison, see:
 
 - [Assessment scope](docs/assessment/00-assessment-scope.md)
-- [RES-102 questions](docs/assessment/01-res-102-questions.md)
-- [RES-102 evidence-backed answers](docs/assessment/02-res-102-answers.md)
-- [RES-102 task and option comparison](docs/assessment/03-res-102-task-breakdown.md)
+- [RES-102 questions](docs/assessment/102/questions.md)
+- [RES-102 evidence-backed answers](docs/assessment/102/answers.md)
+- [RES-102 task and option comparison](docs/assessment/102/task-breakdown.md)
 
 ## RES-103 — Requests pile up while browsing
 
@@ -124,12 +124,12 @@ user-visible error.
 
 Detailed questions and evidence are kept in:
 
-- [RES-103 scope](docs/assessment/04-res-103-scope.md)
-- [RES-103 questions](docs/assessment/05-res-103-questions.md)
-- [RES-103 evidence-backed answers](docs/assessment/06-res-103-answers.md)
-- [RES-103 options and decision](docs/assessment/07-res-103-options.md)
-- [RES-103 TDD readiness and RED evidence](docs/assessment/08-res-103-tdd-readiness.md)
-- [RES-103 execution tasks](docs/assessment/09-res-103-execution-tasks.md)
+- [RES-103 scope](docs/assessment/103/scope.md)
+- [RES-103 questions](docs/assessment/103/questions.md)
+- [RES-103 evidence-backed answers](docs/assessment/103/answers.md)
+- [RES-103 options and decision](docs/assessment/103/options.md)
+- [RES-103 TDD readiness and RED evidence](docs/assessment/103/tdd-readiness.md)
+- [RES-103 execution tasks](docs/assessment/103/task-breakdown.md)
 
 ## RES-101 — Search result ordering
 
@@ -196,12 +196,12 @@ rendering an error state.
 
 ### References
 
-- [RES-101 scope](docs/assessment/10-res-101-scope.md)
-- [RES-101 questions](docs/assessment/11-res-101-questions.md)
-- [RES-101 evidence-backed answers](docs/assessment/12-res-101-answers.md)
-- [RES-101 options and decision](docs/assessment/13-res-101-options.md)
-- [RES-101 TDD readiness and RED evidence](docs/assessment/14-res-101-tdd-readiness.md)
-- [RES-101 execution tasks](docs/assessment/15-res-101-execution-tasks.md)
+- [RES-101 scope](docs/assessment/101/scope.md)
+- [RES-101 questions](docs/assessment/101/questions.md)
+- [RES-101 evidence-backed answers](docs/assessment/101/answers.md)
+- [RES-101 options and decision](docs/assessment/101/options.md)
+- [RES-101 TDD readiness and RED evidence](docs/assessment/101/tdd-readiness.md)
+- [RES-101 execution tasks](docs/assessment/101/task-breakdown.md)
 
 ## RES-107 — Deep-link details loading (Complete)
 
@@ -281,7 +281,7 @@ T6 completed the final checks: the full Flutter suite passed 13 tests, analyzer
 reported no issues, and `git diff --check` passed. On an iPhone 17 Pro Simulator,
 opening `rescu://open/deal?id=42&source=push` reached the details page for
 “Mystery Japanese Basket”, matching catalog deal 42. The runtime screenshot is
-stored at `docs/assessment/evidence/res-107-deal-42-runtime.png`.
+stored at `docs/assessment/107/evidence/res-107-deal-42-runtime.png`.
 
 ### Rejected alternatives
 
@@ -297,12 +297,12 @@ deal-42 flow are verified.
 
 ### References
 
-- [RES-107 scope](docs/assessment/16-res-107-scope.md)
-- [RES-107 questions](docs/assessment/17-res-107-questions.md)
-- [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)
-- [RES-107 options and decision](docs/assessment/19-res-107-options.md)
-- [RES-107 TDD readiness and RED test](docs/assessment/20-res-107-tdd-readiness.md)
-- [RES-107 execution task breakdown](docs/assessment/21-res-107-task-breakdown.md)
+- [RES-107 scope](docs/assessment/107/scope.md)
+- [RES-107 questions](docs/assessment/107/questions.md)
+- [RES-107 evidence-backed answers](docs/assessment/107/answers.md)
+- [RES-107 options and decision](docs/assessment/107/options.md)
+- [RES-107 TDD readiness and RED test](docs/assessment/107/tdd-readiness.md)
+- [RES-107 execution task breakdown](docs/assessment/107/task-breakdown.md)
 
 ## AI Usage Log
 
