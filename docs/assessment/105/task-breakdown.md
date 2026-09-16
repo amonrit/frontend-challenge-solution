@@ -14,7 +14,7 @@ task records evidence before moving to the next one.
 | T2 | Make the main feed lazy | `lib/feature/home/home_screen.dart` | T1 | Cards are built through a lazy delegate while refresh, pagination, filter, and navigation still work | `ListView.builder`; sliver composition | Complete |
 | T3 | Add display-sized image decode hints | `lib/feature/shared_widget/the_network_image.dart`, `test/res_105_image_sizing_test.dart` | T0 | At DPR 2 and 160 px slot, `memCacheWidth/Height` are 320; placeholders/errors remain unchanged | Pass hints directly; derive a reusable size helper | Complete |
 | T4 | Compare after profile evidence | `docs/assessment/105/answers.md`, `solutions.md` | T1–T3 | Before/after frame, rebuild, and memory/image-cache metrics use the identical scenario; limitations remain explicit | DevTools trace; deterministic tests if profile unavailable | Complete (runtime limitation recorded) |
-| T5 | Run integrated verification | `docs/assessment/105/`, `solutions.md` | T4 | Focused tests, full suite, analyzer, diff check, and manual behavior checks pass | Local automated checks; simulator/device smoke check if available | Next |
+| T5 | Run integrated verification | `docs/assessment/105/`, `solutions.md` | T4 | Focused tests, full suite, analyzer, diff check, and manual behavior checks pass | Local automated checks; simulator/device smoke check if available | Complete (manual/profile limitations recorded) |
 
 ## Execution rules
 

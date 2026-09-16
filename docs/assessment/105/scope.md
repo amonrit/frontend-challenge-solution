@@ -37,7 +37,6 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T4 before/after comparison recorded with runtime
-  limitation.
-- Next task: T5 — run integrated verification.
+- Current phase: Phase 7 — T5 integrated verification complete.
+- Next phase: Phase 8 — documentation currency audit.
 - Production code and tests: unchanged for RES-105.

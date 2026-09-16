@@ -286,7 +286,7 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Implementation in progress; T1–T4 complete, integrated verification pending.
+**Status:** Implementation complete; verification passed. Phase 8 documentation audit pending.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -304,8 +304,8 @@ still require a profile-mode trace.
 The selected plan is to split reactive boundaries, use lazy feed construction,
 and pass display-sized image decode hints. T1 moved scroll observation into
 separate app-bar and FAB `Obx` wrappers; the body observer reads feed state but
-does not depend on scroll offset. Lazy construction and image sizing remain for
-later tasks. T2 replaced the main feed's eager `children + map` with
+does not depend on scroll offset. T2 replaced the main feed's eager
+`children + map` with
 `ListView.builder`, preserving the flash rail, header/filter, footer, and
 existing refresher callbacks. T3 added display-sized `memCacheWidth` and
 `memCacheHeight` hints using layout constraints and device pixel ratio, while
@@ -329,11 +329,15 @@ passed 6 tests. After T2, the same analyzer and Home regression suite passed;
 after T3, the image sizing test passed and analyzer reported no issues. T4
 compared the source-level before/after behavior and recorded that no Android
 profile trace was possible in this environment; runtime performance impact
-remains unmeasured.
+remains unmeasured. T5 integrated verification on 2026-09-17 passed: image
+sizing (1), Home regression (6), full suite (29), analyzer, and diff check.
+Manual device behavior checks remain unperformed.
 
 ### Limitations or follow-up
-TDD readiness and a repeatable profile scenario are still required before
-implementation. The device and runtime trace remain an explicit limitation.
+The implementation has no comparable Android profile numbers because the
+device was unavailable. DevTools profiling on a suitable mid-range Android
+device remains the follow-up needed before claiming measured jank or memory
+improvement.
 
 ### References
 

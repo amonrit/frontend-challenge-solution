@@ -35,6 +35,16 @@
 | Image decode sizing | No `memCacheWidth/Height` values were passed. | Finite layout dimensions are scaled by device pixel ratio and passed as hints. | Focused widget test |
 | Runtime frame/memory metrics | Not captured. | Not captured; no comparable Android target was available. | Explicit limitation |
 
+## Integrated verification
+
+- Image sizing focused test: 1 passed.
+- Home controller regression suite: 6 passed.
+- Full Flutter suite: 29 passed.
+- `flutter analyze`: no issues found.
+- `git diff --check`: passed.
+- Manual device flow and profile-mode metrics remain unperformed because no
+  comparable Android target was available.
+
 ## Confirmed versus unconfirmed
 
 - Confirmed by source: the broad `Obx` dependency set, per-scroll observable
