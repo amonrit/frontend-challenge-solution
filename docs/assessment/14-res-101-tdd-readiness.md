@@ -51,3 +51,10 @@ shown. It then completed the older `sushi` Future. The final assertion expected
 signal: an older completion overwrites the latest query's result.
 
 Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/search_deals_controller_test.dart`.
+
+## GREEN result
+
+After E1, the same deterministic completion order passed: `bakery` completed
+first, then the older `sushi` completion was ignored. The focused command
+completed with one passing test on 2026-09-16. The clear-input boundary remains
+the next dedicated regression test (E3).

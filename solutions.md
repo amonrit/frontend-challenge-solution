@@ -120,7 +120,9 @@ The focused RED test now reproduces the visible overwrite deterministically:
 `bakery` completes first, then older `sushi` completes and replaces it in the
 current controller. E1 now increments a request generation for every input
 event, including clear, and gates post-await result/loading mutations against
-the latest generation. Focused GREEN verification remains pending in E2.
+the latest generation. The original deterministic test is GREEN: after the
+latest `bakery` result arrives, a later completion from the older `sushi`
+request is ignored. E3 will add the separate clear-input regression case.
 
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)
