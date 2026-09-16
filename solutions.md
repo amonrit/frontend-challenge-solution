@@ -349,8 +349,11 @@ pending the next phases. T1's three policy unit tests and T2's two focused model
 tests pass.
 
 ### Limitations or follow-up
-Midnight, year-end, and device-timezone coverage remains for T3. `isOpenNow`
-and `untilStart` still require the consumer audit planned in T4.
+T3 added fixed-clock coverage for Bangkok midnight, month-end, year-end, and
+device-timezone independence. The first run exposed that `isToday` still used
+the system clock directly; the model now delegates to the policy's injected
+clock, and all six focused RES-106 tests pass. `isOpenNow` and `untilStart`
+still require the consumer audit planned in T4.
 
 ### References
 

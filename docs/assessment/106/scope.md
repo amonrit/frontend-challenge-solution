@@ -41,8 +41,7 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T2 model integration complete.
-- Next task: T3 — add deterministic midnight, month-end, year-end, and device
-  timezone tests.
-- Production model behavior: label and `isToday` now use the centralized
-  Bangkok policy; broader boundary coverage remains for T3.
+- Current phase: Phase 6 — T3 boundary and timezone-independence tests complete.
+- Next task: T4 — audit time-dependent consumers and preserve instant semantics.
+- Production model behavior: label and `isToday` now have deterministic
+  midnight, month-end, year-end, and local-timezone coverage.

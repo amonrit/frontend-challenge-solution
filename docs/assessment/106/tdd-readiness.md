@@ -49,3 +49,7 @@ Focused run on 2026-09-16 failed as intended, before any production change:
   `17:30 – 21:00`, actual `10:30 – 14:00`.
 - `isToday compares the complete calendar date`: expected `false`, actual
   `true` for the same numeric day in the following month.
+
+T3 added four fixed-clock boundary tests. The initial run correctly exposed the
+missing model clock delegation; after that targeted correction, all six
+`res_106_pickup_window_test.dart` tests pass.

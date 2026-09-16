@@ -15,6 +15,14 @@ class BangkokTimePolicy {
 
   DateTime get nowInMarket => toMarket(_now());
 
+  bool isToday(DateTime instant) {
+    final marketInstant = toMarket(instant);
+    final marketNow = nowInMarket;
+    return marketInstant.year == marketNow.year &&
+        marketInstant.month == marketNow.month &&
+        marketInstant.day == marketNow.day;
+  }
+
   bool isSameMarketDate(DateTime instant, DateTime reference) {
     final marketInstant = toMarket(instant);
     final marketReference = toMarket(reference);

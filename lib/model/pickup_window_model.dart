@@ -31,7 +31,7 @@ class PickupWindowModel {
   /// Whether pickup starts today.
   bool get isToday {
     final policy = timePolicy ?? BangkokTimePolicy();
-    return policy.isSameMarketDate(start, DateTime.now());
+    return policy.isToday(start);
   }
 
   /// Whether the store is currently accepting pickups.
