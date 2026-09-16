@@ -36,7 +36,8 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: C2 complete; controller-owned nullable model, loading flag,
-  and error message state selected.
-- Next phase: execute T2, ID parsing and guarded repository loading.
-- Production code and tests: unchanged for RES-107.
+- Current phase: T2 complete; route ID parsing and guarded repository loading
+  are implemented and focused tests pass.
+- Next phase: execute T3, observer safety and model-argument fast-path checks.
+- Production code: `DealDetailsController` now resolves direct route IDs and
+  maps invalid input/fetch failures to state; screen rendering remains T4.

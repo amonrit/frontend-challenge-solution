@@ -178,8 +178,8 @@ repository can load the deal.
 
 The execution plan is now split into controller input resolution, async-state
 comparison, guarded ID loading, observer safety, screen states, regression
-coverage, and final verification. The next executable task is T1; no RES-107
-production implementation has started.
+coverage, and final verification. T1 and C2 are complete; the next executable
+task is T3 after the guarded loading work recorded below.
 
 T1 now treats `Get.arguments` as a runtime value: a `DealModel` keeps the
 existing fast path, while other values leave the controller ready to resolve
@@ -191,6 +191,15 @@ C2 selected separate GetX observables for nullable loaded deal, loading, and a
 user-facing error message. This keeps the existing architecture and makes the
 screen's loading/loaded/error branches explicit; a new sealed async abstraction
 or screen-owned `FutureBuilder` would add ownership and lifecycle complexity.
+
+T2 implements the controller loading boundary. It reads the route ID from GetX
+parameters and falls back to the current route query for direct deep-link entry.
+A valid ID sets `isLoading`, calls `DealRepo.fetchById`, and reuses the
+loaded-deal initialization path. Missing or invalid IDs and repository errors
+become retryable `errorMessage` state instead of cast or async exceptions. A
+closed-controller guard prevents late responses from mutating disposed state.
+The focused deep-link and controller regression tests pass (3 tests). Screen
+branches and retry UI remain deferred to T4.
 
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
