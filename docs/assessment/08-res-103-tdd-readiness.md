@@ -72,3 +72,14 @@ observer.
 The first run exposed a test-fixture compilation mistake (`DateTime` is not a
 const constructor). The fixture was corrected before accepting the RED result;
 no production code was changed.
+
+## GREEN result
+
+After E1 retained and disposed the GetX Worker in `onClose()`, the same focused
+test passed with one availability refresh before close and none after close:
+
+```text
+All tests passed!
+```
+
+Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/deal_details_controller_test.dart`.

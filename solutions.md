@@ -73,7 +73,9 @@ availability calls from one to two. This was recorded before the production
 fix.
 
 E1 now retains the `Worker` returned by `ever(...)` and disposes it in
-`onClose()`. Focused GREEN and regression verification remain pending in E2.
+`onClose()`. The focused GREEN test passes: a live controller refreshes once,
+then a cart change after `onClose()` creates no additional repository request.
+Multi-controller and full verification remain pending.
 
 Detailed questions and evidence are kept in:
 
