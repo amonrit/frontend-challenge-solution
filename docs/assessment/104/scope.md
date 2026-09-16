@@ -37,7 +37,7 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: T2 complete; load-more accepts only the current round and
-  expected response page.
-- Next phase: Execute T3, completion state and controller-close safety.
+- Current phase: T3 complete; late responses and indicator completion are
+  guarded by controller lifecycle and request round.
+- Next phase: Execute T4, expand regression coverage for failure and edge cases.
 - Production code and tests: unchanged for RES-104.

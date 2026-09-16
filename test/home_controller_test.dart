@@ -86,4 +86,17 @@ void main() {
     expect(controller.deals.map((deal) => deal.id), [3]);
     controller.onClose();
   });
+
+  test('ignores a refresh response after the controller closes', () async {
+    final repo = _ControlledHomeRepo();
+    final controller = HomeController(dealRepo: repo);
+    final refresh = controller.refreshDeals();
+    final request = repo.nextRequest(1);
+
+    controller.onClose();
+    request.completer.complete(_page(1, [_deal(9)]));
+    await refresh;
+
+    expect(controller.deals, isEmpty);
+  });
 }

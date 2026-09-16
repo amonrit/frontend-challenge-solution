@@ -251,8 +251,13 @@ the feed or pagination metadata.
 
 ### Limitations or follow-up
 
-Completion-indicator balancing and controller-close handling remain the next T3
-task; full before/after and runtime checks remain for T5.
+Full before/after and runtime checks remain for T5.
+
+T3 adds lifecycle guards and `finally` cleanup for refresh/load-more. A closed
+controller no longer accepts late responses, while only the current request
+round completes the shared refresh indicator. The focused suite now includes a
+late-refresh-after-close test and passes 2 tests. Failure-edge expansion and
+full before/after checks remain for T4 and T5.
 
 ### References
 

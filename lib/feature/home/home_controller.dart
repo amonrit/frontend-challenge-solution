@@ -24,6 +24,7 @@ class HomeController extends GetxController {
   int _totalPages = 1;
   bool _isFetchingMore = false;
   int _requestRound = 0;
+  bool _isClosed = false;
 
   bool get hasMore => _page < _totalPages;
 
@@ -49,22 +50,32 @@ class HomeController extends GetxController {
     } catch (e) {
       LogService.error('initial load failed', e);
     }
-    isLoading.value = false;
+    if (!_isClosed) isLoading.value = false;
   }
 
   Future<void> _loadFlashDeals() async {
-    flashDeals.assignAll(await dealRepo.fetchFlashDeals());
+    final loaded = await dealRepo.fetchFlashDeals();
+    if (!_isClosed) flashDeals.assignAll(loaded);
   }
 
   Future<void> refreshDeals() async {
     final round = ++_requestRound;
     _page = 1;
-    final res = await dealRepo.fetchDeals(page: 1);
-    if (round == _requestRound) {
-      _totalPages = res.totalPages;
-      deals.assignAll(res.items);
+    try {
+      final res = await dealRepo.fetchDeals(page: 1);
+      if (!_isClosed && round == _requestRound) {
+        _totalPages = res.totalPages;
+        deals.assignAll(res.items);
+      }
+    } catch (e) {
+      if (!_isClosed && round == _requestRound) {
+        LogService.error('refresh failed', e);
+      }
+    } finally {
+      if (!_isClosed && round == _requestRound) {
+        refreshController.refreshCompleted();
+      }
     }
-    refreshController.refreshCompleted();
   }
 
   Future<void> loadMore() async {
@@ -78,16 +89,21 @@ class HomeController extends GetxController {
     final requestedPage = _page + 1;
     try {
       final res = await dealRepo.fetchDeals(page: requestedPage);
-      if (round == _requestRound && res.page == requestedPage) {
+      if (!_isClosed && round == _requestRound && res.page == requestedPage) {
         _page = requestedPage;
         _totalPages = res.totalPages;
         deals.addAll(res.items);
       }
     } catch (e) {
-      LogService.error('loadMore failed', e);
+      if (!_isClosed && round == _requestRound) {
+        LogService.error('loadMore failed', e);
+      }
+    } finally {
+      _isFetchingMore = false;
+      if (!_isClosed && round == _requestRound) {
+        refreshController.loadComplete();
+      }
     }
-    _isFetchingMore = false;
-    refreshController.loadComplete();
   }
 
   void scrollToTop() {
@@ -97,6 +113,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    _isClosed = true;
     scrollController.dispose();
     refreshController.dispose();
     super.onClose();
