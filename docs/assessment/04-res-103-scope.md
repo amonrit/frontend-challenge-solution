@@ -30,8 +30,9 @@ availability display.
 
 ## Workflow state
 
-- Current phase: Phase 0 complete.
-- Next phase: write `docs/assessment/05-res-103-questions.md` with questions
-  only.
-- Production code, tests, and implementation decisions: not changed in this
-  phase.
+- Status: complete through diagnosis, deterministic regression tests, project
+  checks, and the manual request-count comparison.
+- Production change: the `ever(...)` Worker is retained and disposed in
+  `DealDetailsController.onClose()`.
+- Evidence: focused tests, full suite, analyzer, and manual simulator logs are
+  recorded in the linked RES-103 assessment documents and `solutions.md`.

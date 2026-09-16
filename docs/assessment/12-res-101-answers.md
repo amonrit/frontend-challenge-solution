@@ -31,7 +31,7 @@ runs, and the runtime request log.
 | --- | --- | --- |
 | Existing full suite | 7 tests passed before RES-101 changes. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test`, 2026-09-16. |
 | Deterministic test seam | A test `DealRepo` can expose independently completable Futures for each query, allowing a newer response to complete before an older response. | Constructor injection in `SearchDealsController`; `DealRepo.search` API. |
-| Expected RED signal | Complete the newer query first, then the older query; current code will assign the older list last. | Source behavior; focused reproduction test not yet written. |
+| Expected RED signal | Complete the newer query first, then the older query; the pre-fix controller assigns the older list last. | Focused controlled-Future reproduction test, RED before E1. |
 
 ## Final runtime and test evidence
 
