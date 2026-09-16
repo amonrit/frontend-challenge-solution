@@ -36,7 +36,7 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: Phase 2 complete; source answers recorded and runtime facts
-  remain explicitly pending.
-- Next phase: compare implementation options in the task-breakdown document.
+- Current phase: Phase 3 complete; implementation options compared and the
+  controller-owned resolver selected.
+- Next phase: define the TDD readiness gate and write the first RED test.
 - Production code and tests: unchanged for RES-107.

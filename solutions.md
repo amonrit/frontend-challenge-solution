@@ -162,12 +162,19 @@ query parameters, while normal card navigation additionally supplies a
 that optional argument before the screen can render. `DealRepo.fetchById` and
 the simulated API already provide ID lookup, latency, and a 404 exception; deal
 42 exists in the catalog. The baseline full suite passed 9 tests and analyzer
-reported no issues on 2026-09-16. Runtime crash reproduction and the selected
-loading/error design remain pending for later phases.
+reported no issues on 2026-09-16. Runtime crash reproduction remains pending
+for a later verification phase.
+
+The selected design is controller-owned resolution: preserve a valid
+`DealModel` argument, otherwise parse the route ID and fetch through
+`DealRepo.fetchById`, with explicit loading and error state. Middleware, async
+binding resolution, and screen-owned `FutureBuilder` were rejected because they
+broaden route plumbing or split state/data ownership.
 
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)
+- [RES-107 options and decision](docs/assessment/19-res-107-options.md)
 
 | Tool | Use | Verification |
 | --- | --- | --- |
