@@ -67,12 +67,17 @@ The current design comparison selects retaining the GetX `Worker` returned by
 mounted/closed guard was rejected because it leaves the subscription alive;
 shared cart-level ownership was rejected as broader than this ticket.
 
+The focused RED test confirms the selected lifecycle gap: after
+`DealDetailsController.onClose()`, a second cart change raises repository
+availability calls from one to two. No production fix has been applied yet.
+
 Detailed questions and evidence are kept in:
 
 - [RES-103 scope](docs/assessment/04-res-103-scope.md)
 - [RES-103 questions](docs/assessment/05-res-103-questions.md)
 - [RES-103 evidence-backed answers](docs/assessment/06-res-103-answers.md)
 - [RES-103 options and decision](docs/assessment/07-res-103-options.md)
+- [RES-103 TDD readiness and RED evidence](docs/assessment/08-res-103-tdd-readiness.md)
 
 ## AI Usage Log
 
