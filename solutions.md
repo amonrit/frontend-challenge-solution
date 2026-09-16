@@ -201,6 +201,13 @@ closed-controller guard prevents late responses from mutating disposed state.
 The focused deep-link and controller regression tests pass (3 tests). Screen
 branches and retry UI remain deferred to T4.
 
+T3 keeps the normal card-navigation fast path: a supplied `DealModel` is used
+immediately and does not trigger an initial repository fetch. The cart `ever`
+worker is created only after a loaded deal exists, and any previous worker is
+disposed before re-initialization to prevent duplicate availability requests.
+The controller close and multi-controller regression tests remain green; the
+focused controller/deep-link suite now passes 4 tests.
+
 - [RES-107 scope](docs/assessment/16-res-107-scope.md)
 - [RES-107 questions](docs/assessment/17-res-107-questions.md)
 - [RES-107 evidence-backed answers](docs/assessment/18-res-107-answers.md)

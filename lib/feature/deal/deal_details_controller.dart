@@ -83,6 +83,7 @@ class DealDetailsController extends GetxController {
     });
     // Whenever the cart changes, re-check this deal's remaining stock so the
     // details screen never shows stale availability.
+    _cartWorker?.dispose();
     _cartWorker = ever(cartService.itemCount, (_) => _recheckAvailability());
   }
 

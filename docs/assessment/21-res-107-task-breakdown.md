@@ -9,7 +9,7 @@ they do not change production code.
 | T1 | Make details input model-or-ID aware without a forced cast. | `lib/feature/deal/deal_details_controller.dart` | RED test | A model argument remains valid; a missing argument proceeds to ID resolution. | Complete; controller regression check passed |
 | C2 | Compare async state representations for loading, loaded, and error. | `21-res-107-task-breakdown.md`, `solutions.md` | T1 design | Select a state shape that keeps screen rendering and lifecycle ownership clear. | Complete; separate Rx state selected |
 | T2 | Implement ID parsing and guarded repository loading. | `lib/feature/deal/deal_details_controller.dart` | T1, C2 | Valid ID 42 calls `fetchById`; invalid/missing input and failures become state, not crashes. | Complete; focused deep-link and controller tests passed |
-| T3 | Preserve the model-argument fast path and initialize dependent observers safely. | `lib/feature/deal/deal_details_controller.dart` | T2 | Card navigation does not make an unnecessary initial fetch; cart observer starts only with a loaded model. | Next |
+| T3 | Preserve the model-argument fast path and initialize dependent observers safely. | `lib/feature/deal/deal_details_controller.dart` | T2 | Card navigation does not make an unnecessary initial fetch; cart observer starts only with a loaded model. | Complete; focused tests passed |
 | T4 | Render loading and error states while retaining the existing loaded page. | `lib/feature/deal/deal_details_screen.dart` | T2 | Deep link shows loading, then details or an understandable retryable error. | Blocked by T2 |
 | T5 | Add regression coverage for valid ID, normal argument, invalid ID, and failure paths. | `test/deal_details_deep_link_test.dart`, `test/deal_details_controller_test.dart` | T2–T4 | Focused tests prove all acceptance paths and no late state mutation after close. | Blocked by T2–T4 |
 | T6 | Run project checks and manual deep-link verification. | tests, `solutions.md`, assessment evidence | T5 | Focused/full tests, analyzer, diff check, and deal-42 simulator flow pass. | Blocked by T5 |
@@ -76,3 +76,13 @@ transitions so the screen only renders state and does not own repository work.
 - Completion and error updates are guarded after `onClose` so a late response
   cannot mutate a disposed controller.
 - Focused deep-link and controller tests passed (3 tests).
+
+## T3 implementation evidence
+
+- A supplied `DealModel` still initializes synchronously and does not call
+  `fetchById`; the regression test asserts zero initial repository calls.
+- The cart `ever` worker is created only from the loaded-deal initialization
+  path. Re-initialization disposes the previous worker first, preventing
+  duplicate availability requests.
+- Existing close and multi-controller tests continue to prove that disposing
+  one controller does not stop another controller's observer.

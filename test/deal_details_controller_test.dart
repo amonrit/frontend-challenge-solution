@@ -75,6 +75,19 @@ void main() {
 
   tearDown(Get.reset);
 
+  test('uses the supplied model without an initial repository fetch', () {
+    final repo = _CountingDealRepo(deal);
+    final controller = DealDetailsController(
+      dealRepo: repo,
+      cartService: CartService(),
+      analytics: AnalyticsService(),
+    )..onInit();
+
+    expect(controller.deal.id, deal.id);
+    expect(repo.fetchByIdCalls, 0);
+    controller.onClose();
+  });
+
   test('stops refreshing availability when its controller closes', () async {
     final cart = CartService();
     final repo = _CountingDealRepo(deal);

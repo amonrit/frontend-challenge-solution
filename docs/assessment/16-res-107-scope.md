@@ -36,8 +36,9 @@ Showing an error or fallback page is not an acceptable outcome for this ticket.
 
 ## Workflow state
 
-- Current phase: T2 complete; route ID parsing and guarded repository loading
-  are implemented and focused tests pass.
-- Next phase: execute T3, observer safety and model-argument fast-path checks.
-- Production code: `DealDetailsController` now resolves direct route IDs and
-  maps invalid input/fetch failures to state; screen rendering remains T4.
+- Current phase: T3 complete; model fast path and cart observer lifecycle are
+  covered by focused tests.
+- Next phase: execute T4, loading and error rendering in the details screen.
+- Production code: `DealDetailsController` resolves direct route IDs, maps
+  failures to state, and prevents duplicate cart observers; screen rendering
+  remains T4.
