@@ -44,6 +44,9 @@
 - `git diff --check`: passed.
 - Manual device flow and profile-mode metrics remain unperformed because no
   comparable Android target was available.
+- `test/home_feed_list_test.dart` now verifies that a 100-deal feed initially
+  builds fewer than 100 `DealCard` widgets, providing direct lazy-construction
+  coverage.
 
 ## Confirmed versus unconfirmed
 

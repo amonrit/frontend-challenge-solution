@@ -16,7 +16,7 @@ task records evidence before moving to the next one.
 | T4 | Compare after profile evidence | `docs/assessment/105/answers.md`, `solutions.md` | T1–T3 | Before/after frame, rebuild, and memory/image-cache metrics use the identical scenario; limitations remain explicit | DevTools trace; deterministic tests if profile unavailable | Complete (runtime limitation recorded) |
 | T5 | Run integrated verification | `docs/assessment/105/`, `solutions.md` | T4 | Focused tests, full suite, analyzer, diff check, and manual behavior checks pass | Local automated checks; simulator/device smoke check if available | Complete (manual/profile limitations recorded) |
 | F1 | Capture DevTools before/after on a mid-range Android device | `docs/assessment/105/profile-baseline.md`, `solutions.md` | Suitable device available | Identical profile-mode scenario records frame timing, rebuilds, and memory/image-cache metrics before and after | Physical device; configured Android emulator | Follow-up |
-| F2 | Add widget tests for rebuild scope and lazy construction | `test/`, Home widgets | Test seam design | Tests demonstrate scroll updates do not rebuild feed content and cards are built lazily | Rebuild counters; controlled builder instrumentation | Follow-up |
+| F2 | Add widget tests for rebuild scope and lazy construction | `test/home_feed_list_test.dart`, Home widgets | Test seam design | Lazy feed test shows a 100-deal feed builds fewer than 100 cards in the initial viewport; direct scroll-rebuild instrumentation remains separate | Rebuild counters; controlled builder instrumentation | Partially complete (lazy test complete; rebuild test follow-up) |
 
 ## Execution rules
 

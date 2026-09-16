@@ -15,7 +15,7 @@ updated alongside each ticket rather than after all implementation work.
 6. **RES-104** — protect Home refresh and pagination from stale responses.
 7. **RES-106** — normalize pickup display and today filtering to Bangkok time.
 8. **RES-105** — split Home reactivity, lazy feed construction, and image
-   decoding; required runtime profiling evidence remains unavailable.
+   decoding; required comparable runtime profiling evidence remains unavailable.
 9. **F-1, F-2, F-3** — not started in this submission; retained as follow-up
    work from the assignment.
 
@@ -285,7 +285,7 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Partial. Implementation complete and automated checks passed; required comparable Android DevTools evidence is unavailable.
+**Status:** Partial. Implementation complete and automated checks passed; required comparable Android DevTools evidence is still unavailable.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -330,15 +330,20 @@ compared the source-level before/after behavior and recorded that no Android
 profile trace was possible in this environment; runtime performance impact
 remains unmeasured. T5 integrated verification on 2026-09-17 passed: image
 sizing (1), Home regression (6), full suite (29), analyzer, and diff check.
-Manual device behavior checks remain unperformed.
+Follow-up widget coverage then passed the lazy feed test; the full suite now
+passes 32 tests. A Pixel 6 / API 35 emulator installed and launched the app in
+profile mode, but the host forced Software GL because of memory pressure. Its
+frame data is therefore unsuitable for the required mid-range comparison.
 
 ### Limitations or follow-up
-The implementation has no comparable Android profile numbers because the
-device was unavailable. DevTools profiling on a suitable mid-range Android
-device remains the follow-up needed before claiming measured jank or memory
-improvement. Dedicated widget tests for rebuild scope and lazy construction
-(RES-105 F2) are also follow-up coverage; the current automated test directly
-covers image decode sizing, while source review covers the structural changes.
+The implementation has no comparable Android profile numbers because the only
+available Android target is a host-memory-constrained emulator using Software
+GL. DevTools profiling on a suitable mid-range Android device remains the
+follow-up needed before claiming measured jank or memory improvement.
+`test/home_feed_list_test.dart` directly verifies lazy
+construction for a 100-deal feed. A dedicated scroll-rebuild instrumentation
+test remains follow-up coverage; image sizing tests and source review cover the
+other structural changes.
 
 ### References
 
@@ -651,7 +656,9 @@ to end before starting F-2 or F-3.
 
 ## DevTools Evidence — RES-105
 
-No comparable profile-mode baseline or after-fix trace was captured because no
-mid-range Android target was available. The limitation and reproducibility
-contract are recorded in [profile-baseline.md](docs/assessment/105/profile-baseline.md);
-source-level changes and automated evidence are recorded in the RES-105 section.
+No comparable profile-mode baseline or after-fix trace was captured. A Pixel 6
+/ API 35 emulator is now available, but it uses Software GL under host memory
+pressure and cannot provide defensible mid-range evidence. The limitation and
+reproducibility contract are recorded in
+[profile-baseline.md](docs/assessment/105/profile-baseline.md); source-level
+changes and automated evidence are recorded in the RES-105 section.

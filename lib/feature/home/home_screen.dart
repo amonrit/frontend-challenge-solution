@@ -4,10 +4,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../app_config.dart';
 import '../../routes/routes.dart';
-import '../shared_widget/deal_card.dart';
 import '../shared_widget/shimmer_deal_card.dart';
 import 'home_controller.dart';
-import 'widget/flash_deals_section.dart';
+import 'widget/home_feed_list.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -88,45 +87,18 @@ class HomeScreen extends GetView<HomeController> {
         ],
       );
     }
-    final deals = controller.visibleDeals;
-    final hasFlashDeals = controller.flashDeals.isNotEmpty;
-    final headerIndex = hasFlashDeals ? 1 : 0;
-    final dealStartIndex = headerIndex + 1;
-    final footerIndex = dealStartIndex + deals.length;
     return SmartRefresher(
       controller: controller.refreshController,
       enablePullDown: true,
       enablePullUp: true,
       onRefresh: controller.refreshDeals,
       onLoading: controller.loadMore,
-      child: ListView.builder(
+      child: HomeFeedList(
         controller: controller.scrollController,
-        itemCount: footerIndex + 1,
-        itemBuilder: (context, index) {
-          if (hasFlashDeals && index == 0) {
-            return FlashDealsSection(deals: controller.flashDeals);
-          }
-          if (index == headerIndex) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-              child: Row(
-                children: [
-                  const Text('Nearby deals',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                  const Spacer(),
-                  FilterChip(
-                    label: const Text('Pickup today'),
-                    selected: controller.todayOnly.value,
-                    onSelected: (v) => controller.todayOnly.value = v,
-                  ),
-                ],
-              ),
-            );
-          }
-          if (index == footerIndex) return const SizedBox(height: 24);
-          return DealCard(deal: deals[index - dealStartIndex]);
-        },
+        deals: controller.visibleDeals,
+        flashDeals: controller.flashDeals,
+        todayOnly: controller.todayOnly.value,
+        onTodayChanged: (value) => controller.todayOnly.value = value,
       ),
     );
   }

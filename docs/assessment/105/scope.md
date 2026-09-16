@@ -37,7 +37,9 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Phase 8 — documentation currency audit complete.
-- Next phase: None for RES-105; ready for delivery with a profiling limitation.
-- Production code and tests: T1–T3 changed Home/image code and added the image
-  sizing test; integrated verification passed.
+- Current phase: Follow-up coverage update — lazy-construction widget test added.
+- Next step: Android DevTools profile evidence and direct scroll-rebuild test
+  when suitable tooling is available.
+- Production code and tests: Home feed extraction and lazy-construction coverage
+  were added; the available Pixel 6 emulator is unsuitable for performance
+  profiling because it runs with Software GL under host memory pressure.
