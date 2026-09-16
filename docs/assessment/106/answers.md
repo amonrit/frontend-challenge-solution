@@ -62,3 +62,5 @@ years. A fixed-clock test must compare the complete Bangkok calendar date.
    conversion, midnight, month-end, year-end, and local-timezone independence.
 3. The focused suite passes after implementation; no manual runtime claim is
    made because a separate runtime measurement was not performed.
+4. The Home integration regression test now verifies that `Pickup today` keeps
+   a Bangkok-today deal and excludes the next Bangkok calendar date.

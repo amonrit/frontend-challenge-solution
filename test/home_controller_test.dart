@@ -7,6 +7,7 @@ import 'package:rescu/model/paged_response_model.dart';
 import 'package:rescu/model/pickup_window_model.dart';
 import 'package:rescu/repository/deal_repo.dart';
 import 'package:rescu/service/fake_api_service.dart';
+import 'package:rescu/service/bangkok_time_policy.dart';
 
 class _PendingRequest {
   _PendingRequest(this.page);
@@ -27,10 +28,11 @@ class _ControlledHomeRepo extends DealRepo {
     return request.completer.future;
   }
 
-  _PendingRequest nextRequest(int page) => requests.firstWhere((r) => r.page == page && !r.completer.isCompleted);
+  _PendingRequest nextRequest(int page) =>
+      requests.firstWhere((r) => r.page == page && !r.completer.isCompleted);
 }
 
-DealModel _deal(int id) {
+DealModel _deal(int id, {PickupWindowModel? pickupWindow}) {
   return DealModel(
     id: id,
     name: 'Deal $id',
@@ -47,10 +49,11 @@ DealModel _deal(int id) {
     lng: 0,
     rating: null,
     tags: const [],
-    pickupWindow: PickupWindowModel(
-      start: DateTime(2026, 1, 1, 12),
-      end: DateTime(2026, 1, 1, 13),
-    ),
+    pickupWindow: pickupWindow ??
+        PickupWindowModel(
+          start: DateTime(2026, 1, 1, 12),
+          end: DateTime(2026, 1, 1, 13),
+        ),
     flashSaleEndsAt: null,
   );
 }
@@ -119,7 +122,8 @@ void main() {
     controller.onClose();
   });
 
-  test('does not let a stale load-more failure corrupt refreshed state', () async {
+  test('does not let a stale load-more failure corrupt refreshed state',
+      () async {
     final repo = _ControlledHomeRepo();
     final controller = HomeController(dealRepo: repo);
 
@@ -173,6 +177,37 @@ void main() {
 
     expect(repo.requests, hasLength(1));
     expect(controller.deals.map((deal) => deal.id), [1]);
+    controller.onClose();
+  });
+
+  test('Pickup today filter uses the complete Bangkok calendar date', () {
+    final repo = _ControlledHomeRepo();
+    final controller = HomeController(dealRepo: repo);
+    final policy = BangkokTimePolicy(
+      now: () => DateTime.parse('2026-06-15T02:00:00Z'),
+    );
+
+    controller.deals.value = [
+      _deal(
+        1,
+        pickupWindow: PickupWindowModel(
+          start: DateTime.parse('2026-06-15T02:30:00Z'),
+          end: DateTime.parse('2026-06-15T03:30:00Z'),
+          timePolicy: policy,
+        ),
+      ),
+      _deal(
+        2,
+        pickupWindow: PickupWindowModel(
+          start: DateTime.parse('2026-06-16T02:30:00Z'),
+          end: DateTime.parse('2026-06-16T03:30:00Z'),
+          timePolicy: policy,
+        ),
+      ),
+    ];
+    controller.todayOnly.value = true;
+
+    expect(controller.visibleDeals.map((deal) => deal.id), [1]);
     controller.onClose();
   });
 }

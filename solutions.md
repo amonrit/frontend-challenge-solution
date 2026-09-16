@@ -397,9 +397,11 @@ clock, and all six focused RES-106 tests pass. T4 audited card, map, details,
 and Home filtering: they read model properties and contain no duplicate
 timezone arithmetic. `isOpenNow` and `untilStart` remain instant comparisons
 and were left unchanged. T5 verification on 2026-09-17 passed: focused RES-106
-tests (6), full Flutter suite (28), analyzer, and `git diff --check`. Manual
-runtime display measurement was not performed; the recorded evidence is unit
-and source based.
+tests (6), full Flutter suite (28), analyzer, and `git diff --check`. A later
+integration regression test covers the Home `Pickup today` filter with a fixed
+Bangkok clock; the Home suite now passes 7 tests and the full suite passes 30.
+Manual runtime display measurement was not performed; the recorded evidence is
+unit and source based.
 
 ### References
 
@@ -589,7 +591,7 @@ accepted.
 | Tool | Use | Verification |
 | --- | --- | --- |
 | Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
-| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 29 full-suite tests passed; analyzer reported no issues. |
+| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 30 full-suite tests passed; analyzer reported no issues. |
 | `xcrun simctl` and `cliclick` | Opened the deep link and confirmed the loaded deal on iPhone 17 Pro Simulator. | Runtime screenshot matches catalog deal 42. |
 
 ### Incorrect or Misleading AI Suggestions
