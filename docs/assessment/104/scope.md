@@ -37,8 +37,6 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: Phase 4 — deterministic RED test and TDD readiness gate
-  recorded.
-- Next phase: Phase 5 — split the selected request-round design into execution
-  tasks.
+- Current phase: Phase 5 — execution tasks and implementation invariant planned.
+- Next phase: Execute T1, add request-round ownership for refresh.
 - Production code and tests: unchanged for RES-104.

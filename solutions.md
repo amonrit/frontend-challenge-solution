@@ -253,6 +253,7 @@ No production implementation or after measurement has been produced yet.
 - [RES-104 evidence-backed answers](docs/assessment/104/answers.md)
 - [RES-104 options and trade-offs](docs/assessment/104/options.md)
 - [RES-104 TDD readiness](docs/assessment/104/tdd-readiness.md)
+- [RES-104 execution tasks](docs/assessment/104/task-breakdown.md)
 
 ## RES-105 — Home feed performance
 
