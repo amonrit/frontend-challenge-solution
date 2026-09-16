@@ -307,7 +307,7 @@ No implementation or before/after DevTools evidence was produced for this ticket
 
 ## RES-106 — Pickup time and today filter
 
-**Status:** In progress; T1 and T2 complete, boundary verification pending.
+**Status:** Implementation complete; verification passed. Phase 8 documentation audit pending.
 
 ### Requirement
 Use the required Bangkok timezone and compare complete calendar dates for pickup and today filtering.
@@ -344,9 +344,8 @@ The evidence phase recorded the current direct-UTC label and day-only
 comparison, plus a baseline of 19 passing tests and a clean analyzer run. The
 new focused RED run failed for the intended reasons: `10:30 – 14:00` instead of
 `17:30 – 21:00`, and `isToday == true` for a same-day-number date in the next
-month. Implementation, after measurements, and runtime verification are
-pending the next phases. T1's three policy unit tests and T2's two focused model
-tests pass.
+month. After implementation, T1's three policy tests, T2's two focused model
+tests, and T3's four boundary cases pass. Full verification is recorded below.
 
 ### Limitations or follow-up
 T3 added fixed-clock coverage for Bangkok midnight, month-end, year-end, and
@@ -355,7 +354,8 @@ the system clock directly; the model now delegates to the policy's injected
 clock, and all six focused RES-106 tests pass. T4 audited card, map, details,
 and Home filtering: they read model properties and contain no duplicate
 timezone arithmetic. `isOpenNow` and `untilStart` remain instant comparisons
-and were left unchanged. The next task is T5 verification and evidence.
+and were left unchanged. T5 verification on 2026-09-17 passed: focused RES-106
+tests (6), full Flutter suite (28), analyzer, and `git diff --check`.
 
 ### References
 

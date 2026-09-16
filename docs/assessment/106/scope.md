@@ -41,8 +41,8 @@ year boundaries.
 
 ## Workflow state
 
-- Current phase: Phase 6 — T4 consumer audit complete.
-- Next task: T5 — run verification and collect before/after evidence.
+- Current phase: Phase 7 — T5 verification complete.
+- Next phase: Phase 8 — documentation currency audit.
 - Production model behavior: all observed label and Home-filter consumers route
   through `PickupWindowModel`; instant-based open/until calculations remain
-  unchanged.
+  unchanged. Focused and full verification passed.
