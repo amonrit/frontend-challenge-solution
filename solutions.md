@@ -100,15 +100,14 @@ Detailed questions and evidence are kept in:
 - [RES-103 TDD readiness and RED evidence](docs/assessment/08-res-103-tdd-readiness.md)
 - [RES-103 execution tasks](docs/assessment/09-res-103-execution-tasks.md)
 
-## RES-101 — Search result ordering (investigation in progress)
+## RES-101 — Search result ordering
 
 Source inspection shows that every keystroke starts an independent search, and
 each completion writes to the same `results` and `isLoading` state. No value
 identifies the latest query, so completion order can determine what the user
 sees. Runtime logs confirmed that an older query can complete after the final
 query; the manually observed sequence had identical empty-result states, so a
-deterministic controller test will supply the visible overwrite proof. Option
-comparison, TDD, and implementation remain pending.
+deterministic controller test supplied the visible overwrite proof.
 
 The selected design is a monotonic request generation in the controller. Every
 input change, including clearing the field, invalidates older requests. Query
@@ -134,6 +133,17 @@ did not revert to Sushi; a `sushi` then clear sequence remained in the empty
 search state after the former request had time to complete. The deterministic
 controller tests remain the primary proof because the fake API timing is not a
 stable UI-level oracle.
+
+**Final diagnosis:** independent Futures shared the same observable state, so
+completion order could override input order. **Fix:** each input event advances
+an integer generation; only the matching latest generation may mutate
+post-await state. **Rejected alternatives:** query equality fails for repeated
+identical input; debounce does not invalidate work already in flight; a
+cancellable stream refactor exceeds the existing Future-based repository
+contract. **Edge cases covered:** late success after a newer query, late
+success after clear, and stale loading ownership. Stale errors are also ignored
+by the same generation gate, though the UI currently logs errors rather than
+rendering an error state.
 
 - [RES-101 scope](docs/assessment/10-res-101-scope.md)
 - [RES-101 questions](docs/assessment/11-res-101-questions.md)

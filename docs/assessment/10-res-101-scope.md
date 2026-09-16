@@ -30,7 +30,9 @@ replace the newer query's results, including after the input is cleared.
 
 ## Workflow state
 
-- Current phase: Phase 0 complete.
-- Next phase: create `docs/assessment/11-res-101-questions.md` containing
-  questions only.
-- Production code and tests: unchanged in this phase.
+- Status: complete through Phase 7 documentation audit.
+- Production change: `SearchDealsController` uses a monotonic request
+  generation to give the latest input exclusive ownership of post-await state.
+- Evidence: deterministic RED/GREEN controller tests, full automated checks,
+  and AppleScript-driven simulator checks are recorded in the linked
+  assessment documents and `solutions.md`.

@@ -33,7 +33,7 @@ runs, and the runtime request log.
 | Deterministic test seam | A test `DealRepo` can expose independently completable Futures for each query, allowing a newer response to complete before an older response. | Constructor injection in `SearchDealsController`; `DealRepo.search` API. |
 | Expected RED signal | Complete the newer query first, then the older query; current code will assign the older list last. | Source behavior; focused reproduction test not yet written. |
 
-## Runtime evidence still needed
+## Final runtime and test evidence
 
 - A manual simulator run confirmed out-of-order completion. During rapid input,
   the final `bakersushi` response logged at `17:23:21.304`, then older
@@ -42,13 +42,18 @@ runs, and the runtime request log.
   response is eligible to overwrite the latest one. The screen showed
   `No deals found` for this particular sequence, so it did not provide a
   visually distinct wrong-result example.
-- A deterministic focused test with distinct result lists is still needed to
-  prove the visible overwrite without relying on simulated latency.
-- Clear-input behavior while an older search remains in flight.
-- Search-route closure behavior while a request is in flight.
+- The focused controlled-Future test subsequently made the overwrite visible:
+  it completed `bakery` before older `sushi`; pre-fix, `sushi` replaced the
+  visible list, and post-fix the `bakery` list remained.
+- The focused clear-input test proves that a late `sushi` completion cannot
+  restore results, `hasSearched`, or `isLoading` after the input is cleared.
+- AppleScript-driven simulator checks confirmed the final Bakery result after
+  `sushi → bakery` and the persistent empty-search prompt after `sushi → clear`.
+- Search-route closure is not part of this ticket's acceptance boundary. The
+  controller does not cancel transport; it prevents obsolete state mutation.
 
-## Scope decision still needed
+## Final scope decision
 
-Whether to add debounce for request-volume reduction after correctness is fixed.
-Debounce cannot be the correctness mechanism because a delayed older response
-may still complete after a newer request.
+No debounce was added. It can be evaluated separately for request-volume
+reduction, but it cannot be the correctness mechanism because a delayed older
+response may still complete after a newer request.
