@@ -306,10 +306,16 @@ deal-42 flow are verified.
 
 ## AI Usage Log
 
+I used AI as a reasoning and implementation assistant, while keeping evidence
+and final decisions under my control. Each proposed diagnosis was checked
+against source code, a deterministic test, or a simulator run before it was
+accepted.
+
 | Tool | Use | Verification |
 | --- | --- | --- |
 | Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
-| Flutter and Dart API documentation | Confirmed state disposal, timer cancellation, and fake-time test behavior. | Primary documentation and Flutter 3.27.0 runs. |
+| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 13 full-suite tests passed; analyzer reported no issues. |
+| `xcrun simctl` and `cliclick` | Opened the deep link and confirmed the loaded deal on iPhone 17 Pro Simulator. | Runtime screenshot matches catalog deal 42. |
 
 ### Incorrect or Misleading AI Suggestions
 
@@ -345,7 +351,17 @@ Pending RES-106 investigation.
 
 ## Time Spent and One More Day
 
-Update honestly as work progresses.
+Approximately **5–6 hours of active work** were spent in this submission,
+including repository discovery, evidence collection, TDD planning, four ticket
+implementations, focused and full verification, simulator validation, and
+documentation. The wall-clock window is longer because work was performed in
+separate review and testing sessions.
+
+With one additional day, I would finish RES-104 and RES-106 first because they
+are correctness and data-consistency risks, then capture the required
+before/after DevTools evidence and address RES-105. If time remained, I would
+implement F-1 end to end before starting F-2 or F-3, keeping each feature
+fully tested rather than leaving several partial implementations.
 
 ## DevTools Evidence — RES-105
 
