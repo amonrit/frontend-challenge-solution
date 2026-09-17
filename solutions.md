@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Design selected; implementation not started | Scope, source evidence, requirements, and option comparison recorded; no runtime evidence | Complete implementation, 100+ countdown performance evidence, and regression coverage |
+| F-1 | TDD RED recorded; implementation not started | Scope, source evidence, design comparison, and initial failing expiry test | Complete implementation, 100+ countdown performance evidence, and regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -501,7 +501,7 @@ iPhone and Android deal-42 flows are verified.
 
 ## F-1 — Live flash-sale countdowns
 
-**Status:** Design selected; implementation not started. No runtime evidence
+**Status:** TDD RED recorded; implementation not started. No runtime evidence
 yet.
 
 ### Requirement
@@ -521,10 +521,15 @@ the changing text. The detailed comparison records the trade-offs.
 
 ### Verification and evidence
 
-No implementation or performance evidence was produced for this feature.
+The initial widget RED test pumps an already-expired flash deal in the rail and
+expects `Expired`. It failed as intended because the current implementation
+renders no `Expired` widget. Implementation and performance evidence have not
+yet been produced.
 
 ### Limitations or follow-up
-No implementation or performance evidence was produced for this feature.
+The initial RED result covers only the static rail expiry state. Countdown
+formatting, interaction disabling, cart removal and notice, 100+ rebuild scope,
+lifecycle behavior, and runtime performance remain unimplemented.
 
 ### References
 
@@ -533,6 +538,7 @@ No implementation or performance evidence was produced for this feature.
 - [F-1 requirement questions](docs/assessment/f1/questions.md)
 - [F-1 evidence-backed answers](docs/assessment/f1/answers.md)
 - [F-1 options and decision](docs/assessment/f1/options.md)
+- [F-1 TDD readiness and RED result](docs/assessment/f1/tdd-readiness.md)
 
 ## F-2 — Deal impression tracking
 
