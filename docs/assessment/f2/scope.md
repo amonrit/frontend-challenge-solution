@@ -46,9 +46,8 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E4 delivery failure, pause, and disposal behavior
+- Current phase: Phase 6 — E5 detector wrapper and source/position call sites
   complete.
-- Next phase: Phase 6 — execute E5, detector wrapper and source/position call
-  sites.
+- Next phase: Phase 6 — execute E6, delivery-state observability.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-2.

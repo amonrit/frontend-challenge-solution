@@ -55,7 +55,11 @@ class HomeFeedList extends StatelessWidget {
           );
         }
         if (index == footerIndex) return const SizedBox(height: 24);
-        return DealCard(deal: deals[index - dealStartIndex]);
+        return DealCard(
+          deal: deals[index - dealStartIndex],
+          source: 'home_feed',
+          position: index - dealStartIndex,
+        );
       },
     );
   }

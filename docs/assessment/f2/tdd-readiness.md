@@ -102,6 +102,17 @@ disposal. The disposal test first required `TestWidgetsFlutterBinding` setup
 because it calls a widget-binding lifecycle API from a plain Dart test; that
 was a test-fixture correction, not a product failure.
 
+### E5 recorded RED and GREEN
+
+The E5 RED widget test failed to load because `DealImpressionTracker` did not
+exist. The reusable stateful wrapper now gives each rendered observation a
+stable unique detector key, forwards `visibleFraction` to the app-scoped
+service, and ends the observation in `dispose()` or when its identity changes.
+Home feed supplies `home_feed` and its model-list index; the flash rail supplies
+`flash_rail` and its horizontal index; Search supplies `search` and its result
+index. The focused wrapper tests verify forwarded source/position and disposal
+cancellation without any reactive wrapper around a scroll list.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the

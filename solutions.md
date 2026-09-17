@@ -575,8 +575,8 @@ neither is a substitute for DevTools performance measurements.
 ## F-2 — Deal impression tracking
 
 **Status:** Implementation in progress — qualification, cancellation, session
-deduplication, batching, retry, and lifecycle behavior complete. No runtime
-visibility evidence has been produced.
+deduplication, batching, retry, lifecycle behavior, and all card call sites
+complete. No runtime visibility evidence has been produced.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -594,7 +594,10 @@ pending. Qualifying payloads now enter a FIFO queue and are sent through an
 injected sender as one batch at ten events or 15 seconds after the first unsent
 event. A failed batch is retained and retried after 15 seconds; pause clears
 only in-progress qualification and resume sends an overdue unsent batch. Card
-integration remains pending.
+integration uses `DealImpressionTracker`, a small `VisibilityDetector` wrapper
+that forwards source/position and ends its observation at disposal. Home feed,
+flash rail, and Search pass `home_feed`, `flash_rail`, and `search` positions
+respectively.
 
 ### Rejected alternatives
 
@@ -613,7 +616,8 @@ cancellation and Home/Search cross-source deduplication. Runtime visibility and
 batch behavior are not yet verified. Focused service tests verify both delivery
 thresholds using injected timers and sender, plus retention of an impression
 that qualifies while the previous batch is in flight. Retry, pause/resume, and
-timer disposal are also covered by deterministic service tests.
+timer disposal are also covered by deterministic service tests. Wrapper widget
+tests verify forwarded properties and disposal cancellation.
 
 ### Limitations or follow-up
 No implementation or analytics evidence was produced for this feature.
