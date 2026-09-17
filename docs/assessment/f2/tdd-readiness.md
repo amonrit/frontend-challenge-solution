@@ -113,6 +113,16 @@ Home feed supplies `home_feed` and its model-list index; the flash rail supplies
 index. The focused wrapper tests verify forwarded source/position and disposal
 cancellation without any reactive wrapper around a scroll list.
 
+### E6 recorded RED and GREEN
+
+The E6 RED tests found neither delivery-state fields on `AnalyticsService` nor
+the requested Analytics debug summary. The service now exposes observable
+pending and in-flight counts, a sending flag, and the latest batch error; these
+do not alter the required delivery payload. The debug screen labels locally
+recorded event rows separately from `Pending impressions`, `Sending
+impressions`, and a delivery state of idle, sending, or retry scheduled.
+Focused service and widget tests are GREEN.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the

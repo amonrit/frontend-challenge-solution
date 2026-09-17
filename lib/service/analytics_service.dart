@@ -53,6 +53,10 @@ class AnalyticsService extends GetxService with WidgetsBindingObserver {
   bool _isSendingBatch = false;
 
   final events = <AnalyticsEvent>[].obs;
+  final pendingImpressionCount = 0.obs;
+  final inFlightImpressionCount = 0.obs;
+  final isSendingImpressionBatch = false.obs;
+  final lastBatchError = RxnString();
 
   @override
   void onInit() {
@@ -143,6 +147,7 @@ class AnalyticsService extends GetxService with WidgetsBindingObserver {
   void _enqueueImpression(Map<String, dynamic> event) {
     _pendingImpressionEvents.add(event);
     _firstPendingAt ??= _now();
+    _syncDeliveryState();
     if (_pendingImpressionEvents.length >= 10) {
       unawaited(_sendNextBatch());
       return;
@@ -180,16 +185,24 @@ class AnalyticsService extends GetxService with WidgetsBindingObserver {
     final batchFirstPendingAt = _firstPendingAt;
     _pendingImpressionEvents.clear();
     _firstPendingAt = null;
+    inFlightImpressionCount.value = batch.length;
+    isSendingImpressionBatch.value = true;
+    _syncDeliveryState();
     var sent = false;
     try {
       await sender(batch);
       sent = true;
+      lastBatchError.value = null;
     } catch (error) {
       LogService.error('failed to send analytics batch', error);
+      lastBatchError.value = error.toString();
       _pendingImpressionEvents.insertAll(0, batch);
       _firstPendingAt = batchFirstPendingAt;
     } finally {
       _isSendingBatch = false;
+      inFlightImpressionCount.value = 0;
+      isSendingImpressionBatch.value = false;
+      _syncDeliveryState();
       if (!sent) {
         _scheduleBatchDeadline(retryDelay: const Duration(seconds: 15));
       } else if (_pendingImpressionEvents.length >= 10) {
@@ -198,6 +211,10 @@ class AnalyticsService extends GetxService with WidgetsBindingObserver {
         _scheduleBatchDeadline();
       }
     }
+  }
+
+  void _syncDeliveryState() {
+    pendingImpressionCount.value = _pendingImpressionEvents.length;
   }
 
   @override
@@ -229,6 +246,9 @@ class AnalyticsService extends GetxService with WidgetsBindingObserver {
     _impressionObservations.clear();
     _impressedDealIds.clear();
     _pendingImpressionEvents.clear();
+    _syncDeliveryState();
+    inFlightImpressionCount.value = 0;
+    isSendingImpressionBatch.value = false;
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }

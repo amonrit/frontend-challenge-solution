@@ -392,4 +392,49 @@ void main() {
     qualificationTimer!.fire();
     expect(analytics.events, isEmpty);
   });
+
+  test('exposes queued and in-flight batch delivery state', () async {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    final timers = <_FakeTimer>[];
+    final sendCompleter = Completer<void>();
+    final analytics = AnalyticsService(
+      now: () => now,
+      oneShotTimer: (_, callback) {
+        final timer = _FakeTimer(callback);
+        timers.add(timer);
+        return timer;
+      },
+      batchSender: (_) => sendCompleter.future,
+    );
+
+    analytics.observeImpression(
+      observationId: 'home_feed:42:0',
+      dealId: 42,
+      source: 'home_feed',
+      position: 0,
+      visibleFraction: 0.5,
+    );
+    now = now.add(const Duration(seconds: 1));
+    timers.last.fire();
+
+    expect(analytics.pendingImpressionCount.value, 1);
+    expect(analytics.inFlightImpressionCount.value, 0);
+    expect(analytics.isSendingImpressionBatch.value, isFalse);
+
+    now = now.add(const Duration(seconds: 15));
+    timers.last.fire();
+    await Future<void>.value();
+
+    expect(analytics.pendingImpressionCount.value, 0);
+    expect(analytics.inFlightImpressionCount.value, 1);
+    expect(analytics.isSendingImpressionBatch.value, isTrue);
+
+    sendCompleter.complete();
+    await Future<void>.value();
+    await Future<void>.value();
+
+    expect(analytics.inFlightImpressionCount.value, 0);
+    expect(analytics.isSendingImpressionBatch.value, isFalse);
+    expect(analytics.lastBatchError.value, isNull);
+  });
 }

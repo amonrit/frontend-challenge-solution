@@ -576,7 +576,8 @@ neither is a substitute for DevTools performance measurements.
 
 **Status:** Implementation in progress — qualification, cancellation, session
 deduplication, batching, retry, lifecycle behavior, and all card call sites
-complete. No runtime visibility evidence has been produced.
+complete. Analytics debug delivery-state observability is complete. No runtime
+visibility evidence has been produced.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -597,7 +598,9 @@ only in-progress qualification and resume sends an overdue unsent batch. Card
 integration uses `DealImpressionTracker`, a small `VisibilityDetector` wrapper
 that forwards source/position and ends its observation at disposal. Home feed,
 flash rail, and Search pass `home_feed`, `flash_rail`, and `search` positions
-respectively.
+respectively. Analytics debug now presents locally recorded events separately
+from pending/in-flight counts and idle, sending, or retry-scheduled delivery
+state.
 
 ### Rejected alternatives
 
@@ -617,7 +620,8 @@ batch behavior are not yet verified. Focused service tests verify both delivery
 thresholds using injected timers and sender, plus retention of an impression
 that qualifies while the previous batch is in flight. Retry, pause/resume, and
 timer disposal are also covered by deterministic service tests. Wrapper widget
-tests verify forwarded properties and disposal cancellation.
+tests verify forwarded properties and disposal cancellation. Delivery-state
+tests verify queued/in-flight transitions and the Analytics debug summary.
 
 ### Limitations or follow-up
 No implementation or analytics evidence was produced for this feature.
