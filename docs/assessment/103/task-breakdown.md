@@ -32,9 +32,9 @@ only one task per user-approved `next`.
 ## E4 verification commands
 
 ```sh
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/deal_details_controller_test.dart
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze
+flutter test test/deal_details_controller_test.dart
+flutter test
+flutter analyze
 git diff --check
 ```
 

@@ -39,8 +39,8 @@
 | Evidence | `solutions.md`, `docs/assessment/` |
 
 ```sh
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/deal_details_deep_link_test.dart
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze
+flutter test test/deal_details_deep_link_test.dart
+flutter analyze
 ```
 
 ## RED result
@@ -51,4 +51,4 @@ The focused test failed before any repository call with:
 route has an ID but no model argument, and the current controller force-casts
 the missing argument.
 
-Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/deal_details_deep_link_test.dart`.
+Command: `flutter test test/deal_details_deep_link_test.dart`.

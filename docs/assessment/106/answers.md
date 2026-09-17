@@ -37,8 +37,8 @@ years. A fixed-clock test must compare the complete Bangkok calendar date.
 
 | Check | Before result | Command |
 | --- | --- | --- |
-| Full test suite | 19 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
-| Static analysis | No issues | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
+| Full test suite | 19 tests passed | `flutter test` |
+| Static analysis | No issues | `flutter analyze` |
 | RES-106 focused regression | Not available; no test exists before Phase 4 | `test/res_106_pickup_window_test.dart` |
 | Runtime display/filter measurement | Not run manually | Unit evidence uses the deterministic policy seam |
 

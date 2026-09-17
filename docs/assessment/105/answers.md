@@ -15,9 +15,9 @@
 
 | Check | Result | Command / environment |
 | --- | --- | --- |
-| Flutter toolchain | Flutter 3.27.0, Dart 3.6.0, DevTools 2.40.2 | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter --version` |
-| Full test suite | 28 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
-| Static analysis | No issues found | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
+| Flutter toolchain | Flutter 3.27.0, Dart 3.6.0, DevTools 2.40.2 | `flutter --version` |
+| Full test suite | 28 tests passed | `flutter test` |
+| Static analysis | No issues found | `flutter analyze` |
 | Profile DevTools baseline | Android before/after VM timeline captured; raster timing was not repeatable enough for an improvement claim | [Profile baseline record](profile-baseline.md) |
 
 ## Implementation evidence

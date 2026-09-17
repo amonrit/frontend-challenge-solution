@@ -37,8 +37,8 @@ be required for the RED test.
 
 | Check | Before result | Command |
 | --- | --- | --- |
-| Full test suite | 13 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
-| Static analysis | No issues | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` (previous project baseline) |
+| Full test suite | 13 tests passed | `flutter test` |
+| Static analysis | No issues | `flutter analyze` (previous project baseline) |
 | RES-104 focused regression | Not available yet; no test exists before Phase 4 | `test/home_controller_test.dart` to be added later |
 | Pre-change runtime request measurement | Not run; deterministic test seam was selected as the primary race evidence | Manual Home overlap flow remains follow-up |
 

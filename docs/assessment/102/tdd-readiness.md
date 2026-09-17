@@ -25,7 +25,7 @@
 
 - Production: `lib/feature/order/widget/pickup_countdown.dart`
 - Tests: `test/pickup_countdown_test.dart`
-- Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/pickup_countdown_test.dart`
+- Command: `flutter test test/pickup_countdown_test.dart`
 - Protected: `lib/service/fake_api_service.dart`, `assets/data/`
 
 ## Result

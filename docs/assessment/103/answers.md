@@ -39,8 +39,8 @@ inspection, automated tests, and runtime logs.
 | --- | --- | --- |
 | Source trace | `onInit()` creates one `ever` observer per controller instance; the returned `Worker` is not retained in the current source. | `deal_details_controller.dart`; GetX 4.7.3 `rx_workers.dart`. |
 | Dependency inspection | `ever` returns a `Worker` wrapping a stream subscription; `Worker.dispose()` calls the subscription cancellation callback. | GetX 4.7.3 source. |
-| Regression baseline | Full project suite passed: 5 tests. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test`. |
-| Static analysis | No issues found. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze`. |
+| Regression baseline | Full project suite passed: 5 tests. | `flutter test`. |
+| Static analysis | No issues found. | `flutter analyze`. |
 | iOS runtime launch | App built and launched on iPhone 17 Pro Simulator after clearing generated build artifacts. Startup log showed `FakeApiService ready`, `/home` screen view, `GET /deals/flash`, and `GET /deals?page=1`. | `/private/tmp/rescu-res103-runtime.log`, Flutter 3.27.0 run. |
 | Simulator restart retry | Simulator was shut down, booted, and the app rebuilt/launched again successfully. Startup logs were reproduced, but coordinate/accessibility taps still did not navigate from the Home screen. | Flutter 3.27.0 run after `simctl shutdown`/`boot`, 2026-09-16. |
 | Manual request reproduction | In a clean app run, the user opened deal 1, 2, and 3 and backed out of each, then opened deal 4 and tapped **Add to bag**. One cart change logged four refresh callbacks and four requests: `GET /deals/3`, `/deals/4`, `/deals/2`, and `/deals/1`. | Interactive Flutter run terminal output, 2026-09-16; output captured in the session transcript. |

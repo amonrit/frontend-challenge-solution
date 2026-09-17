@@ -40,8 +40,8 @@
 | Evidence | `solutions.md`, `docs/assessment/104/` |
 
 ```sh
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/home_controller_test.dart
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze
+flutter test test/home_controller_test.dart
+flutter analyze
 ```
 
 ## RED result

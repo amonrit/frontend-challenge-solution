@@ -45,9 +45,9 @@
 ## Commands
 
 ```sh
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/deal_details_controller_test.dart
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test
+flutter test test/deal_details_controller_test.dart
+flutter analyze
+flutter test
 git diff --check
 ```
 
@@ -84,4 +84,4 @@ test passed with one availability refresh before close and none after close:
 All tests passed!
 ```
 
-Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/deal_details_controller_test.dart`.
+Command: `flutter test test/deal_details_controller_test.dart`.

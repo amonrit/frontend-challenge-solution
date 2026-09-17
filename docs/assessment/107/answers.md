@@ -38,9 +38,9 @@ task breakdown.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Baseline full suite | 9 tests passed on 2026-09-16 using Flutter 3.27.0. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
-| Final full suite | 13 tests passed after RES-107 implementation. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
-| Static analysis | No issues on 2026-09-16. | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
+| Baseline full suite | 9 tests passed on 2026-09-16 using Flutter 3.27.0. | `flutter test` |
+| Final full suite | 13 tests passed after RES-107 implementation. | `flutter test` |
+| Static analysis | No issues on 2026-09-16. | `flutter analyze` |
 | Protected files | `fake_api_service.dart` and `assets/data/` remained unchanged throughout RES-107. | `git status`; source inspection |
 
 ## Follow-up limits

@@ -46,7 +46,7 @@ scenario.
 - Planned production files: `lib/feature/home/home_screen.dart`,
   `lib/feature/shared_widget/the_network_image.dart`, and related widgets.
 - Protected: `lib/service/fake_api_service.dart`, `assets/data/`.
-- RED command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/res_105_image_sizing_test.dart`
+- RED command: `flutter test test/res_105_image_sizing_test.dart`
 
 ## RED result
 

@@ -37,9 +37,9 @@
 | Evidence | `solutions.md`, `docs/assessment/` |
 
 ```sh
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/search_deals_controller_test.dart
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze
-/Users/amonrit/fvm/versions/3.27.0/bin/flutter test
+flutter test test/search_deals_controller_test.dart
+flutter analyze
+flutter test
 git diff --check
 ```
 
@@ -50,7 +50,7 @@ shown. It then completed the older `sushi` Future. The final assertion expected
 `bakery`, but the controller exposed `sushi` instead. This is the intended RED
 signal: an older completion overwrites the latest query's result.
 
-Command: `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test test/search_deals_controller_test.dart`.
+Command: `flutter test test/search_deals_controller_test.dart`.
 
 ## GREEN result
 

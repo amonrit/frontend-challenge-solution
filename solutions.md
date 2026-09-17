@@ -2,22 +2,9 @@
 
 This is the delivery summary. Investigation questions, research, and task comparisons are kept in [`docs/assessment/`](docs/assessment/) so this file stays focused on completed work and evidence. The shared assessment format is documented in [`docs/assessment/README.md`](docs/assessment/README.md).
 
-## Work order
-
-The work was completed in this order. Documentation and verification were
-updated alongside each ticket rather than after all implementation work.
-
-1. Baseline checks, repository workflow, and assessment documentation setup.
-2. **RES-102** — cancel the pickup countdown timer on widget disposal.
-3. **RES-103** — dispose the detail controller's cart observer.
-4. **RES-101** — ignore stale search responses with request generations.
-5. **RES-107** — resolve deep links by ID and render loading/error states.
-6. **RES-104** — protect Home refresh and pagination from stale responses.
-7. **RES-106** — normalize pickup display and today filtering to Bangkok time.
-8. **RES-105** — split Home reactivity, lazy feed construction, and image
-   decoding; required comparable runtime profiling evidence remains unavailable.
-9. **F-1, F-2, F-3** — not started in this submission; retained as follow-up
-   work from the assignment.
+The rerun baseline/current results and Android route coverage for every
+RES-101 to RES-107 ticket are summarized in the
+[regression evidence matrix](docs/assessment/regression-matrix.md).
 
 Each completed ticket below follows the same summary format: status, diagnosis
 or requirement, fix or implementation, rejected alternatives, verification and
