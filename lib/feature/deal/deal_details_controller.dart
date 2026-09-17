@@ -111,7 +111,20 @@ class DealDetailsController extends GetxController {
   }
 
   Future<bool> addToCart() async {
-    if (!await cartService.add(deal)) return false;
+    Get.snackbar(
+      'Reserving stock',
+      '${deal.name} was added to your bag.',
+      snackPosition: SnackPosition.BOTTOM,
+      duration: const Duration(seconds: 2),
+    );
+    if (!await cartService.add(deal)) {
+      Get.snackbar(
+        'Could not reserve this deal',
+        'It may no longer be available. Please try another deal.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
     Get.snackbar(
       'Added to bag',
       '${deal.name} — pick up ${deal.pickupWindow.label}',

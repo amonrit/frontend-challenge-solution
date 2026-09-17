@@ -114,6 +114,16 @@ The focused reservation, expiry, countdown, and flash-cart command passed 11
 tests; analyzer passed. Cart-screen placement and notice presentation remain
 E5 work.
 
+### E5 recorded RED and GREEN
+
+The reservation-expiry notice widget test was RED: the host watched only
+flash-sale notices, so the reservation message never appeared. The root notice
+host now queues either notice type without putting presentation logic in
+CartService. Cart lines show `Reserving stock…` while pending, disable their
+quantity controls, and render the E4 countdown after confirmation. Details
+shows immediate reserving feedback and a non-technical rollback message.
+Focused notice and expiry widget tests passed; analyzer passed.
+
 ## Edge and failure cases
 
 - Existing line increment, a duplicate rapid tap, and a quantity limit.

@@ -46,9 +46,8 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E4 expiry and shared-clock countdown state
-  complete.
-- Next phase: Phase 6 — execute E5 only: cart/details user feedback and
-  countdown placement.
+- Current phase: Phase 6 — E5 reservation feedback, notices, and countdown
+  placement complete.
+- Next phase: Phase 6 — execute E6 only: checkout validation and 410 recovery.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

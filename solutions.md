@@ -642,9 +642,8 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Partial — E1–E4 add optimistic reservation, stale-completion
-protection, safe quantity replacement, and shared-clock expiry. Cart UI,
-checkout, and runtime reservation evidence remain.
+**Status:** Partial — E1–E5 add reservation state, expiry, and cart/details
+feedback. Checkout and runtime reservation evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -660,7 +659,9 @@ reserve a replacement quantity before releasing the prior hold; a 409 restores
 the previous confirmed quantity and id. Same-line changes are serialized while
 pending. At the server UTC expiry instant, CartService removes the line,
 releases its hold best-effort, and queues a notice. A leaf countdown derives
-from the existing app clock; cart-screen placement remains E5 work.
+from the existing app clock. The cart shows pending/countdown states and the
+root notice host presents reservation expiry; details gives clear reserve
+success/failure feedback.
 
 ### Rejected alternatives
 
@@ -681,11 +682,12 @@ boundary. E3's focused reservation and flash-expiry command passed 9 tests,
 including increment/decrement, rollback, serialization, and release paths;
 analyzer also passed. E4's focused reservation/expiry/countdown/flash command
 passed 11 tests; analyzer passed.
+E5's focused notice and expiry widget tests passed; analyzer passed.
 
 ### Limitations or follow-up
 
-E5–E7 remain: user feedback, checkout 410 recovery, and integrated/profile
-evidence. No runtime reservation flow has been claimed.
+E6–E7 remain: checkout 410 recovery and integrated/profile evidence. No
+runtime reservation flow has been claimed.
 
 ### References
 

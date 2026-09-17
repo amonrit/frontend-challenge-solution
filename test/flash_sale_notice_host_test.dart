@@ -35,4 +35,27 @@ void main() {
     expect(cart.expiryNotices, isEmpty);
     cart.onClose();
   });
+
+  testWidgets('shows and consumes a reservation expiry notice', (tester) async {
+    final cart = CartService(reservationGateway: ImmediateReservationGateway());
+    cart.reservationExpiryNotices.add(const ReservationExpiryNotice(
+      dealId: 42,
+      dealName: 'Reserved sushi box',
+    ));
+
+    await tester.pumpWidget(MaterialApp(
+      builder: (context, child) => FlashSaleNoticeHost(
+        cartService: cart,
+        child: child!,
+      ),
+      home: const Scaffold(body: SizedBox()),
+    ));
+    await tester.pump();
+
+    expect(
+      find.text('Your reservation for Reserved sushi box expired.'),
+      findsOneWidget,
+    );
+    cart.onClose();
+  });
 }

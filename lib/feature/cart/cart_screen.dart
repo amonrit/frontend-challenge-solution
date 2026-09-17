@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app_config.dart';
+import '../../service/flash_sale_clock_service.dart';
 import '../shared_widget/the_network_image.dart';
 import 'cart_controller.dart';
+import 'reservation_countdown.dart';
 
 class CartScreen extends GetView<CartController> {
   const CartScreen({super.key});
@@ -11,6 +13,7 @@ class CartScreen extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     final cart = controller.cartService;
+    final clock = Get.find<FlashSaleClockService>();
     return Scaffold(
       appBar: AppBar(title: const Text('My bag')),
       body: Obx(() {
@@ -45,17 +48,24 @@ class CartScreen extends GetView<CartController> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                  fontSize: 14.5,
-                                  fontWeight: FontWeight.w600)),
+                                  fontSize: 14.5, fontWeight: FontWeight.w600)),
                           Text(item.deal.storeName,
                               style: TextStyle(
-                                  fontSize: 12.5,
-                                  color: Colors.grey.shade600)),
+                                  fontSize: 12.5, color: Colors.grey.shade600)),
                           Text('฿${item.deal.price.toStringAsFixed(0)} each',
                               style: const TextStyle(
                                   fontSize: 13,
                                   color: AppConfig.primaryGreen,
                                   fontWeight: FontWeight.w600)),
+                          if (item.isReservationPending)
+                            const Text('Reserving stock…',
+                                style: TextStyle(fontSize: 12)),
+                          if (!item.isReservationPending &&
+                              item.reservation != null)
+                            ReservationCountdown(
+                              expiresAt: item.reservation!.expiresAt,
+                              clock: clock,
+                            ),
                         ],
                       ),
                     ),
@@ -64,15 +74,19 @@ class CartScreen extends GetView<CartController> {
                         IconButton(
                           visualDensity: VisualDensity.compact,
                           icon: const Icon(Icons.remove_circle_outline),
-                          onPressed: () => cart.decrement(item.deal.id),
+                          onPressed: item.isReservationPending
+                              ? null
+                              : () => cart.decrement(item.deal.id),
                         ),
                         Text('${item.quantity}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         IconButton(
                           visualDensity: VisualDensity.compact,
                           icon: const Icon(Icons.add_circle_outline),
-                          onPressed: () => cart.add(item.deal),
+                          onPressed: item.isReservationPending
+                              ? null
+                              : () => cart.add(item.deal),
                         ),
                       ],
                     ),
