@@ -60,6 +60,9 @@ justification in `solutions.md` after evidence and option comparison.
 - A subsequent successful checkout logged `POST /checkout items=1`, followed by
   `DELETE /reservations/res_4`, and rendered an empty bag. Its log does not
   reveal the request body, so reservation-id forwarding remains proven by test.
-- Next evidence: manual expiry and checkout-410 journeys, plus comparable
-  DevTools rebuild evidence. The collected paths do not measure countdown
-  performance or prove the remaining lifecycle branches.
+- A fresh hold visibly counted down `03:06` → `01:49` → `00:36` without a
+  device-clock change. After real expiry it rendered an empty bag and logged
+  `DELETE /reservations/res_5` at 06:18:25.
+- Next evidence: a manual checkout-410 journey and comparable DevTools rebuild
+  evidence. The collected paths do not measure countdown performance or prove
+  the remaining lifecycle branch.

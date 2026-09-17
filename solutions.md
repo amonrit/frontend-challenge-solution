@@ -19,7 +19,7 @@ passed all seven ticket flows.
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
 | F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
 | F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add, replacement, rollback, removal, and successful-checkout observations | Expiry and checkout-410 manual journey; comparable DevTools rebuild evidence |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add, replacement, rollback, removal, checkout, and real-expiry observations | Checkout-410 manual journey; comparable DevTools rebuild evidence |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -645,8 +645,8 @@ evidence on suitable hardware before making a performance claim.
 **Status:** Implementation complete; acceptance evidence incomplete. Automated
 reservation lifecycle and checkout coverage is complete. An Android-emulator
 profile run confirms the real add/reserve/countdown, quantity-replacement,
-rollback, removal, and successful-checkout paths; broader manual and comparable
-DevTools evidence remain.
+rollback, removal, checkout, and real-expiry paths; broader manual and
+comparable DevTools evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -716,12 +716,19 @@ empty bag. This manually confirms checkout routing and completed-hold cleanup.
 The endpoint log does not expose its request body, so the deterministic checkout
 test remains the evidence that the submitted line includes its reservation id.
 
+For expiry, a fresh `res_5` hold remained on the bag screen without changing
+the device clock. Its visible countdown moved from `03:06` to `01:49` to
+`00:36`; after the real expiry threshold the bag rendered empty and the process
+logged `DELETE /reservations/res_5` at 06:18:25. This confirms the live
+countdown-to-removal and release path. It does not test checkout's distinct
+410 response branch.
+
 ### Limitations or follow-up
 
-Capture manual expiry and checkout-410 journeys, then obtain comparable Flutter
-DevTools rebuild evidence for multiple visible reservation countdowns. The
-profile run covers successful first add, replacement, rollback, removal, and
-checkout; deterministic tests remain the primary evidence for the remaining
+Capture a manual checkout-410 journey, then obtain comparable Flutter DevTools
+rebuild evidence for multiple visible reservation countdowns. The profile run
+covers successful first add, replacement, rollback, removal, checkout, and
+expiry; deterministic tests remain the primary evidence for the remaining
 branches.
 
 ### References
