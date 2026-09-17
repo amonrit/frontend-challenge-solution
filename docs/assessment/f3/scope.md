@@ -46,8 +46,7 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E5 reservation feedback, notices, and countdown
-  placement complete.
-- Next phase: Phase 6 — execute E6 only: checkout validation and 410 recovery.
+- Current phase: Phase 6 — E6 checkout validation and 410 recovery complete.
+- Next phase: Phase 7 — E7 final functional and performance verification.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

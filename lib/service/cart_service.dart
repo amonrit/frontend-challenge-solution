@@ -191,6 +191,13 @@ class CartService extends GetxService {
 
   num get total => items.fold(0, (sum, i) => sum + i.lineTotal);
 
+  bool get canCheckout =>
+      items.isNotEmpty &&
+      items.every((item) =>
+          !item.isReservationPending &&
+          item.reservation != null &&
+          _currentTime.toUtc().isBefore(item.reservation!.expiresAt.toUtc()));
+
   DateTime get _currentTime => _flashSaleClock?.currentTime.value ?? _now();
 
   void _expireFlashDeals() {
