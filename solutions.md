@@ -688,8 +688,11 @@ benefit remains unmeasured without a comparable profile device.
 
 Parse fixed UTC instants, inject a fixed Bangkok clock, and assert labels and
 complete year/month/day comparisons across midnight, month-end, and year-end.
-RES-106 added `BangkokTimePolicy` so tests do not depend on the host timezone or
-wall clock; its focused boundary suite passes.
+The policy must not use the device's local time: a traveller, a device with an
+incorrect timezone, or a test runner in another locale could otherwise classify
+the same Bangkok pickup window differently. RES-106 added `BangkokTimePolicy`
+so tests do not depend on the host timezone or wall clock; its focused boundary
+suite passes.
 
 ## Time Spent and One More Day
 
