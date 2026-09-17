@@ -49,5 +49,7 @@ justification in `solutions.md` after evidence and option comparison.
 - Current phase: Phase 8 — documentation currency audit complete.
 - Next phase: collect optional manual reservation-flow and comparable DevTools
   evidence if acceptance proof beyond automated coverage is needed.
+- Android emulator profile-mode bootstrap is recorded as build/wiring evidence
+  only; it does not establish a reservation interaction or performance result.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

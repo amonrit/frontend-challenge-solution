@@ -686,13 +686,16 @@ passed 11 tests; analyzer passed.
 E5's focused notice and expiry widget tests passed; analyzer passed.
 E6's deterministic controller tests verify that 410 clears the submitted cart
 and 502 retains its confirmed hold for retry. The final full suite passed 75
-tests and analyzer reported no issues.
+tests and analyzer reported no issues. Android emulator profile-mode built,
+installed, and reached Home with Fake API bootstrap logs; this checks build and
+dependency wiring only.
 
 ### Limitations or follow-up
 
 Capture a manual add, quantity change, removal, expiry, and checkout-410
 journey, then obtain comparable Flutter DevTools rebuild evidence for multiple
-visible reservation countdowns. No runtime reservation flow has been claimed.
+visible reservation countdowns. No reservation interaction was performed in
+the profile launch, so no runtime reservation flow has been claimed.
 
 ### References
 
