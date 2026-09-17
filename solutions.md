@@ -574,8 +574,8 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Planning — Phase 3 design selected. No implementation or runtime
-evidence has been produced.
+**Status:** Planning — Phase 4 initial RED test recorded. No implementation or
+runtime evidence has been produced.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -596,7 +596,9 @@ comparison records lifecycle and performance trade-offs.
 
 ### Verification and evidence
 
-No implementation or analytics evidence was produced for this feature.
+The initial deterministic qualification test is intentionally RED: the current
+analytics sink has no injected clock/timer or visibility-observation API.
+Implementation has not begun.
 
 ### Limitations or follow-up
 No implementation or analytics evidence was produced for this feature.
@@ -608,6 +610,7 @@ No implementation or analytics evidence was produced for this feature.
 - [F-2 requirement questions](docs/assessment/f2/questions.md)
 - [F-2 evidence-backed answers](docs/assessment/f2/answers.md)
 - [F-2 options and decision](docs/assessment/f2/options.md)
+- [F-2 TDD readiness and RED test](docs/assessment/f2/tdd-readiness.md)
 
 ## F-3 — Stock reservations
 
