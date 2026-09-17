@@ -19,7 +19,7 @@ passed all seven ticket flows.
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
 | F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
 | F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer | Manual add/remove/expiry/410 journey and comparable DevTools rebuild evidence |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add/countdown observation | Quantity-change, removal, expiry, and checkout-410 manual journey; comparable DevTools rebuild evidence |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -643,7 +643,8 @@ evidence on suitable hardware before making a performance claim.
 ## F-3 — Stock reservations
 
 **Status:** Implementation complete; acceptance evidence incomplete. Automated
-reservation lifecycle and checkout coverage is complete; manual/runtime and
+reservation lifecycle and checkout coverage is complete. An Android-emulator
+profile run confirms the real add/reserve/countdown path; broader manual and
 comparable DevTools evidence remain.
 
 ### Requirement
@@ -687,15 +688,20 @@ E5's focused notice and expiry widget tests passed; analyzer passed.
 E6's deterministic controller tests verify that 410 clears the submitted cart
 and 502 retains its confirmed hold for retry. The final full suite passed 75
 tests and analyzer reported no issues. Android emulator profile-mode built,
-installed, and reached Home with Fake API bootstrap logs; this checks build and
-dependency wiring only.
+installed, and reached Home with Fake API bootstrap logs. In that same profile
+run, opening Chef's Thai Bundle and tapping **Add to bag** logged
+`POST /reservations dealId=2 qty=1`; its bag line then rendered
+`Reservation expires in 02:37`. This establishes the real first-add,
+reservation-request, and countdown-display path. It does not establish the
+other lifecycle branches below.
 
 ### Limitations or follow-up
 
-Capture a manual add, quantity change, removal, expiry, and checkout-410
-journey, then obtain comparable Flutter DevTools rebuild evidence for multiple
-visible reservation countdowns. No reservation interaction was performed in
-the profile launch, so no runtime reservation flow has been claimed.
+Capture manual quantity-change, removal, expiry, and checkout-410 journeys,
+then obtain comparable Flutter DevTools rebuild evidence for multiple visible
+reservation countdowns. The profile run covers only a successful first add and
+its initial countdown display; deterministic tests remain the primary evidence
+for the remaining branches.
 
 ### References
 

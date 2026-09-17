@@ -46,10 +46,11 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 8 — documentation currency audit complete.
-- Next phase: collect optional manual reservation-flow and comparable DevTools
-  evidence if acceptance proof beyond automated coverage is needed.
-- Android emulator profile-mode bootstrap is recorded as build/wiring evidence
-  only; it does not establish a reservation interaction or performance result.
-- No F-3 diagnosis, implementation decision, test, production-code change, or
-  runtime reservation claim has been made.
+- Current phase: optional manual acceptance evidence in progress after the
+  Phase 8 documentation currency audit.
+- Android-emulator profile evidence confirms one successful first add:
+  Chef's Thai Bundle logged `POST /reservations dealId=2 qty=1`, and its cart
+  line displayed `Reservation expires in 02:37`.
+- Next evidence: manual quantity change, removal, expiry, and checkout-410
+  journeys, plus comparable DevTools rebuild evidence. The successful add does
+  not measure countdown performance or prove the remaining lifecycle branches.
