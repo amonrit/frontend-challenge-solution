@@ -46,8 +46,9 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 3 — reservation architecture and expiry policy selected.
-- Next phase: Phase 4 — define deterministic acceptance criteria and capture
-  the smallest reservation RED test.
+- Current phase: Phase 4 — TDD readiness complete; initial RED failure
+  recorded.
+- Next phase: Phase 5 — split the selected reservation design into executable
+  tasks. No implementation starts in that phase.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

@@ -642,8 +642,9 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Planning — scope, evidence, and a reservation/expiry design are
-documented; no implementation or runtime reservation evidence yet.
+**Status:** TDD readiness — scope, evidence, selected design, and initial RED
+test are prepared; the RED failure confirms the reservation seam is absent. No
+implementation or runtime reservation evidence exists yet.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -679,6 +680,7 @@ No implementation or reservation evidence was produced for this feature.
 - [F-3 requirement questions](docs/assessment/f3/questions.md)
 - [F-3 evidence-backed answers](docs/assessment/f3/answers.md)
 - [F-3 options and decision](docs/assessment/f3/options.md)
+- [F-3 TDD readiness and RED test](docs/assessment/f3/tdd-readiness.md)
 
 ## AI Usage Log
 
