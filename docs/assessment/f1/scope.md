@@ -39,8 +39,9 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E8 verification complete with runtime-performance
-  acceptance evidence still incomplete.
+- Current phase: Phase 6 — E8 verification complete. Android profile-mode
+  observation confirmed a ticking active countdown in the rail, Home card, and
+  details screen; runtime-performance acceptance evidence remains incomplete.
 - Next phase: No further F-1 execution task. Capture comparable DevTools
   frame-time and memory evidence before claiming full acceptance.
 - Scope, evidence, option selection, and E1–E7 implementation/test claims are

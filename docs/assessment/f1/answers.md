@@ -33,8 +33,10 @@
 
 - No current source establishes a production server-clock contract, a required
   background/resume policy, or the rounding rule at a second boundary.
-- No runtime reproduction has yet observed a countdown reaching expiry, cart
-  removal, or duplicate-notice behavior.
+- Android profile-mode observation confirms active countdown text changes in
+  the rail, Home card, and details screen. No runtime reproduction has yet
+  observed a countdown reaching expiry, cart removal, or duplicate-notice
+  behavior.
 - No DevTools baseline for 100+ countdowns has been captured. The RES-105
   physical-device limitation still applies: USB Flutter DevTools evidence is
   unavailable with the current charge-only cable.

@@ -116,12 +116,17 @@ then passes after `main.dart` requests `Get.find<FlashSaleClockService>()`
 explicitly. The test also explicitly deletes the permanent test services so
 Flutter can verify that the periodic timer has been cancelled.
 
-The final Flutter 3.27.0 verification passed 49 tests and `flutter analyze`
-with no issues. The Android emulator built and foregrounded the profile-mode
-app at `dev.rescu.rescu.MainActivity`; its current-process log recorded normal
-`FakeApiService` startup without the previous type-lookup exception. This is
-functional/profile-launch evidence only. No comparable DevTools frame-time,
-Dart heap, or image-cache capture was produced.
+The implementation-stage Flutter 3.27.0 verification passed 49 tests and
+`flutter analyze` with no issues. The latest shared suite now passes 77 tests
+with the analyzer still clean. The Android emulator built and foregrounded the
+profile-mode app at `dev.rescu.rescu.MainActivity`; its current-process log
+recorded normal `FakeApiService` startup without the previous type-lookup
+exception. On a fresh launch, the flash rail changed from `24:18` / `07:18` to
+`23:42` / `06:42`; the matching Home card changed from `24:18` to `23:42`; and
+the active deal details showed `23:06` with Add to bag enabled. This is live
+active-state wiring evidence only. Controlled-clock tests remain the evidence
+for expiry, cart removal, and notice delivery. No comparable DevTools
+frame-time, Dart heap, or image-cache capture was produced.
 
 ## Edge and failure cases
 
