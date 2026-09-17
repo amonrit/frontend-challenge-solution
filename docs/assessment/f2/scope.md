@@ -50,5 +50,7 @@ screen must make recorded events observable, and scrolling must not regress.
 - Android profile manual evidence recorded Home/flash-rail impressions, Search
   impressions for ids 22 and 23, two delivered batches, and the Analytics debug
   idle state. Controlled-clock tests remain the exact threshold proof.
+- A 100-card widget fixture verifies one active qualification timer and no
+  parent rebuild at its shared deadline; it does not measure device performance.
 - Remaining evidence: comparable DevTools scrolling/rebuild measurements. No
   runtime performance claim has been made.

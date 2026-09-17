@@ -4,7 +4,7 @@ This is the delivery summary. Investigation questions, research, and task compar
 
 ## Status Summary
 
-**Latest shared verification (2026-09-18):** `flutter test` passed 76 tests,
+**Latest shared verification (2026-09-18):** `flutter test` passed 77 tests,
 `flutter analyze` reported no issues, and the Android-emulator regression suite
 passed all seven ticket flows.
 
@@ -17,9 +17,9 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 76-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
-| F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 76-test suite; analyzer; Android profile manual Home/Search/debug delivery evidence | Comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 76-test suite, analyzer, 100-countdown rebuild contract, and Android-emulator profile manual lifecycle observations | Comparable DevTools rebuild evidence; the guarded runtime flow prevents a normal manual 410 submission |
+| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 77-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
+| F-2 | **Implementation complete; acceptance evidence incomplete** | 100-callback timer/rebuild contract, focused qualification/delivery/wrapper/debug tests, latest 77-test suite, analyzer, and Android profile manual Home/Search/debug delivery evidence | Comparable Flutter DevTools scrolling/rebuild capture |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 77-test suite, analyzer, 100-countdown rebuild contract, and Android-emulator profile manual lifecycle observations | Comparable DevTools rebuild evidence; the guarded runtime flow prevents a normal manual 410 submission |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -617,7 +617,9 @@ one-second threshold, cancellation, cross-source first-wins deduplication,
 10-event and 15-second FIFO delivery, in-flight preservation, retry,
 pause/resume, disposal, and delivery state. Widget tests cover source/position
 forwarding, tracker disposal, and the Analytics debug summary. The latest full
-suite passed 76 tests and `fvm flutter analyze` reported no issues. Android
+suite passed 77 tests and `fvm flutter analyze` reported no issues. A 100-card
+tracker fixture verifies one active qualification timer after all visibility
+callbacks and no parent-list rebuild when its shared deadline fires. Android
 emulator profile-mode reached Home and logged both Fake API readiness and
 analytics bootstrap.
 
@@ -630,7 +632,8 @@ positions 0 and 1. At the next 15-second deadline it logged
 events and `Pending impressions: 0`, `Sending impressions: 0`, and
 `Delivery: idle`. The screenshots and logs establish route wiring, payload
 shape, session state, and delivery; deterministic controlled-clock tests remain
-the proof of the exact 50%-for-one-second threshold.
+the proof of the exact 50%-for-one-second threshold. The 100-card fixture is a
+timer/rebuild ownership contract, not a device frame-time measurement.
 
 ### Limitations or follow-up
 Capture comparable Flutter DevTools scrolling/rebuild evidence on suitable

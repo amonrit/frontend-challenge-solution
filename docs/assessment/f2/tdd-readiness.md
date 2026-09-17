@@ -126,14 +126,16 @@ Focused service and widget tests are GREEN.
 ### E7 recorded verification
 
 The focused F-2 command covering the service, tracker, and debug screen passed
-14 tests. The latest full `fvm flutter test` suite passed 76 tests, `fvm
+14 tests. The latest full `fvm flutter test` suite passed 77 tests, `fvm
 flutter analyze` reported no issues, and `git diff --check` was clean for the
 feature work. Android emulator profile-mode reached Home, recorded flash-rail,
 Home-feed, and Search impressions, and delivered batches of 3 and 2 events.
 Analytics debug showed the two Search payloads with pending/sending counts at
 zero and idle delivery. This is functional integration evidence; the controlled
-clock tests remain the exact 50%-for-one-second proof, and comparable Flutter
-DevTools scrolling/rebuild capture remains absent.
+clock tests remain the exact 50%-for-one-second proof. A 100-card tracker
+fixture also verifies one active qualification timer and unchanged parent build
+count after its shared deadline. Comparable Flutter DevTools scrolling/rebuild
+capture remains absent.
 
 ## Edge and failure cases
 

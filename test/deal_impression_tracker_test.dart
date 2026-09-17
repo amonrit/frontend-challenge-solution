@@ -103,4 +103,73 @@ void main() {
 
     expect(analytics.events, isEmpty);
   });
+
+  testWidgets(
+      '100 visibility callbacks use one active qualification timer without rebuilding the parent',
+      (tester) async {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    var parentBuilds = 0;
+    final timers = <_FakeTimer>[];
+    final analytics = AnalyticsService(
+      now: () => now,
+      oneShotTimer: (_, callback) {
+        final timer = _FakeTimer(callback);
+        timers.add(timer);
+        return timer;
+      },
+    );
+
+    await tester.pumpWidget(_TrackerFixture(
+      analytics: analytics,
+      onBuild: () => parentBuilds++,
+    ));
+
+    final detectors = tester.widgetList<VisibilityDetector>(
+      find.byType(VisibilityDetector),
+    );
+    expect(detectors, hasLength(100));
+    for (final detector in detectors) {
+      detector.onVisibilityChanged!(_halfVisible(detector));
+    }
+
+    expect(parentBuilds, 1);
+    expect(timers.where((timer) => timer.isActive), hasLength(1));
+
+    now = now.add(const Duration(seconds: 1));
+    timers.last.fire();
+    await tester.pump();
+
+    expect(parentBuilds, 1);
+    expect(analytics.events.where((event) => event.name == 'deal_impression'),
+        hasLength(100));
+  });
+}
+
+class _TrackerFixture extends StatelessWidget {
+  const _TrackerFixture({required this.analytics, required this.onBuild});
+
+  final AnalyticsService analytics;
+  final VoidCallback onBuild;
+
+  @override
+  Widget build(BuildContext context) {
+    onBuild();
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: SingleChildScrollView(
+        child: Column(
+          children: List.generate(
+            100,
+            (index) => DealImpressionTracker(
+              analytics: analytics,
+              dealId: index,
+              source: 'home_feed',
+              position: index,
+              child: const SizedBox(width: 100, height: 100),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
