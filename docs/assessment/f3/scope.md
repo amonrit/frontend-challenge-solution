@@ -67,5 +67,7 @@ justification in `solutions.md` after evidence and option comparison.
   `res_6` was released at 06:26:28, the bag became empty, and the UI stated
   that the reservation expired. This correct guard prevents a normal manual
   410 submission; the injected controller test covers 410 recovery.
-- Next evidence: comparable DevTools rebuild evidence. The collected paths do
-  not measure countdown performance.
+- Automated rebuild evidence now includes a 100-leaf reservation countdown
+  fixture: one shared timer advances every label without rebuilding its parent.
+- Next evidence: comparable DevTools rebuild evidence. The collected paths and
+  widget contract do not measure device frame time or memory.

@@ -4,7 +4,7 @@ This is the delivery summary. Investigation questions, research, and task compar
 
 ## Status Summary
 
-**Latest shared verification (2026-09-17):** `flutter test` passed 75 tests,
+**Latest shared verification (2026-09-18):** `flutter test` passed 76 tests,
 `flutter analyze` reported no issues, and the Android-emulator regression suite
 passed all seven ticket flows.
 
@@ -17,9 +17,9 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
-| F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add, replacement, rollback, removal, checkout, and real-expiry observations | Comparable DevTools rebuild evidence; the guarded runtime flow prevents a normal manual 410 submission |
+| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 76-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
+| F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 76-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 76-test suite, analyzer, 100-countdown rebuild contract, and Android-emulator profile manual lifecycle observations | Comparable DevTools rebuild evidence; the guarded runtime flow prevents a normal manual 410 submission |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -688,8 +688,10 @@ analyzer also passed. E4's focused reservation/expiry/countdown/flash command
 passed 11 tests; analyzer passed.
 E5's focused notice and expiry widget tests passed; analyzer passed.
 E6's deterministic controller tests verify that 410 clears the submitted cart
-and 502 retains its confirmed hold for retry. The final full suite passed 75
-tests and analyzer reported no issues. Android emulator profile-mode built,
+and 502 retains its confirmed hold for retry. The latest full suite passed 76
+tests and analyzer reported no issues. A direct widget contract creates 100
+`ReservationCountdown` leaves, verifies one shared timer, and proves a tick
+updates labels without rebuilding their parent. Android emulator profile-mode built,
 installed, and reached Home with Fake API bootstrap logs. In that same profile
 run, opening Chef's Thai Bundle and tapping **Add to bag** logged
 `POST /reservations dealId=2 qty=1`; its bag line then rendered

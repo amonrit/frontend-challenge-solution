@@ -65,6 +65,82 @@ void main() {
     expect(find.text('Reservation expired'), findsOneWidget);
     clock.onClose();
   });
+
+  testWidgets(
+      'a shared tick updates 100 reservation labels without rebuilding their parent',
+      (tester) async {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    var parentBuilds = 0;
+    var timerCreations = 0;
+    final clock = FlashSaleClockService(
+      now: () => now,
+      periodicTimer: (_, __) {
+        timerCreations++;
+        return _NoopTimer();
+      },
+    )..onInit();
+    final expiresAt = now.add(const Duration(minutes: 1));
+
+    await tester.pumpWidget(_ReservationCountdownFixture(
+      clock: clock,
+      expiresAt: expiresAt,
+      onBuild: () => parentBuilds++,
+    ));
+
+    expect(timerCreations, 1);
+    expect(parentBuilds, 1);
+    expect(find.text('Reservation expires in 01:00'), findsNWidgets(100));
+
+    now = now.add(const Duration(seconds: 1));
+    clock.refresh();
+    await tester.pump();
+
+    expect(parentBuilds, 1);
+    expect(find.text('Reservation expires in 00:59'), findsNWidgets(100));
+    clock.onClose();
+  });
+}
+
+class _ReservationCountdownFixture extends StatelessWidget {
+  const _ReservationCountdownFixture({
+    required this.clock,
+    required this.expiresAt,
+    required this.onBuild,
+  });
+
+  final FlashSaleClockService clock;
+  final DateTime expiresAt;
+  final VoidCallback onBuild;
+
+  @override
+  Widget build(BuildContext context) {
+    onBuild();
+    return MaterialApp(
+      home: SingleChildScrollView(
+        child: Column(
+          children: List.generate(
+            100,
+            (index) => ReservationCountdown(
+              key: ValueKey(index),
+              expiresAt: expiresAt,
+              clock: clock,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NoopTimer implements Timer {
+  @override
+  void cancel() {}
+
+  @override
+  bool get isActive => true;
+
+  @override
+  int get tick => 0;
 }
 
 class _ExpiryGateway implements ReservationGateway {
