@@ -46,8 +46,8 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 7 — final automated verification complete.
-- Next phase: Phase 8 — documentation currency audit after any additional
-  manual or DevTools evidence.
+- Current phase: Phase 8 — documentation currency audit complete.
+- Next phase: collect optional manual reservation-flow and comparable DevTools
+  evidence if acceptance proof beyond automated coverage is needed.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

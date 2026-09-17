@@ -1,5 +1,13 @@
 # F-3 — Stock Reservations: Evidence-Backed Answers
 
+## Evidence timing
+
+The source findings below record the pre-implementation investigation that
+informed the selected design. They remain historical evidence; the delivered
+implementation and current verification state are summarized in
+[`solutions.md`](../../../solutions.md) and the later records in
+[`tdd-readiness.md`](tdd-readiness.md).
+
 ## Evidence record
 
 | Questions | Answer supported by evidence | Evidence |
