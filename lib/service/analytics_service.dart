@@ -8,6 +8,9 @@ typedef OneShotTimerFactory = Timer Function(
   Duration duration,
   void Function() callback,
 );
+typedef AnalyticsBatchSender = Future<void> Function(
+  List<Map<String, dynamic>> events,
+);
 
 class AnalyticsEvent {
   final String name;
@@ -32,14 +35,21 @@ class AnalyticsService extends GetxService {
   AnalyticsService({
     DateTime Function()? now,
     OneShotTimerFactory? oneShotTimer,
+    AnalyticsBatchSender? batchSender,
   })  : _now = now ?? DateTime.now,
-        _oneShotTimer = oneShotTimer ?? Timer.new;
+        _oneShotTimer = oneShotTimer ?? Timer.new,
+        _batchSender = batchSender;
 
   final DateTime Function() _now;
   final OneShotTimerFactory _oneShotTimer;
+  final AnalyticsBatchSender? _batchSender;
   final _impressionObservations = <String, _ImpressionObservation>{};
   final _impressedDealIds = <int>{};
+  final _pendingImpressionEvents = <Map<String, dynamic>>[];
   Timer? _qualificationTimer;
+  Timer? _batchTimer;
+  DateTime? _firstPendingAt;
+  bool _isSendingBatch = false;
 
   final events = <AnalyticsEvent>[].obs;
 
@@ -113,15 +123,73 @@ class AnalyticsService extends GetxService {
         'source': observation.source,
         'position': observation.position,
       });
+      _enqueueImpression({
+        'deal_id': observation.dealId,
+        'source': observation.source,
+        'position': observation.position,
+      });
     }
     _scheduleQualification();
+  }
+
+  void _enqueueImpression(Map<String, dynamic> event) {
+    _pendingImpressionEvents.add(event);
+    _firstPendingAt ??= _now();
+    if (_pendingImpressionEvents.length >= 10) {
+      unawaited(_sendNextBatch());
+      return;
+    }
+    _scheduleBatchDeadline();
+  }
+
+  void _scheduleBatchDeadline() {
+    if (_isSendingBatch ||
+        _pendingImpressionEvents.isEmpty ||
+        _batchTimer != null) {
+      return;
+    }
+    final deadline = _firstPendingAt!.add(const Duration(seconds: 15));
+    final delay = deadline.difference(_now());
+    _batchTimer = _oneShotTimer(
+      delay.isNegative ? Duration.zero : delay,
+      () {
+        _batchTimer = null;
+        unawaited(_sendNextBatch());
+      },
+    );
+  }
+
+  Future<void> _sendNextBatch() async {
+    final sender = _batchSender;
+    if (_isSendingBatch || _pendingImpressionEvents.isEmpty || sender == null) {
+      return;
+    }
+
+    _batchTimer?.cancel();
+    _batchTimer = null;
+    _isSendingBatch = true;
+    final batch = List<Map<String, dynamic>>.from(_pendingImpressionEvents);
+    _pendingImpressionEvents.clear();
+    _firstPendingAt = null;
+    try {
+      await sender(batch);
+    } finally {
+      _isSendingBatch = false;
+      if (_pendingImpressionEvents.length >= 10) {
+        unawaited(_sendNextBatch());
+      } else {
+        _scheduleBatchDeadline();
+      }
+    }
   }
 
   @override
   void onClose() {
     _qualificationTimer?.cancel();
+    _batchTimer?.cancel();
     _impressionObservations.clear();
     _impressedDealIds.clear();
+    _pendingImpressionEvents.clear();
     super.onClose();
   }
 }

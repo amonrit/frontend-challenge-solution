@@ -46,7 +46,8 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E2 cancellation and session deduplication complete.
-- Next phase: Phase 6 — execute E3, FIFO batch ownership and delivery.
+- Current phase: Phase 6 — E3 FIFO batch ownership and delivery complete.
+- Next phase: Phase 6 — execute E4, delivery failure, pause, and disposal
+  behavior.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-2.

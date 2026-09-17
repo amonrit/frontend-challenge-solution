@@ -574,9 +574,9 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Implementation in progress — qualification, cancellation, and
-session deduplication complete. No runtime visibility or batching evidence has
-been produced.
+**Status:** Implementation in progress — qualification, cancellation, session
+deduplication, and success-path batching complete. No runtime visibility
+evidence has been produced.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -590,7 +590,9 @@ records the required event only when it has remained at or above the threshold
 for one controlled second. A below-threshold update or wrapper disposal removes
 the observation. A session-wide deal-id set allows the first qualifying source
 and position to emit once, across routes. Batching and card integration remain
-pending.
+pending. Qualifying payloads now enter a FIFO queue and are sent through an
+injected sender as one batch at ten events or 15 seconds after the first unsent
+event; failure policy and card integration remain pending.
 
 ### Rejected alternatives
 
@@ -606,7 +608,9 @@ The initial deterministic qualification test is GREEN: an observation at 50%
 emits no event before its deadline and emits exactly one required event when the
 injected clock reaches one second. Focused tests also verify threshold-drop
 cancellation and Home/Search cross-source deduplication. Runtime visibility and
-batch behavior are not yet verified.
+batch behavior are not yet verified. Focused service tests verify both delivery
+thresholds using injected timers and sender, plus retention of an impression
+that qualifies while the previous batch is in flight.
 
 ### Limitations or follow-up
 No implementation or analytics evidence was produced for this feature.

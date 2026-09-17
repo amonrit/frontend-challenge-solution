@@ -20,7 +20,11 @@ Future<void> main() async {
 
 Future<void> initDependencies() async {
   await Get.putAsync(() => FakeApiService().init(), permanent: true);
-  Get.put(AnalyticsService(), permanent: true);
+  Get.put(
+    AnalyticsService(
+        batchSender: Get.find<FakeApiService>().sendAnalyticsBatch),
+    permanent: true,
+  );
   Get.put(FlashSaleClockService(), permanent: true);
   Get.put(
     CartService(flashSaleClock: Get.find<FlashSaleClockService>()),

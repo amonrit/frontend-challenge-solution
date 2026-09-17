@@ -73,6 +73,22 @@ session-wide deal-id set is updated atomically when a due observation is
 recorded, so insertion order makes the first qualifying observation retain its
 source and position. Both cancellation and cross-source tests are GREEN.
 
+### E3 recorded RED and GREEN
+
+The E3 RED tests could not construct the service because it had no injected
+batch sender. `AnalyticsService` now keeps a FIFO queue of qualifying
+impression payloads, starts the 15-second deadline only for its first unsent
+event, and takes an immutable batch snapshot under a single-flight send guard.
+The focused tests verify one send with deal ids 1–10 at the threshold and one
+send of an incomplete batch at its controlled 15-second deadline. Delivery
+failure and pause/resume behavior remain E4 work. The first GREEN run exposed
+a fixture assumption from E1: its timer factory asserted that every timer was
+one second. E3 legitimately adds a 15-second batch timer, so the fixture now
+asserts the first qualification timer only. This corrected the test seam
+without changing product behavior. A Completer-backed sender test also proves
+that an eleventh impression qualifying during the first in-flight batch remains
+queued and is sent only as the next batch.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the
