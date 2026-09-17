@@ -66,6 +66,8 @@ void main() {
     final deal = _flashDeal(now.add(const Duration(seconds: 1)));
 
     expect(await cart.add(deal), isTrue);
+    expect(await cart.add(deal), isTrue);
+    expect(await cart.add(deal), isTrue);
 
     now = now.add(const Duration(seconds: 2));
     clock.refresh();

@@ -46,9 +46,9 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E2 stale first-add completion safety confirmed by
-  an existing-GREEN regression test.
-- Next phase: Phase 6 — execute E3 only: safe quantity replacement and
-  obsolete-hold release.
+- Current phase: Phase 6 — E3 quantity replacement and obsolete-hold release
+  complete.
+- Next phase: Phase 6 — execute E4 only: reservation expiry and leaf countdown
+  state.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

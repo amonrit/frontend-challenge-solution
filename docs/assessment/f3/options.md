@@ -70,10 +70,12 @@ For the first-add operation, object identity is the invalidation boundary: a
 completion may attach its hold only while its exact optimistic `CartItemModel`
 is still in `items`; otherwise it releases the late hold. The E2
 remove-and-readd regression test passed before adding a generation map, so a
-separate counter would be redundant at this stage. E3 will add a per-line
+separate counter would be redundant for that operation. E3 adds a per-line
 operation generation where it is needed: replacement changes quantity while
 the same line remains in the cart, so object presence alone cannot distinguish
-an older completion from the newer request.
+an older completion from the newer request. Same-line changes are serialized
+while a replacement is pending, preventing an optimistic quantity from being
+paired with an older hold.
 
 Removal, flash-sale expiry, successful checkout cleanup, and replacement all
 release superseded ids best-effort. A release failure is logged but never

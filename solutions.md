@@ -642,9 +642,9 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Partial — E1 adds the reservation gateway and optimistic first-add
-rollback. Quantity replacement, expiry, checkout, UI feedback, and runtime
-reservation evidence remain.
+**Status:** Partial — E1–E3 add optimistic reservation, stale-completion
+protection, and safe quantity replacement. Expiry/countdown, checkout, UI
+feedback, and runtime reservation evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -654,11 +654,11 @@ Reserve stock optimistically when adding to cart and release or expire reservati
 `CartService` now owns a narrow injected `ReservationGateway`; production
 adapts it to `OrderRepo` during app bootstrap. A first add inserts the line
 immediately, attaches the server hold on success, and removes the same line on
-reserve failure. Until E3 implements a safe replacement hold, a second add to
-the same line is rejected rather than silently increasing an unheld quantity.
-The first-add stale-completion test also confirms that a late hold after
-remove-and-readd is released without changing the replacement line. The
-selected expiry and 410 policies remain planned.
+reserve failure. A first-add stale completion after remove-and-readd releases
+its hold without changing the replacement line. Increment and decrement now
+reserve a replacement quantity before releasing the prior hold; a 409 restores
+the previous confirmed quantity and id. Same-line changes are serialized while
+pending. The selected expiry and 410 policies remain planned.
 
 ### Rejected alternatives
 
@@ -675,13 +675,14 @@ command together with affected CartService, deal, flash-expiry, notice, and
 bootstrap tests passed 14 tests; `fvm flutter analyze` reported no issues.
 The focused stale-completion regression also passed before a generation map was
 added, because the first-add flow uses line identity as its invalidation
-boundary.
+boundary. E3's focused reservation and flash-expiry command passed 9 tests,
+including increment/decrement, rollback, serialization, and release paths;
+analyzer also passed.
 
 ### Limitations or follow-up
 
-E2–E7 remain: operation generations, safe quantity replacement/release,
-expiry/countdown, user feedback, checkout 410 recovery, and integrated/profile
-evidence. No runtime reservation flow has been claimed.
+E4–E7 remain: expiry/countdown, user feedback, checkout 410 recovery, and
+integrated/profile evidence. No runtime reservation flow has been claimed.
 
 ### References
 

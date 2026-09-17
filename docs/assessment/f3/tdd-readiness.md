@@ -85,6 +85,23 @@ generation counter is unnecessary for every mutation. E3 still needs a
 per-line generation because replacement changes quantity while retaining the
 same line object.
 
+### E3 recorded RED and GREEN
+
+The increment tests were RED against E1: a second add logged that quantity
+replacement was unavailable, left quantity at one, and never created a second
+controlled reserve request. CartService now makes the requested quantity
+optimistic, marks the line pending, reserves the replacement quantity, then
+attaches that hold before releasing the prior id. A 409 restores the prior
+quantity and hold. Matching decrement and remove-release tests are GREEN.
+
+During E3, a same-line rapid-tap test exposed a second race: with available
+stock above two, two replacement requests were started and the test observed
+three reserve futures instead of two. CartService now rejects same-line
+increment/decrement while a reservation change is pending and keeps a
+per-line operation generation for replacement invalidation. The focused
+reservation plus flash-expiry command passed 9 tests, and `fvm flutter
+analyze` reported no issues on 2026-09-17.
+
 ## Edge and failure cases
 
 - Existing line increment, a duplicate rapid tap, and a quantity limit.
