@@ -574,8 +574,9 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Implementation in progress — deterministic qualification complete.
-No runtime visibility or batching evidence has been produced.
+**Status:** Implementation in progress — qualification, cancellation, and
+session deduplication complete. No runtime visibility or batching evidence has
+been produced.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -586,8 +587,10 @@ analytics delivery.
 `AnalyticsService` now owns an injected clock, a single earliest-deadline
 one-shot timer, and pending qualifying observations. An eligible observation
 records the required event only when it has remained at or above the threshold
-for one controlled second. Cancellation, session deduplication, batching, and
-card integration remain pending.
+for one controlled second. A below-threshold update or wrapper disposal removes
+the observation. A session-wide deal-id set allows the first qualifying source
+and position to emit once, across routes. Batching and card integration remain
+pending.
 
 ### Rejected alternatives
 
@@ -601,8 +604,9 @@ comparison records lifecycle and performance trade-offs.
 
 The initial deterministic qualification test is GREEN: an observation at 50%
 emits no event before its deadline and emits exactly one required event when the
-injected clock reaches one second. Runtime visibility and batch behavior are
-not yet verified.
+injected clock reaches one second. Focused tests also verify threshold-drop
+cancellation and Home/Search cross-source deduplication. Runtime visibility and
+batch behavior are not yet verified.
 
 ### Limitations or follow-up
 No implementation or analytics evidence was produced for this feature.

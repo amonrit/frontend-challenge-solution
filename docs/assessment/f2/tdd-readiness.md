@@ -63,6 +63,16 @@ The service owns one earliest-deadline timer and cancels it in `onClose()`.
 Threshold cancellation, cross-source deduplication, and batching remain E2+
 work.
 
+### E2 recorded RED and GREEN
+
+The E2 RED tests first showed an emitted event after the same observation
+dropped from `0.5` to `0.49`, and two events when Home and Search qualified the
+same deal concurrently. `AnalyticsService` now removes an observation below
+the threshold and exposes the same removal boundary for wrapper disposal. A
+session-wide deal-id set is updated atomically when a due observation is
+recorded, so insertion order makes the first qualifying observation retain its
+source and position. Both cancellation and cross-source tests are GREEN.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the

@@ -46,7 +46,7 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E1 deterministic visibility qualification complete.
-- Next phase: Phase 6 — execute E2, cancellation and session deduplication.
+- Current phase: Phase 6 — E2 cancellation and session deduplication complete.
+- Next phase: Phase 6 — execute E3, FIFO batch ownership and delivery.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-2.

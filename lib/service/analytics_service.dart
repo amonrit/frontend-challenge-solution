@@ -38,6 +38,7 @@ class AnalyticsService extends GetxService {
   final DateTime Function() _now;
   final OneShotTimerFactory _oneShotTimer;
   final _impressionObservations = <String, _ImpressionObservation>{};
+  final _impressedDealIds = <int>{};
   Timer? _qualificationTimer;
 
   final events = <AnalyticsEvent>[].obs;
@@ -55,7 +56,11 @@ class AnalyticsService extends GetxService {
     required int position,
     required double visibleFraction,
   }) {
-    if (visibleFraction < 0.5 ||
+    if (visibleFraction < 0.5) {
+      endImpressionObservation(observationId);
+      return;
+    }
+    if (_impressedDealIds.contains(dealId) ||
         _impressionObservations.containsKey(observationId)) {
       return;
     }
@@ -67,6 +72,12 @@ class AnalyticsService extends GetxService {
       startedAt: _now(),
     );
     _scheduleQualification();
+  }
+
+  void endImpressionObservation(String observationId) {
+    if (_impressionObservations.remove(observationId) != null) {
+      _scheduleQualification();
+    }
   }
 
   void _scheduleQualification() {
@@ -96,6 +107,7 @@ class AnalyticsService extends GetxService {
     for (final entry in due) {
       _impressionObservations.remove(entry.key);
       final observation = entry.value;
+      if (!_impressedDealIds.add(observation.dealId)) continue;
       logEvent('deal_impression', {
         'deal_id': observation.dealId,
         'source': observation.source,
@@ -109,6 +121,7 @@ class AnalyticsService extends GetxService {
   void onClose() {
     _qualificationTimer?.cancel();
     _impressionObservations.clear();
+    _impressedDealIds.clear();
     super.onClose();
   }
 }
