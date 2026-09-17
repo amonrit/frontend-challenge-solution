@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Implementation in progress | Pure status, shared clock, cart expiry, and all required countdown surfaces are covered by focused tests | Visible notice, 100+ performance evidence, and regression coverage |
+| F-1 | Implementation in progress | Pure status, shared clock, cart expiry, visible notice, and all required countdown surfaces are covered by focused tests | 100+ performance evidence and regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -516,8 +516,9 @@ active/expired state and required formatting from a supplied end instant and
 clock. `FlashSaleClockService` now owns one app-scoped periodic timer and
 refreshes its time immediately on app resume. `CartService` observes that
 clock, rejects expired additions, removes an expired deal's whole cart line,
-and queues one expiry notice event; presentation and visible notice work remain
-unimplemented. The flash rail now uses `FlashSaleCountdown`, an `Obx` leaf that
+and queues one expiry notice event. `FlashSaleNoticeHost` consumes this queue
+at the app root and presents one Snackbar at a time, so the cart remains free
+of presentation code. The flash rail now uses `FlashSaleCountdown`, an `Obx` leaf that
 reads the shared clock and rebuilds only its label. Home cards and details use
 the same leaf plus an expiry gate that disables interaction only when a deal
 crosses into expiry. The details controller honors a rejected cart mutation and
@@ -538,13 +539,13 @@ Clock-service tests pass for one timer, disposal, and resume refresh. Cart
 service tests pass for expired-add rejection and one-time removal/notice
 queueing. Rail tests verify both expired text and a controlled active countdown
 update. Home and details widget tests verify the expired interaction gates. The
-focused F-1 suite passes 12 tests. Performance evidence has not yet been
+notice-host widget test verifies visible text and queue consumption after the
+Snackbar closes. The focused F-1 suite passes 13 tests. Performance evidence has not yet been
 produced.
 
 ### Limitations or follow-up
-Visible notice presentation, 100+ rebuild scope, and runtime performance remain
-unimplemented. The notice queue is intentionally not yet visible to the user
-until E6 mounts its root host.
+100+ rebuild-scope verification, runtime performance evidence, and final
+regression coverage remain.
 
 ### References
 

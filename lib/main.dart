@@ -10,6 +10,7 @@ import 'service/analytics_service.dart';
 import 'service/cart_service.dart';
 import 'service/fake_api_service.dart';
 import 'service/flash_sale_clock_service.dart';
+import 'feature/shared_widget/flash_sale_notice_host.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,9 @@ class RescuApp extends StatelessWidget {
       theme: AppConfig.theme,
       initialRoute: Routes.home,
       getPages: Routes.pages,
+      builder: (context, child) => FlashSaleNoticeHost(
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }

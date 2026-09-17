@@ -85,6 +85,15 @@ same shared-clock countdown and expiry-gate policy. The gate listens to clock
 updates but rebuilds its parent affordance only when active state changes to
 expired.
 
+### E6 recorded RED and GREEN
+
+`test/flash_sale_notice_host_test.dart` initially failed to load because the
+root notice host did not exist. After E6, the widget injects one queued cart
+expiry event, finds its user-facing Snackbar text, closes that Snackbar, and
+asserts that the event was consumed. This keeps `CartService` responsible for
+cart state and its event queue while the root host owns presentation and serial
+notice delivery.
+
 ## Edge and failure cases
 
 - Null end instant and a deal already expired at initial render.

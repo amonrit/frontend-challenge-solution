@@ -89,6 +89,10 @@ class CartService extends GetxService {
     _recount();
   }
 
+  void consumeExpiryNotice(FlashSaleExpiryNotice notice) {
+    expiryNotices.remove(notice);
+  }
+
   num get total => items.fold(0, (sum, i) => sum + i.lineTotal);
 
   DateTime get _currentTime => _flashSaleClock?.currentTime.value ?? _now();
