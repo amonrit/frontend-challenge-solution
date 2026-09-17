@@ -574,7 +574,7 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Planning — Phase 1 questions complete. No implementation or runtime
+**Status:** Planning — Phase 2 evidence complete. No implementation or runtime
 evidence has been produced.
 
 ### Requirement
