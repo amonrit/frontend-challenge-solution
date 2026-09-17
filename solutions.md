@@ -605,9 +605,10 @@ accepted.
 
 | Tool | Use | Verification |
 | --- | --- | --- |
-| Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
-| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 33 full-suite tests passed; analyzer reported no issues. |
-| `xcrun simctl` and `cliclick` | Opened the deep link and confirmed the loaded deal on iPhone 17 Pro Simulator. | Runtime screenshot matches catalog deal 42. |
+| Codex | Inspected source, formed hypotheses, proposed alternatives, wrote focused tests, implementation changes, and assessment documentation. | Every accepted change was checked against source, a RED/GREEN test, runtime observation, or a review of the diff. |
+| Git worktrees | Re-ran each RES-101 to RES-107 RED test against its historical pre-fix commit without changing `main`. | The resulting baseline failures and current GREEN results are recorded in the [regression evidence matrix](docs/assessment/regression-matrix.md). |
+| Flutter 3.27.0 and Dart CLI | Ran focused/current suites, analyzer, formatter, and Android integration tests using the pinned toolchain. | Current unit/widget suite: 34 passed; analyzer: no issues; Android regression suite: 7 passed. |
+| Android emulator and Flutter integration binding | Exercised startup, bindings, routing, fake API wiring, countdown disposal, Home filtering, and simulated deep-link flow. | `integration_test/res_101_107_smoke_test.dart` passed seven independently launched ticket flows. |
 
 ### Incorrect or Misleading AI Suggestions
 
@@ -626,6 +627,28 @@ accepted.
    **Correction:** keep GetX parameters as the production path and add a
    current-route query fallback for direct deep-link entry and deterministic
    tests.
+
+3. **Suggestion:** treat a route-level integration test as the main proof for
+   the RES-101, RES-103, or RES-104 race condition.
+   **Why it was misleading:** real fake-API timing can vary, so an integration
+   pass does not guarantee that an old request completed after a newer one.
+   **How it was caught:** controlled `Completer` tests reproduced the exact
+   stale order deterministically, while the Android flow only verified that
+   routes and wiring work together.
+   **Correction:** retain Android integration tests as complementary coverage;
+   use controller tests with controlled futures as the acceptance proof for
+   ordering and lifecycle races.
+
+4. **Suggestion:** interpret one Android-emulator timeline run as a before/after
+   performance result for RES-105.
+   **Why it was misleading:** the AVD's rendering configuration and raster
+   timing were not repeatable enough to make a causal frame-time or memory
+   claim.
+   **How it was caught:** repeated captures changed materially under the same
+   scripted flow.
+   **Correction:** document the traces and their limitation, keep widget tests
+   for rebuild/lazy-construction mechanisms, and reserve a performance claim
+   for a repeatable physical-device measurement.
 
 ## Design Questions
 
@@ -651,15 +674,17 @@ wall clock; its focused boundary suite passes.
 
 ## Time Spent and One More Day
 
-Approximately **5–6 hours of active work** were spent in this submission,
-including repository discovery, evidence collection, TDD planning, four ticket
-implementations, focused and full verification, simulator validation, and
-documentation. The wall-clock window is longer because work was performed in
-separate review and testing sessions.
+Approximately **18–22 hours of active work** were spent across source review,
+baseline capture, TDD planning, implementation for RES-101 to RES-107,
+historical RED reruns in isolated worktrees, focused/full verification, Android
+integration testing, and documentation. This excludes waiting for emulator
+boot, Gradle builds, dependency resolution, and review pauses.
 
-With one additional day, I would capture the required comparable Android
-DevTools traces for RES-105, then use the remaining time to implement F-1 end
-to end before starting F-2 or F-3.
+With one additional day, I would first capture repeatable before/after DevTools
+traces on a physical mid-range Android device for RES-105. I would then finish
+F-1 end to end: one shared ticker for countdown text, expiration-driven cart
+removal, focused tests for 100+ countdowns, and an Android integration flow.
+Only after that proof is complete would I start F-2 or F-3.
 
 ## DevTools Evidence — RES-105
 
