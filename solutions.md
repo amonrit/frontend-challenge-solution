@@ -574,10 +574,17 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Not started in this submission.
+**Status:** Planning — Phase 0 scope complete. No implementation or runtime
+evidence has been produced.
 
 ### Requirement
-Track qualifying card visibility with session deduplication and batched analytics delivery.
+Track qualifying card visibility with session deduplication and batched
+analytics delivery.
+
+### Implementation
+
+Not started. Scope is recorded before requirements, evidence, and options are
+examined.
 
 ### Rejected alternatives
 
