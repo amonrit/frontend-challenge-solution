@@ -656,7 +656,9 @@ adapts it to `OrderRepo` during app bootstrap. A first add inserts the line
 immediately, attaches the server hold on success, and removes the same line on
 reserve failure. Until E3 implements a safe replacement hold, a second add to
 the same line is rejected rather than silently increasing an unheld quantity.
-The selected expiry and 410 policies remain planned.
+The first-add stale-completion test also confirms that a late hold after
+remove-and-readd is released without changing the replacement line. The
+selected expiry and 410 policies remain planned.
 
 ### Rejected alternatives
 
@@ -671,6 +673,9 @@ user action, or non-deterministic tests.
 The initial controlled 409 rollback test is GREEN. On 2026-09-17, its focused
 command together with affected CartService, deal, flash-expiry, notice, and
 bootstrap tests passed 14 tests; `fvm flutter analyze` reported no issues.
+The focused stale-completion regression also passed before a generation map was
+added, because the first-add flow uses line identity as its invalidation
+boundary.
 
 ### Limitations or follow-up
 

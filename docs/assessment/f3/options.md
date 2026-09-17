@@ -66,11 +66,14 @@ unknown member of the request without identifying it.
 
 ## Async and release policy
 
-Each cart-line mutation receives a monotonically increasing operation
-generation. A reserve completion may commit only if the line still exists and
-its generation is current. Removing, expiring, or replacing a line invalidates
-older completions. This prevents a delayed success from resurrecting a user
-removal or overwriting a newer quantity.
+For the first-add operation, object identity is the invalidation boundary: a
+completion may attach its hold only while its exact optimistic `CartItemModel`
+is still in `items`; otherwise it releases the late hold. The E2
+remove-and-readd regression test passed before adding a generation map, so a
+separate counter would be redundant at this stage. E3 will add a per-line
+operation generation where it is needed: replacement changes quantity while
+the same line remains in the cart, so object presence alone cannot distinguish
+an older completion from the newer request.
 
 Removal, flash-sale expiry, successful checkout cleanup, and replacement all
 release superseded ids best-effort. A release failure is logged but never

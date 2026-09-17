@@ -73,6 +73,18 @@ full operation-generation coverage, expiry UI, and checkout behavior remain
 later tasks; E1 deliberately rejects a second add to the same line rather than
 silently increase an unheld quantity.
 
+### E2 recorded existing GREEN
+
+The E2 test starts one optimistic add, removes its line, starts a replacement
+add for the same deal, then resolves the first reserve last. It passed without
+new production code: E1 already checks the exact `CartItemModel` identity
+before attaching a hold and releases a late successful hold for a removed
+object. The replacement line remains untouched and receives only its own
+reservation. This is a valid existing GREEN result, not evidence that a
+generation counter is unnecessary for every mutation. E3 still needs a
+per-line generation because replacement changes quantity while retaining the
+same line object.
+
 ## Edge and failure cases
 
 - Existing line increment, a duplicate rapid tap, and a quantity limit.
