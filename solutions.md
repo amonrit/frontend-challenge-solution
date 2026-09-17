@@ -574,8 +574,8 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Planning — Phase 5 execution tasks prepared. No implementation or
-runtime evidence has been produced.
+**Status:** Implementation in progress — deterministic qualification complete.
+No runtime visibility or batching evidence has been produced.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -583,8 +583,11 @@ analytics delivery.
 
 ### Implementation
 
-Not started. Scope is recorded before requirements, evidence, and options are
-examined.
+`AnalyticsService` now owns an injected clock, a single earliest-deadline
+one-shot timer, and pending qualifying observations. An eligible observation
+records the required event only when it has remained at or above the threshold
+for one controlled second. Cancellation, session deduplication, batching, and
+card integration remain pending.
 
 ### Rejected alternatives
 
@@ -596,9 +599,10 @@ comparison records lifecycle and performance trade-offs.
 
 ### Verification and evidence
 
-The initial deterministic qualification test is intentionally RED: the current
-analytics sink has no injected clock/timer or visibility-observation API.
-Implementation has not begun.
+The initial deterministic qualification test is GREEN: an observation at 50%
+emits no event before its deadline and emits exactly one required event when the
+injected clock reaches one second. Runtime visibility and batch behavior are
+not yet verified.
 
 ### Limitations or follow-up
 No implementation or analytics evidence was produced for this feature.

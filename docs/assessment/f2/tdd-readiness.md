@@ -54,6 +54,15 @@ was changed to obtain this result.
 After the first execution task, the test records no event before the deadline,
 then exactly one required event at the controlled deadline.
 
+### E1 recorded GREEN
+
+`AnalyticsService` now accepts an injected clock and one-shot timer, retains
+an eligible observation until its one-second deadline, and records the required
+event only when that controlled deadline fires. The initial RED test is GREEN.
+The service owns one earliest-deadline timer and cancels it in `onClose()`.
+Threshold cancellation, cross-source deduplication, and batching remain E2+
+work.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the
