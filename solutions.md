@@ -515,7 +515,9 @@ formatter, per-surface countdown text leaves, and one-time expiry transitions
 to the cart and root notice host. `FlashSaleStatus` now supplies immutable
 active/expired state and required formatting from a supplied end instant and
 clock. `FlashSaleClockService` now owns one app-scoped periodic timer and
-refreshes its time immediately on app resume. `CartService` observes that
+refreshes its time immediately on app resume. It is registered once as a
+permanent app dependency; when its DI registration is torn down, `onClose()`
+cancels its timer and removes its lifecycle observer. `CartService` observes that
 clock, rejects expired additions, removes an expired deal's whole cart line,
 and queues one expiry notice event. `FlashSaleNoticeHost` consumes this queue
 at the app root and presents one Snackbar at a time, so the cart remains free
