@@ -336,9 +336,11 @@ raster timing varied substantially between repeats, so the capture is evidence
 of the comparison method rather than a measured improvement claim.
 
 ### Limitations or follow-up
-The implementation has before/after timeline data but no repeatable Android
-frame or memory improvement measurement. A physical mid-range Android device
-is needed before claiming measured jank, memory, or image-cache improvement.
+The implementation has before/after timeline data and a physical Android
+Perfetto capture, but no analyzed repeatable frame or memory improvement
+measurement. The Flutter VM Service was unavailable over wireless debugging,
+so DevTools frame and memory views could not be collected. No measured jank,
+memory, or image-cache improvement is claimed.
 `test/home_feed_list_test.dart` directly verifies lazy construction for a
 100-deal feed, while `test/home_screen_rebuild_scope_test.dart` verifies that
 scroll state does not rebuild `HomeFeedList`. Image sizing tests and source

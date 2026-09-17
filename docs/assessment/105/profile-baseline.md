@@ -50,14 +50,40 @@ for a measured jank or memory-improvement claim because the host-GPU emulator
 does not produce repeatable raster timing and no image-cache/RSS comparison was
 captured.
 
+## Physical-device Perfetto capture
+
+Date: 2026-09-17
+
+A physical Android 15 device was connected through Wireless debugging. Flutter
+could install and launch profile APKs, but its Dart VM Service could not be
+discovered through the wireless log stream; DevTools frame and memory views
+were therefore unavailable.
+
+As a system-level alternative, Perfetto captured `sched/sched_switch`, `freq`,
+`idle`, `am`, `wm`, `gfx`, and `view` events for 15 seconds. Both runs used the
+same contract: force-stop the app, launch Home, then perform three upward and
+two downward 350 ms swipes at the same coordinates.
+
+| Revision | Source | Trace size | SHA-256 |
+| --- | --- | ---: | --- |
+| Before | `beb4164` (pre-RES-105 implementation) | 15 MB | `403d32a5d58561ab3efe01545f94b1f5af7871977202704751d13e061bc3068b` |
+| After | Current profile APK | 11 MB | `38a904cdd4e4185448c31341924d8aae3cfe08da2f53d33c949bc4f89e3e042f` |
+
+The raw traces are intentionally not committed because they are binary capture
+artifacts. Trace size is not a performance metric, so this capture does not
+claim an improvement. It establishes a repeatable physical-device trace
+contract that can be opened in Perfetto UI when a trace processor is available.
+
 ## Required follow-up
 
-- Repeat the identical trace on a physical mid-range Android device and capture
-  image-cache/RSS data alongside frame timing (F1).
+- Analyze the physical traces with Perfetto UI or restore a stable Flutter VM
+  Service connection to capture DevTools frame timing and Dart/RSS/image-cache
+  memory alongside this trace contract.
 
 ## After-change profile status
 
 The host-GPU emulator can be used for functional Android checks and trace
 collection. Its raster timing is not repeatable enough for a performance claim.
-Source-level changes and automated behavior evidence are recorded in
-`answers.md`; runtime performance improvement remains unclaimed.
+The physical-device Perfetto capture provides stronger runtime evidence, but
+without analyzed frame or memory slices runtime performance improvement remains
+unclaimed.
