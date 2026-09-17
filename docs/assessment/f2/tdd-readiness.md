@@ -89,6 +89,19 @@ without changing product behavior. A Completer-backed sender test also proves
 that an eleventh impression qualifying during the first in-flight batch remains
 queued and is sent only as the next batch.
 
+### E4 recorded RED and GREEN
+
+E4 RED initially failed to compile because `AnalyticsService` had no lifecycle
+observer API. The selected policy retains a failed batch, logs its technical
+error, and schedules a controlled 15-second retry; it does not create another
+impression for the already-deduplicated deal. App pause clears only
+in-progress visibility observations, while unsent batches remain. On resume,
+an overdue batch sends immediately. `onClose()` cancels both service timers and
+removes the lifecycle observer. Focused tests cover retry, pause, resume, and
+disposal. The disposal test first required `TestWidgetsFlutterBinding` setup
+because it calls a widget-binding lifecycle API from a plain Dart test; that
+was a test-fixture correction, not a product failure.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the

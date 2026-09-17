@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../util/log_service.dart';
@@ -31,7 +32,7 @@ class AnalyticsEvent {
 /// (overflow menu on Home -> "Analytics debug") and in the console.
 ///
 /// The "Impression tracking" feature task builds on top of this service.
-class AnalyticsService extends GetxService {
+class AnalyticsService extends GetxService with WidgetsBindingObserver {
   AnalyticsService({
     DateTime Function()? now,
     OneShotTimerFactory? oneShotTimer,
@@ -52,6 +53,12 @@ class AnalyticsService extends GetxService {
   bool _isSendingBatch = false;
 
   final events = <AnalyticsEvent>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   void logEvent(String name, [Map<String, dynamic> properties = const {}]) {
     final event = AnalyticsEvent(name, properties, at: _now());
@@ -92,6 +99,7 @@ class AnalyticsService extends GetxService {
 
   void _scheduleQualification() {
     _qualificationTimer?.cancel();
+    _qualificationTimer = null;
     if (_impressionObservations.isEmpty) return;
 
     final now = _now();
@@ -142,14 +150,14 @@ class AnalyticsService extends GetxService {
     _scheduleBatchDeadline();
   }
 
-  void _scheduleBatchDeadline() {
+  void _scheduleBatchDeadline({Duration? retryDelay}) {
     if (_isSendingBatch ||
         _pendingImpressionEvents.isEmpty ||
         _batchTimer != null) {
       return;
     }
-    final deadline = _firstPendingAt!.add(const Duration(seconds: 15));
-    final delay = deadline.difference(_now());
+    final delay = retryDelay ??
+        _firstPendingAt!.add(const Duration(seconds: 15)).difference(_now());
     _batchTimer = _oneShotTimer(
       delay.isNegative ? Duration.zero : delay,
       () {
@@ -169,13 +177,44 @@ class AnalyticsService extends GetxService {
     _batchTimer = null;
     _isSendingBatch = true;
     final batch = List<Map<String, dynamic>>.from(_pendingImpressionEvents);
+    final batchFirstPendingAt = _firstPendingAt;
     _pendingImpressionEvents.clear();
     _firstPendingAt = null;
+    var sent = false;
     try {
       await sender(batch);
+      sent = true;
+    } catch (error) {
+      LogService.error('failed to send analytics batch', error);
+      _pendingImpressionEvents.insertAll(0, batch);
+      _firstPendingAt = batchFirstPendingAt;
     } finally {
       _isSendingBatch = false;
-      if (_pendingImpressionEvents.length >= 10) {
+      if (!sent) {
+        _scheduleBatchDeadline(retryDelay: const Duration(seconds: 15));
+      } else if (_pendingImpressionEvents.length >= 10) {
+        unawaited(_sendNextBatch());
+      } else {
+        _scheduleBatchDeadline();
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _impressionObservations.clear();
+      _qualificationTimer?.cancel();
+      _qualificationTimer = null;
+      return;
+    }
+    if (state == AppLifecycleState.resumed &&
+        !_isSendingBatch &&
+        _pendingImpressionEvents.isNotEmpty) {
+      final deadline = _firstPendingAt!.add(const Duration(seconds: 15));
+      if (!_now().isBefore(deadline)) {
+        _batchTimer?.cancel();
+        _batchTimer = null;
         unawaited(_sendNextBatch());
       } else {
         _scheduleBatchDeadline();
@@ -190,6 +229,7 @@ class AnalyticsService extends GetxService {
     _impressionObservations.clear();
     _impressedDealIds.clear();
     _pendingImpressionEvents.clear();
+    WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }
 }

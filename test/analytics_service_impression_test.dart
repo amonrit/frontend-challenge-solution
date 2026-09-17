@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rescu/service/analytics_service.dart';
 
@@ -26,6 +27,8 @@ class _FakeTimer implements Timer {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   test('records one deal impression after one continuous visible second', () {
     var now = DateTime.utc(2026, 1, 1, 12);
     _FakeTimer? qualificationTimer;
@@ -265,5 +268,128 @@ void main() {
 
     expect(sentBatches, hasLength(2));
     expect(sentBatches.last.single['deal_id'], 11);
+  });
+
+  test('retries a failed batch after a controlled delay', () async {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    final timers = <_FakeTimer>[];
+    final sentBatches = <List<Map<String, dynamic>>>[];
+    var attempts = 0;
+    final analytics = AnalyticsService(
+      now: () => now,
+      oneShotTimer: (_, callback) {
+        final timer = _FakeTimer(callback);
+        timers.add(timer);
+        return timer;
+      },
+      batchSender: (events) {
+        attempts++;
+        if (attempts == 1) return Future<void>.error(StateError('offline'));
+        sentBatches.add(events);
+        return Future.value();
+      },
+    );
+
+    analytics.observeImpression(
+      observationId: 'home_feed:42:0',
+      dealId: 42,
+      source: 'home_feed',
+      position: 0,
+      visibleFraction: 0.5,
+    );
+    now = now.add(const Duration(seconds: 1));
+    timers.last.fire();
+    now = now.add(const Duration(seconds: 15));
+    timers.last.fire();
+    await Future<void>.value();
+    await Future<void>.value();
+
+    expect(attempts, 1);
+
+    now = now.add(const Duration(seconds: 15));
+    timers.last.fire();
+    await Future<void>.value();
+
+    expect(attempts, 2);
+    expect(sentBatches.single.single['deal_id'], 42);
+  });
+
+  test('pausing clears an in-progress visibility observation', () {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    _FakeTimer? qualificationTimer;
+    final analytics = AnalyticsService(
+      now: () => now,
+      oneShotTimer: (_, callback) => qualificationTimer = _FakeTimer(callback),
+    );
+
+    analytics.observeImpression(
+      observationId: 'home_feed:42:0',
+      dealId: 42,
+      source: 'home_feed',
+      position: 0,
+      visibleFraction: 0.5,
+    );
+    analytics.didChangeAppLifecycleState(AppLifecycleState.paused);
+
+    now = now.add(const Duration(seconds: 1));
+    qualificationTimer!.fire();
+
+    expect(analytics.events, isEmpty);
+  });
+
+  test('resuming dispatches a batch whose deadline elapsed while paused',
+      () async {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    final timers = <_FakeTimer>[];
+    final sentBatches = <List<Map<String, dynamic>>>[];
+    final analytics = AnalyticsService(
+      now: () => now,
+      oneShotTimer: (_, callback) {
+        final timer = _FakeTimer(callback);
+        timers.add(timer);
+        return timer;
+      },
+      batchSender: (events) async => sentBatches.add(events),
+    );
+
+    analytics.observeImpression(
+      observationId: 'search:42:0',
+      dealId: 42,
+      source: 'search',
+      position: 0,
+      visibleFraction: 0.5,
+    );
+    now = now.add(const Duration(seconds: 1));
+    timers.last.fire();
+    analytics.didChangeAppLifecycleState(AppLifecycleState.paused);
+
+    now = now.add(const Duration(seconds: 15));
+    analytics.didChangeAppLifecycleState(AppLifecycleState.resumed);
+    await Future<void>.value();
+
+    expect(sentBatches.single.single['deal_id'], 42);
+  });
+
+  test('service disposal cancels a pending qualification timer', () {
+    var now = DateTime.utc(2026, 1, 1, 12);
+    _FakeTimer? qualificationTimer;
+    final analytics = AnalyticsService(
+      now: () => now,
+      oneShotTimer: (_, callback) => qualificationTimer = _FakeTimer(callback),
+    );
+
+    analytics.observeImpression(
+      observationId: 'home_feed:42:0',
+      dealId: 42,
+      source: 'home_feed',
+      position: 0,
+      visibleFraction: 0.5,
+    );
+    analytics.onClose();
+
+    expect(qualificationTimer!.cancelled, isTrue);
+    now = now.add(const Duration(seconds: 1));
+    qualificationTimer!.fire();
+    expect(analytics.events, isEmpty);
   });
 }
