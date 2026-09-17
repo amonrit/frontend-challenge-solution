@@ -19,7 +19,7 @@ passed all seven ticket flows.
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
 | F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
 | F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add/countdown observation | Quantity-change, removal, expiry, and checkout-410 manual journey; comparable DevTools rebuild evidence |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add/countdown and quantity-replacement observations | Removal, expiry, and checkout-410 manual journey; comparable DevTools rebuild evidence |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -644,8 +644,8 @@ evidence on suitable hardware before making a performance claim.
 
 **Status:** Implementation complete; acceptance evidence incomplete. Automated
 reservation lifecycle and checkout coverage is complete. An Android-emulator
-profile run confirms the real add/reserve/countdown path; broader manual and
-comparable DevTools evidence remain.
+profile run confirms the real add/reserve/countdown and quantity-replacement
+paths; broader manual and comparable DevTools evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -693,15 +693,20 @@ run, opening Chef's Thai Bundle and tapping **Add to bag** logged
 `POST /reservations dealId=2 qty=1`; its bag line then rendered
 `Reservation expires in 02:37`. This establishes the real first-add,
 reservation-request, and countdown-display path. It does not establish the
-other lifecycle branches below.
+other lifecycle branches below. Tapping its plus control then rendered quantity
+2 and `Reservation expires in 04:38`; the same process logged
+`POST /reservations dealId=2 qty=2` followed by `DELETE /reservations/res_1`.
+That manual sequence supports replacement-before-release for a successful
+increment, while deterministic tests remain the primary evidence for races and
+failure recovery.
 
 ### Limitations or follow-up
 
-Capture manual quantity-change, removal, expiry, and checkout-410 journeys,
-then obtain comparable Flutter DevTools rebuild evidence for multiple visible
-reservation countdowns. The profile run covers only a successful first add and
-its initial countdown display; deterministic tests remain the primary evidence
-for the remaining branches.
+Capture manual removal, expiry, and checkout-410 journeys, then obtain
+comparable Flutter DevTools rebuild evidence for multiple visible reservation
+countdowns. The profile run covers successful first add and quantity
+replacement only; deterministic tests remain the primary evidence for the
+remaining branches.
 
 ### References
 

@@ -51,6 +51,9 @@ justification in `solutions.md` after evidence and option comparison.
 - Android-emulator profile evidence confirms one successful first add:
   Chef's Thai Bundle logged `POST /reservations dealId=2 qty=1`, and its cart
   line displayed `Reservation expires in 02:37`.
-- Next evidence: manual quantity change, removal, expiry, and checkout-410
-  journeys, plus comparable DevTools rebuild evidence. The successful add does
-  not measure countdown performance or prove the remaining lifecycle branches.
+- The same run confirmed a successful increment: quantity displayed 2, the
+  countdown refreshed to `04:38`, and the log recorded
+  `POST /reservations dealId=2 qty=2` before `DELETE /reservations/res_1`.
+- Next evidence: manual removal, expiry, and checkout-410 journeys, plus
+  comparable DevTools rebuild evidence. These successful paths do not measure
+  countdown performance or prove the remaining lifecycle branches.
