@@ -124,6 +124,15 @@ quantity controls, and render the E4 countdown after confirmation. Details
 shows immediate reserving feedback and a non-technical rollback message.
 Focused notice and expiry widget tests passed; analyzer passed.
 
+### E6 and E7 verification
+
+CartController now blocks checkout until every line has a confirmed,
+unexpired hold. An injected message seam makes deterministic controller tests
+independent of snackbar animation: 410 clears the submitted cart and 502
+retains it for retry. The latest full suite passed 75 tests and analyzer found
+no issues. Manual reservation flows and comparable DevTools countdown/rebuild
+evidence have not been captured.
+
 ## Edge and failure cases
 
 - Existing line increment, a duplicate rapid tap, and a quantity limit.

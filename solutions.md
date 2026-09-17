@@ -4,7 +4,7 @@ This is the delivery summary. Investigation questions, research, and task compar
 
 ## Status Summary
 
-**Latest shared verification (2026-09-17):** `flutter test` passed 63 tests,
+**Latest shared verification (2026-09-17):** `flutter test` passed 75 tests,
 `flutter analyze` reported no issues, and the Android-emulator regression suite
 passed all seven ticket flows.
 
@@ -19,7 +19,7 @@ passed all seven ticket flows.
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
 | F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
 | F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer | Manual add/remove/expiry/410 journey and comparable DevTools rebuild evidence |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -642,8 +642,9 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Partial — E1–E5 add reservation state, expiry, and cart/details
-feedback. Checkout and runtime reservation evidence remain.
+**Status:** Implementation complete; acceptance evidence incomplete. Automated
+reservation lifecycle and checkout coverage is complete; manual/runtime and
+comparable DevTools evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -683,11 +684,15 @@ including increment/decrement, rollback, serialization, and release paths;
 analyzer also passed. E4's focused reservation/expiry/countdown/flash command
 passed 11 tests; analyzer passed.
 E5's focused notice and expiry widget tests passed; analyzer passed.
+E6's deterministic controller tests verify that 410 clears the submitted cart
+and 502 retains its confirmed hold for retry. The final full suite passed 75
+tests and analyzer reported no issues.
 
 ### Limitations or follow-up
 
-E6–E7 remain: checkout 410 recovery and integrated/profile evidence. No
-runtime reservation flow has been claimed.
+Capture a manual add, quantity change, removal, expiry, and checkout-410
+journey, then obtain comparable Flutter DevTools rebuild evidence for multiple
+visible reservation countdowns. No runtime reservation flow has been claimed.
 
 ### References
 

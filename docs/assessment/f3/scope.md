@@ -46,7 +46,8 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E6 checkout validation and 410 recovery complete.
-- Next phase: Phase 7 — E7 final functional and performance verification.
+- Current phase: Phase 7 — final automated verification complete.
+- Next phase: Phase 8 — documentation currency audit after any additional
+  manual or DevTools evidence.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.
