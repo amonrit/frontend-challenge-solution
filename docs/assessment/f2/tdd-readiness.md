@@ -123,6 +123,17 @@ recorded event rows separately from `Pending impressions`, `Sending
 impressions`, and a delivery state of idle, sending, or retry scheduled.
 Focused service and widget tests are GREEN.
 
+### E7 recorded verification
+
+The focused F-2 command covering the service, tracker, and debug screen passed
+14 tests. The latest full `fvm flutter test` suite passed 63 tests, `fvm
+flutter analyze` reported no issues, and `git diff --check` was clean for the
+feature work. The app also built and reached Home in Android emulator
+profile-mode, logging Fake API readiness and analytics bootstrap. This is
+build/wiring evidence only: no manual cross-screen 50%-for-one-second journey,
+Analytics-debug batch observation, or comparable Flutter DevTools
+scrolling/rebuild capture was performed.
+
 ## Edge and failure cases
 
 - Visibility exactly `0.5`, just below it, and threshold jitter before the

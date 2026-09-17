@@ -46,8 +46,9 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E6 delivery-state observability complete.
-- Next phase: Phase 6 — execute E7, final functional and performance
-  verification.
-- No diagnosis, option selection, test, production-code change, or runtime
-  claim has been made for F-2.
+- Current phase: Phase 8 — documentation currency audit complete.
+- Next phase: collect the outstanding manual cross-screen and comparable
+  DevTools evidence if acceptance proof beyond deterministic tests is needed.
+- Deterministic service/widget evidence, static analysis, and Android
+  profile-mode bootstrap evidence are recorded. No manual cross-screen
+  visibility/delivery or comparable DevTools scrolling claim has been made.

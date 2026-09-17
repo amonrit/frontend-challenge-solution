@@ -4,7 +4,7 @@ This is the delivery summary. Investigation questions, research, and task compar
 
 ## Status Summary
 
-**Latest shared verification (2026-09-17):** `flutter test` passed 34 tests,
+**Latest shared verification (2026-09-17):** `flutter test` passed 63 tests,
 `flutter analyze` reported no issues, and the Android-emulator regression suite
 passed all seven ticket flows.
 
@@ -17,8 +17,8 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: 49 tests, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
-| F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
+| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
+| F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
 The rerun baseline/current results and Android route coverage for every
@@ -574,10 +574,11 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Implementation in progress — qualification, cancellation, session
-deduplication, batching, retry, lifecycle behavior, and all card call sites
-complete. Analytics debug delivery-state observability is complete. No runtime
-visibility evidence has been produced.
+**Status:** Implementation complete; acceptance evidence incomplete.
+Deterministic qualification, delivery, lifecycle, wrapper, and debug-screen
+coverage is complete. Android profile-mode bootstrap reached Home, but manual
+cross-screen visibility/delivery proof and comparable DevTools evidence have
+not been captured.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -590,8 +591,8 @@ one-shot timer, and pending qualifying observations. An eligible observation
 records the required event only when it has remained at or above the threshold
 for one controlled second. A below-threshold update or wrapper disposal removes
 the observation. A session-wide deal-id set allows the first qualifying source
-and position to emit once, across routes. Batching and card integration remain
-pending. Qualifying payloads now enter a FIFO queue and are sent through an
+and position to emit once, across routes. Qualifying payloads enter a FIFO
+queue and are sent through an
 injected sender as one batch at ten events or 15 seconds after the first unsent
 event. A failed batch is retained and retried after 15 seconds; pause clears
 only in-progress qualification and resume sends an overdue unsent batch. Card
@@ -612,19 +613,22 @@ comparison records lifecycle and performance trade-offs.
 
 ### Verification and evidence
 
-The initial deterministic qualification test is GREEN: an observation at 50%
-emits no event before its deadline and emits exactly one required event when the
-injected clock reaches one second. Focused tests also verify threshold-drop
-cancellation and Home/Search cross-source deduplication. Runtime visibility and
-batch behavior are not yet verified. Focused service tests verify both delivery
-thresholds using injected timers and sender, plus retention of an impression
-that qualifies while the previous batch is in flight. Retry, pause/resume, and
-timer disposal are also covered by deterministic service tests. Wrapper widget
-tests verify forwarded properties and disposal cancellation. Delivery-state
-tests verify queued/in-flight transitions and the Analytics debug summary.
+The focused F-2 command passed 14 tests: deterministic service tests cover the
+one-second threshold, cancellation, cross-source first-wins deduplication,
+10-event and 15-second FIFO delivery, in-flight preservation, retry,
+pause/resume, disposal, and delivery state. Widget tests cover source/position
+forwarding, tracker disposal, and the Analytics debug summary. The latest full
+suite passed 63 tests and `fvm flutter analyze` reported no issues. An Android
+emulator profile-mode launch reached Home and logged both Fake API readiness
+and analytics bootstrap. This launch checks build and dependency wiring; it
+does not establish the 50%-for-one-second card condition, batch delivery in the
+debug screen, or scroll/rebuild performance.
 
 ### Limitations or follow-up
-No implementation or analytics evidence was produced for this feature.
+Capture a manual Home → Search/flash-rail journey that qualifies a card once,
+then inspect the Analytics debug screen for its pending/in-flight transition
+and delivered batch. Capture comparable Flutter DevTools scrolling/rebuild
+evidence on suitable hardware before making a performance claim.
 
 ### References
 

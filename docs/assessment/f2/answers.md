@@ -1,5 +1,13 @@
 # F-2 — Deal Impression Tracking: Evidence-Backed Answers
 
+## Evidence timing
+
+The source findings below record the pre-implementation investigation that
+informed the selected design. They are intentionally retained as historical
+evidence; the delivered implementation and its current verification state are
+summarized in [`solutions.md`](../../../solutions.md) and the later entries in
+[`tdd-readiness.md`](tdd-readiness.md).
+
 ## Evidence record
 
 | Source or command | Observed fact |
