@@ -39,7 +39,8 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 1 — requirement questions complete.
-- Next phase: Phase 2 — collect evidence-backed answers.
+- Current phase: Phase 2 — evidence-backed answers complete.
+- Next phase: Phase 3 — compare implementation options and research framework
+  behavior needed for the decision.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.
