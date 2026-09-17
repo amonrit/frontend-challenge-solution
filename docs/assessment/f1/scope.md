@@ -41,7 +41,8 @@ second; the result requires DevTools performance evidence.
 
 - Current phase: Phase 6 — E8 verification complete. Android profile-mode
   observation confirmed a ticking active countdown in the rail, Home card, and
-  details screen; runtime-performance acceptance evidence remains incomplete.
+  details screen; the final focused F-1 suite (16 tests) and analyzer passed.
+  Runtime-performance acceptance evidence remains incomplete.
 - Next phase: No further F-1 execution task. Capture comparable DevTools
   frame-time and memory evidence before claiming full acceptance.
 - Scope, evidence, option selection, and E1–E7 implementation/test claims are

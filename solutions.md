@@ -563,6 +563,8 @@ that the shared clock is wired to all requested active display surfaces and
 that the active interaction gate is open. Controlled-clock tests remain the
 evidence for expiry, cart removal, and the notice because waiting for a live
 deal to expire or changing the device clock would be less deterministic.
+The final F-1 acceptance audit reran its 16 focused tests and `fvm flutter
+analyze`; all passed.
 
 ### Limitations or follow-up
 Comparable DevTools frame-time, Dart heap, and image-cache evidence for a
