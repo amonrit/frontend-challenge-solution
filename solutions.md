@@ -18,7 +18,7 @@ passed all seven ticket flows.
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
 | F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 76-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
-| F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 76-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
+| F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 76-test suite; analyzer; Android profile manual Home/Search/debug delivery evidence | Comparable Flutter DevTools scrolling/rebuild capture |
 | F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 76-test suite, analyzer, 100-countdown rebuild contract, and Android-emulator profile manual lifecycle observations | Comparable DevTools rebuild evidence; the guarded runtime flow prevents a normal manual 410 submission |
 
 The rerun baseline/current results and Android route coverage for every
@@ -576,9 +576,8 @@ neither is a substitute for DevTools performance measurements.
 
 **Status:** Implementation complete; acceptance evidence incomplete.
 Deterministic qualification, delivery, lifecycle, wrapper, and debug-screen
-coverage is complete. Android profile-mode bootstrap reached Home, but manual
-cross-screen visibility/delivery proof and comparable DevTools evidence have
-not been captured.
+coverage is complete. Android profile manual evidence confirms Home, flash-rail,
+and Search event delivery; comparable DevTools evidence has not been captured.
 
 ### Requirement
 Track qualifying card visibility with session deduplication and batched
@@ -618,17 +617,24 @@ one-second threshold, cancellation, cross-source first-wins deduplication,
 10-event and 15-second FIFO delivery, in-flight preservation, retry,
 pause/resume, disposal, and delivery state. Widget tests cover source/position
 forwarding, tracker disposal, and the Analytics debug summary. The latest full
-suite passed 63 tests and `fvm flutter analyze` reported no issues. An Android
-emulator profile-mode launch reached Home and logged both Fake API readiness
-and analytics bootstrap. This launch checks build and dependency wiring; it
-does not establish the 50%-for-one-second card condition, batch delivery in the
-debug screen, or scroll/rebuild performance.
+suite passed 76 tests and `fvm flutter analyze` reported no issues. Android
+emulator profile-mode reached Home and logged both Fake API readiness and
+analytics bootstrap.
+
+Manual profile evidence then left Home cards visible and recorded flash-rail
+deal ids 1 and 5 plus Home-feed deal id 2; 15 seconds later the app logged
+`POST /analytics/batch events=3`. Searching `vegan` displayed two result cards
+and logged `deal_impression` for ids 22 and 23 with `source: search` and
+positions 0 and 1. At the next 15-second deadline it logged
+`POST /analytics/batch events=2`. Analytics debug displayed those Search
+events and `Pending impressions: 0`, `Sending impressions: 0`, and
+`Delivery: idle`. The screenshots and logs establish route wiring, payload
+shape, session state, and delivery; deterministic controlled-clock tests remain
+the proof of the exact 50%-for-one-second threshold.
 
 ### Limitations or follow-up
-Capture a manual Home → Search/flash-rail journey that qualifies a card once,
-then inspect the Analytics debug screen for its pending/in-flight transition
-and delivered batch. Capture comparable Flutter DevTools scrolling/rebuild
-evidence on suitable hardware before making a performance claim.
+Capture comparable Flutter DevTools scrolling/rebuild evidence on suitable
+hardware before making a performance claim.
 
 ### References
 
@@ -843,9 +849,8 @@ dependency resolution, real reservation-expiry waits, and review pauses.
 With one additional day, I would first capture repeatable before/after DevTools
 traces on a physical mid-range Android device for RES-105. I would then obtain
 comparable DevTools evidence for F-1's 100 countdown leaves, F-2 scrolling,
-and F-3 reservation countdowns. Finally, I would capture F-2's manual
-cross-screen batch-delivery proof and add dedicated RES-107 loading/error
-widget coverage.
+and F-3 reservation countdowns. Finally, I would add dedicated RES-107
+loading/error widget coverage.
 
 ## DevTools Evidence — RES-105
 

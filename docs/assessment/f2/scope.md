@@ -46,9 +46,9 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 8 — documentation currency audit complete.
-- Next phase: collect the outstanding manual cross-screen and comparable
-  DevTools evidence if acceptance proof beyond deterministic tests is needed.
-- Deterministic service/widget evidence, static analysis, and Android
-  profile-mode bootstrap evidence are recorded. No manual cross-screen
-  visibility/delivery or comparable DevTools scrolling claim has been made.
+- Current phase: Phase 8 — manual-evidence documentation audit complete.
+- Android profile manual evidence recorded Home/flash-rail impressions, Search
+  impressions for ids 22 and 23, two delivered batches, and the Analytics debug
+  idle state. Controlled-clock tests remain the exact threshold proof.
+- Remaining evidence: comparable DevTools scrolling/rebuild measurements. No
+  runtime performance claim has been made.
