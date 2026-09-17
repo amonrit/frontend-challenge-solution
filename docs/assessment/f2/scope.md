@@ -46,7 +46,7 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 0 — scope initialized.
-- Next phase: Phase 1 — write requirement questions.
+- Current phase: Phase 1 — requirement questions complete.
+- Next phase: Phase 2 — collect evidence-backed answers.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-2.
