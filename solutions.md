@@ -574,7 +574,7 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Planning — Phase 2 evidence complete. No implementation or runtime
+**Status:** Planning — Phase 3 design selected. No implementation or runtime
 evidence has been produced.
 
 ### Requirement
@@ -588,7 +588,11 @@ examined.
 
 ### Rejected alternatives
 
-No approach was selected because implementation was not started.
+Per-card timers, route-local tracking, manual scroll geometry, and a separate
+impression service were rejected. The selected design makes the existing
+app-scoped `AnalyticsService` own qualification, deduplication, batching, and
+delivery; small card wrappers only forward visibility changes. The detailed
+comparison records lifecycle and performance trade-offs.
 
 ### Verification and evidence
 
@@ -600,6 +604,10 @@ No implementation or analytics evidence was produced for this feature.
 ### References
 
 - `PROBLEM.md` F-2 requirements
+- [F-2 scope](docs/assessment/f2/scope.md)
+- [F-2 requirement questions](docs/assessment/f2/questions.md)
+- [F-2 evidence-backed answers](docs/assessment/f2/answers.md)
+- [F-2 options and decision](docs/assessment/f2/options.md)
 
 ## F-3 — Stock reservations
 

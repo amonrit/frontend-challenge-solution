@@ -46,7 +46,8 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 2 — evidence-backed answers complete.
-- Next phase: Phase 3 — compare implementation options and select a design.
+- Current phase: Phase 3 — selected design recorded.
+- Next phase: Phase 4 — establish TDD readiness and capture the initial RED
+  test.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-2.
