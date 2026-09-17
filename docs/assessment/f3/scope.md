@@ -46,9 +46,9 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E3 quantity replacement and obsolete-hold release
+- Current phase: Phase 6 — E4 expiry and shared-clock countdown state
   complete.
-- Next phase: Phase 6 — execute E4 only: reservation expiry and leaf countdown
-  state.
+- Next phase: Phase 6 — execute E5 only: cart/details user feedback and
+  countdown placement.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

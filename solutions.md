@@ -642,9 +642,9 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Partial — E1–E3 add optimistic reservation, stale-completion
-protection, and safe quantity replacement. Expiry/countdown, checkout, UI
-feedback, and runtime reservation evidence remain.
+**Status:** Partial — E1–E4 add optimistic reservation, stale-completion
+protection, safe quantity replacement, and shared-clock expiry. Cart UI,
+checkout, and runtime reservation evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -658,7 +658,9 @@ reserve failure. A first-add stale completion after remove-and-readd releases
 its hold without changing the replacement line. Increment and decrement now
 reserve a replacement quantity before releasing the prior hold; a 409 restores
 the previous confirmed quantity and id. Same-line changes are serialized while
-pending. The selected expiry and 410 policies remain planned.
+pending. At the server UTC expiry instant, CartService removes the line,
+releases its hold best-effort, and queues a notice. A leaf countdown derives
+from the existing app clock; cart-screen placement remains E5 work.
 
 ### Rejected alternatives
 
@@ -677,12 +679,13 @@ The focused stale-completion regression also passed before a generation map was
 added, because the first-add flow uses line identity as its invalidation
 boundary. E3's focused reservation and flash-expiry command passed 9 tests,
 including increment/decrement, rollback, serialization, and release paths;
-analyzer also passed.
+analyzer also passed. E4's focused reservation/expiry/countdown/flash command
+passed 11 tests; analyzer passed.
 
 ### Limitations or follow-up
 
-E4–E7 remain: expiry/countdown, user feedback, checkout 410 recovery, and
-integrated/profile evidence. No runtime reservation flow has been claimed.
+E5–E7 remain: user feedback, checkout 410 recovery, and integrated/profile
+evidence. No runtime reservation flow has been claimed.
 
 ### References
 

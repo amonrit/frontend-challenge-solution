@@ -102,6 +102,18 @@ per-line operation generation for replacement invalidation. The focused
 reservation plus flash-expiry command passed 9 tests, and `fvm flutter
 analyze` reported no issues on 2026-09-17.
 
+### E4 recorded RED and GREEN
+
+The expiry RED failed because neither `ReservationCountdown` nor
+`reservationExpiryNotices` existed. CartService now reuses the app-scoped
+FlashSaleClockService tick to remove a confirmed line at its server UTC
+`expiresAt`, release its hold best-effort, and queue a reservation-expiry
+notice. `ReservationCountdown` is a leaf `Obx` over that same clock; it
+formats the remaining duration and switches to `Reservation expired` at zero.
+The focused reservation, expiry, countdown, and flash-cart command passed 11
+tests; analyzer passed. Cart-screen placement and notice presentation remain
+E5 work.
+
 ## Edge and failure cases
 
 - Existing line increment, a duplicate rapid tap, and a quantity limit.

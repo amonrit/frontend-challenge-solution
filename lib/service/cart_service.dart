@@ -19,6 +19,16 @@ class FlashSaleExpiryNotice {
   final String dealName;
 }
 
+class ReservationExpiryNotice {
+  const ReservationExpiryNotice({
+    required this.dealId,
+    required this.dealName,
+  });
+
+  final int dealId;
+  final String dealName;
+}
+
 /// App-wide cart. Lives for the whole session.
 ///
 /// NOTE: the starter cart is purely local — it does not reserve stock on the
@@ -42,14 +52,17 @@ class CartService extends GetxService {
   final items = <CartItemModel>[].obs;
   final itemCount = 0.obs;
   final expiryNotices = <FlashSaleExpiryNotice>[].obs;
+  final reservationExpiryNotices = <ReservationExpiryNotice>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     final clock = _flashSaleClock;
     if (clock != null) {
-      _flashSaleClockWorker =
-          ever(clock.currentTime, (_) => _expireFlashDeals());
+      _flashSaleClockWorker = ever(clock.currentTime, (_) {
+        _expireFlashDeals();
+        _expireReservations();
+      });
     }
   }
 
@@ -154,11 +167,7 @@ class CartService extends GetxService {
   void remove(int dealId) {
     final item = items.firstWhereOrNull((i) => i.deal.id == dealId);
     if (item == null) return;
-    _invalidate(item);
-    items.remove(item);
-    _recount();
-    final reservation = item.reservation;
-    if (reservation != null) unawaited(_releaseQuietly(reservation.id));
+    _removeItem(item, releaseReservation: true);
   }
 
   void clear() {
@@ -176,6 +185,10 @@ class CartService extends GetxService {
     expiryNotices.remove(notice);
   }
 
+  void consumeReservationExpiryNotice(ReservationExpiryNotice notice) {
+    reservationExpiryNotices.remove(notice);
+  }
+
   num get total => items.fold(0, (sum, i) => sum + i.lineTotal);
 
   DateTime get _currentTime => _flashSaleClock?.currentTime.value ?? _now();
@@ -188,14 +201,38 @@ class CartService extends GetxService {
         .toList();
     if (expiredItems.isEmpty) return;
 
-    final expiredIds = expiredItems.map((item) => item.deal.id).toSet();
-    items.removeWhere((item) => expiredIds.contains(item.deal.id));
-    _recount();
     for (final item in expiredItems) {
+      _removeItem(item, releaseReservation: true);
       expiryNotices.add(FlashSaleExpiryNotice(
         dealId: item.deal.id,
         dealName: item.deal.name,
       ));
+    }
+  }
+
+  void _expireReservations() {
+    final expiredItems = items.where((item) {
+      final reservation = item.reservation;
+      return !item.isReservationPending &&
+          reservation != null &&
+          !_currentTime.toUtc().isBefore(reservation.expiresAt.toUtc());
+    }).toList();
+    for (final item in expiredItems) {
+      _removeItem(item, releaseReservation: true);
+      reservationExpiryNotices.add(ReservationExpiryNotice(
+        dealId: item.deal.id,
+        dealName: item.deal.name,
+      ));
+    }
+  }
+
+  void _removeItem(CartItemModel item, {required bool releaseReservation}) {
+    _invalidate(item);
+    if (!items.remove(item)) return;
+    _recount();
+    final reservation = item.reservation;
+    if (releaseReservation && reservation != null) {
+      unawaited(_releaseQuietly(reservation.id));
     }
   }
 
