@@ -46,8 +46,7 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 1 — reservation requirement questions complete.
-- Next phase: Phase 2 — collect evidence-backed answers from source and safe
-  baseline checks.
+- Current phase: Phase 2 — source evidence and safe baseline checks complete.
+- Next phase: Phase 3 — compare reservation and expiry-policy options.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.
