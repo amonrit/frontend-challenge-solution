@@ -39,7 +39,7 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 5 — execution plan complete.
-- Next phase: Phase 6 — execute E1, pure flash status and formatting.
+- Current phase: Phase 6 — E1 pure flash status and formatting complete.
+- Next phase: Phase 6 — execute E2, shared clock and lifecycle refresh.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.
