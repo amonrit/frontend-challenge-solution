@@ -46,7 +46,8 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 2 — source evidence and safe baseline checks complete.
-- Next phase: Phase 3 — compare reservation and expiry-policy options.
+- Current phase: Phase 3 — reservation architecture and expiry policy selected.
+- Next phase: Phase 4 — define deterministic acceptance criteria and capture
+  the smallest reservation RED test.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

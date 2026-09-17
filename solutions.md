@@ -642,15 +642,28 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Planning — scope, questions, and source-backed baseline evidence
-are documented; no implementation or runtime reservation evidence yet.
+**Status:** Planning — scope, evidence, and a reservation/expiry design are
+documented; no implementation or runtime reservation evidence yet.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
 
+### Implementation
+
+Not started. The selected design makes the app-scoped `CartService` the owner
+of reservation state and asynchronous mutations through a narrow injected
+gateway. Quantity changes reserve a replacement hold before releasing the old
+hold. Expiry removes the line and requires a deliberate re-add; a checkout 410
+conservatively removes all lines from that request because the current contract
+does not identify the failed reservation.
+
 ### Rejected alternatives
 
-No approach was selected because implementation was not started.
+Route-local reservation ownership, a second mutable reservation service,
+release-before-reserve quantity changes, automatic re-reservation at expiry,
+and real-latency fake-backend tests were rejected. They respectively risk
+lifecycle loss, duplicate sources of truth, loss of a valid hold, unexpected
+user action, or non-deterministic tests.
 
 ### Verification and evidence
 
@@ -665,6 +678,7 @@ No implementation or reservation evidence was produced for this feature.
 - [F-3 scope](docs/assessment/f3/scope.md)
 - [F-3 requirement questions](docs/assessment/f3/questions.md)
 - [F-3 evidence-backed answers](docs/assessment/f3/answers.md)
+- [F-3 options and decision](docs/assessment/f3/options.md)
 
 ## AI Usage Log
 
