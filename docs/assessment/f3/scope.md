@@ -63,6 +63,9 @@ justification in `solutions.md` after evidence and option comparison.
 - A fresh hold visibly counted down `03:06` → `01:49` → `00:36` without a
   device-clock change. After real expiry it rendered an empty bag and logged
   `DELETE /reservations/res_5` at 06:18:25.
-- Next evidence: a manual checkout-410 journey and comparable DevTools rebuild
-  evidence. The collected paths do not measure countdown performance or prove
-  the remaining lifecycle branch.
+- A separate near-expiry checkout attempt reached client-side expiry first:
+  `res_6` was released at 06:26:28, the bag became empty, and the UI stated
+  that the reservation expired. This correct guard prevents a normal manual
+  410 submission; the injected controller test covers 410 recovery.
+- Next evidence: comparable DevTools rebuild evidence. The collected paths do
+  not measure countdown performance.

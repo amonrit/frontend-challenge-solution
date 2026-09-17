@@ -19,7 +19,7 @@ passed all seven ticket flows.
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
 | F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: latest 63-test suite, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
 | F-2 | **Implementation complete; acceptance evidence incomplete** | 14 focused qualification/delivery/wrapper/debug tests; latest 63-test suite; analyzer; Android profile-mode Home launch | Manual cross-screen qualification and Analytics-debug delivery proof; comparable Flutter DevTools scrolling/rebuild capture |
-| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add, replacement, rollback, removal, checkout, and real-expiry observations | Checkout-410 manual journey; comparable DevTools rebuild evidence |
+| F-3 | **Implementation complete; acceptance evidence incomplete** | Reservation lifecycle tests, latest 75-test suite, analyzer, and Android-emulator profile manual add, replacement, rollback, removal, checkout, and real-expiry observations | Comparable DevTools rebuild evidence; the guarded runtime flow prevents a normal manual 410 submission |
 
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
@@ -645,8 +645,9 @@ evidence on suitable hardware before making a performance claim.
 **Status:** Implementation complete; acceptance evidence incomplete. Automated
 reservation lifecycle and checkout coverage is complete. An Android-emulator
 profile run confirms the real add/reserve/countdown, quantity-replacement,
-rollback, removal, checkout, and real-expiry paths; broader manual and
-comparable DevTools evidence remain.
+rollback, removal, checkout, and real-expiry paths. Comparable DevTools
+evidence remains; the normal runtime path prevents an expired hold from
+reaching checkout.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -723,13 +724,21 @@ logged `DELETE /reservations/res_5` at 06:18:25. This confirms the live
 countdown-to-removal and release path. It does not test checkout's distinct
 410 response branch.
 
+A separate attempt to time Checkout near expiry reached the same guarded
+outcome: `res_6` was released at 06:26:28, the bag rendered empty, and the UI
+reported `Your reservation for Chef's Thai Bundle expired.` Because the client
+removes an expired line before checkout can be submitted, a normal manual flow
+cannot produce 410 without bypassing the behavior under test. The deterministic
+controller test injects 410 after a submitted confirmed hold and verifies the
+selected recovery: clear the affected cart and give a clear retry message.
+
 ### Limitations or follow-up
 
-Capture a manual checkout-410 journey, then obtain comparable Flutter DevTools
-rebuild evidence for multiple visible reservation countdowns. The profile run
-covers successful first add, replacement, rollback, removal, checkout, and
-expiry; deterministic tests remain the primary evidence for the remaining
-branches.
+Obtain comparable Flutter DevTools rebuild evidence for multiple visible
+reservation countdowns. The profile run covers successful first add,
+replacement, rollback, removal, checkout, and expiry. The deterministic 410
+test covers the backend-race branch that the normal UI prevents from being
+submitted.
 
 ### References
 
