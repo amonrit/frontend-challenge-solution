@@ -57,7 +57,15 @@ Date: 2026-09-17
 A physical Android 15 device was connected through Wireless debugging. Flutter
 could install and launch profile APKs, but its Dart VM Service could not be
 discovered through the wireless log stream; DevTools frame and memory views
-were therefore unavailable.
+were therefore unavailable. The preferred measurement path is Flutter DevTools
+over a USB data connection, which gives direct access to Flutter frame timing,
+Dart heap, and image-cache evidence. That path was unavailable because only a
+charge-only USB cable was available for this assessment session.
+
+Rather than fabricate a DevTools result or stop at emulator data, the fallback
+was a physical-device Perfetto capture through Wireless debugging. It provides
+system scheduling and graphics events, but it is not equivalent to Flutter
+DevTools and is documented with its own data-quality limits below.
 
 As a system-level alternative, Perfetto captured `sched/sched_switch`, `freq`,
 `idle`, `am`, `wm`, `gfx`, and `view` events for 15 seconds. Both runs used the
@@ -73,6 +81,19 @@ The raw traces are intentionally not committed because they are binary capture
 artifacts. Trace size is not a performance metric, so this capture does not
 claim an improvement. It establishes a repeatable physical-device trace
 contract that can be opened in Perfetto UI when a trace processor is available.
+
+## Perfetto UI analysis attempt
+
+Both traces were opened in Perfetto UI and contained CPU Scheduling, CPU
+Frequency, graphics, and `dev.rescu.rescu` process tracks. A SQL query against
+the current trace returned 8,382.758 ms of scheduled process time across 8,803
+scheduling slices during its 15-second capture. This is an observation only,
+not a performance result.
+
+Perfetto UI also reported import/data-loss errors in both captures: 18,519 for
+the baseline and 22,362 for the current trace. Those warnings make the two
+scheduled-time values unsuitable for a before/after comparison. No runtime
+improvement claim is made from this analysis.
 
 ## Required follow-up
 

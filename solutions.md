@@ -335,12 +335,29 @@ scroll-rebuild scope test; the full suite is re-run after this change. A Pixel
 raster timing varied substantially between repeats, so the capture is evidence
 of the comparison method rather than a measured improvement claim.
 
+### Physical-device measurement decision
+
+Flutter DevTools over a USB data connection was the preferred measurement path:
+it can inspect frame timing, Dart heap, and image-cache behaviour. Only a
+charge-only USB cable was available, so the physical device could not expose a
+USB data connection. Wireless debugging also did not expose a usable Flutter
+VM Service, which prevented collecting DevTools frame and memory views.
+
+As a fallback, comparable 15-second Perfetto traces were captured over Wireless
+debugging before and after the change. They document the attempted physical
+device method and its metadata, but do not substitute for DevTools and are not
+used to claim a frame-time, jank, memory, or image-cache improvement.
+
 ### Limitations or follow-up
 The implementation has before/after timeline data and a physical Android
 Perfetto capture, but no analyzed repeatable frame or memory improvement
 measurement. The Flutter VM Service was unavailable over wireless debugging,
 so DevTools frame and memory views could not be collected. No measured jank,
 memory, or image-cache improvement is claimed.
+
+Perfetto UI opened both physical traces, but flagged import/data-loss warnings
+in both captures. Its current-trace process scheduling value is recorded in
+the profile evidence only as an observation, not as a comparison metric.
 `test/home_feed_list_test.dart` directly verifies lazy construction for a
 100-deal feed, while `test/home_screen_rebuild_scope_test.dart` verifies that
 scroll state does not rebuild `HomeFeedList`. Image sizing tests and source
