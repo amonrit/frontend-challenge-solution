@@ -54,6 +54,9 @@ justification in `solutions.md` after evidence and option comparison.
 - The same run confirmed a successful increment: quantity displayed 2, the
   countdown refreshed to `04:38`, and the log recorded
   `POST /reservations dealId=2 qty=2` before `DELETE /reservations/res_1`.
-- Next evidence: manual removal, expiry, and checkout-410 journeys, plus
-  comparable DevTools rebuild evidence. These successful paths do not measure
-  countdown performance or prove the remaining lifecycle branches.
+- A first decrement received the configured 409 and visibly retained quantity
+  2 and total ฿252. A retry replaced its hold successfully; removing the final
+  unit rendered an empty bag and logged `DELETE /reservations/res_3`.
+- Next evidence: manual expiry and checkout-410 journeys, plus comparable
+  DevTools rebuild evidence. The collected paths do not measure countdown
+  performance or prove the remaining lifecycle branches.
