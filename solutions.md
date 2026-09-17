@@ -642,8 +642,8 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** Planning — scope established; no implementation or reservation
-evidence yet.
+**Status:** Planning — scope and requirement questions are documented; no
+implementation or reservation evidence yet.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
@@ -663,6 +663,7 @@ No implementation or reservation evidence was produced for this feature.
 
 - `PROBLEM.md` F-3 requirements
 - [F-3 scope](docs/assessment/f3/scope.md)
+- [F-3 requirement questions](docs/assessment/f3/questions.md)
 
 ## AI Usage Log
 
