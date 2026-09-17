@@ -39,8 +39,8 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E4 flash rail countdown complete.
-- Next phase: Phase 6 — execute E5, Home/details rendering and interaction
-  gates.
+- Current phase: Phase 6 — E5 Home/details rendering and interaction gates
+  complete.
+- Next phase: Phase 6 — execute E6, root notice host.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.

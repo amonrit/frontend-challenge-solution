@@ -76,6 +76,15 @@ Flutter's pending-timer invariant. Each test now calls the injected clock's
 `onClose` after its assertions, before that invariant runs. The clock itself
 continues to own and cancel the only periodic timer.
 
+### E5 recorded RED and GREEN
+
+Home-card and detail widget tests initially failed because neither surface
+rendered `Expired`. After E5, the Home `InkWell` has no `onTap` for an expired
+deal and the detail `FilledButton` has no `onPressed`. Both surfaces use the
+same shared-clock countdown and expiry-gate policy. The gate listens to clock
+updates but rebuilds its parent affordance only when active state changes to
+expired.
+
 ## Edge and failure cases
 
 - Null end instant and a deal already expired at initial render.

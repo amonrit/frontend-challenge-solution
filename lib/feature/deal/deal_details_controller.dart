@@ -110,13 +110,14 @@ class DealDetailsController extends GetxController {
     _quantityLeft.value = fresh.quantityLeft;
   }
 
-  void addToCart() {
-    cartService.add(deal);
+  bool addToCart() {
+    if (!cartService.add(deal)) return false;
     Get.snackbar(
       'Added to bag',
       '${deal.name} — pick up ${deal.pickupWindow.label}',
       snackPosition: SnackPosition.BOTTOM,
       duration: const Duration(seconds: 2),
     );
+    return true;
   }
 }

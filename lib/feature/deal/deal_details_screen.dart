@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 import '../../app_config.dart';
 import '../../model/deal_model.dart';
+import '../shared_widget/flash_sale_countdown.dart';
+import '../shared_widget/flash_sale_expiry_gate.dart';
 import '../shared_widget/the_network_image.dart';
 import 'deal_details_controller.dart';
 
@@ -96,6 +98,16 @@ class DealDetailsScreen extends GetView<DealDetailsController> {
                           )),
                     ],
                   ),
+                  if (deal.isFlashSale) ...[
+                    const SizedBox(height: 12),
+                    FlashSaleCountdown(
+                      endsAt: deal.flashSaleEndsAt,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(12),
@@ -161,15 +173,18 @@ class DealDetailsScreen extends GetView<DealDetailsController> {
           ),
         ],
       ),
-      bottomSheet: Container(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-        color: Colors.white,
-        child: SizedBox(
-          width: double.infinity,
-          child: FilledButton.icon(
-            onPressed: controller.addToCart,
-            icon: const Icon(Icons.add_shopping_cart),
-            label: const Text('Add to bag'),
+      bottomSheet: FlashSaleExpiryGate(
+        endsAt: deal.flashSaleEndsAt,
+        builder: (context, isExpired) => Container(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+          color: Colors.white,
+          child: SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: isExpired ? null : controller.addToCart,
+              icon: const Icon(Icons.add_shopping_cart),
+              label: Text(isExpired ? 'Expired' : 'Add to bag'),
+            ),
           ),
         ),
       ),
