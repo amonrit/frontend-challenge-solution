@@ -2,12 +2,31 @@
 
 This is the delivery summary. Investigation questions, research, and task comparisons are kept in [`docs/assessment/`](docs/assessment/) so this file stays focused on completed work and evidence. The shared assessment format is documented in [`docs/assessment/README.md`](docs/assessment/README.md).
 
+## Status Summary
+
+**Latest shared verification (2026-09-17):** `flutter test` passed 34 tests,
+`flutter analyze` reported no issues, and the Android-emulator regression suite
+passed all seven ticket flows.
+
+| Ticket | Delivery status | Current evidence | Remaining acceptance evidence |
+| --- | --- | --- | --- |
+| RES-101 | Complete | Deterministic stale-response tests, latest full suite, Android emulator regression flow | None for the ticket scope |
+| RES-102 | Complete | Countdown disposal tests, simulator smoke test, latest full suite | None for the documented route-pop flow |
+| RES-103 | Complete | Controller lifecycle/late-response tests, Android emulator navigation flow, latest full suite | None for the ticket scope |
+| RES-104 | Complete | Deterministic overlapping-request tests, latest full suite, Android emulator Home flow | None for the ticket scope |
+| RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
+| RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
+| RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
+| F-1 | Not started | Requirements and assessment planning only | Complete implementation, 100+ countdown performance evidence, and regression coverage |
+| F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
+| F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
+
 The rerun baseline/current results and Android route coverage for every
 RES-101 to RES-107 ticket are summarized in the
 [regression evidence matrix](docs/assessment/regression-matrix.md).
 
-Each completed ticket below follows the same summary format: status, diagnosis
-or requirement, fix or implementation, rejected alternatives, verification and
+Each ticket below follows the same summary format: status, diagnosis or
+requirement, fix or implementation, rejected alternatives, verification and
 evidence, limitations, and references.
 
 ## RES-101 — Search result ordering
@@ -110,8 +129,8 @@ The first visible-countdown test used `DateTime.now()` directly. `tester.pump(Du
 | Mounted countdown | Controlled-clock test proves the visible remaining time changes after one tick. |
 | Three disposed countdowns | Regression test passes without framework error or pending timers. |
 | Countdown route pushed then popped | Route-level widget test passes without framework error or pending timer. |
-| Focused tests | `flutter test test/pickup_countdown_test.dart`: 4 passed. |
-| Full test suite | `flutter test`: 5 passed. |
+| Focused tests | `flutter test test/pickup_countdown_test.dart`: passed. |
+| Full test suite | `flutter test`: 34 passed. |
 | Static analysis | `flutter analyze`: no issues. |
 | Fixed app launch | Home screen launched on iPhone 17 Pro Simulator. |
 | My orders → back → wait one minute | Passed by user: returned to Home, waited one minute, and observed no crash or post-disposal timer error. |
@@ -119,9 +138,6 @@ The first visible-countdown test used `DateTime.now()` directly. `tester.pump(Du
 ### Limitations or follow-up
 
 No known RES-102 limitation remains for the documented route-pop scenario.
-The focused/full counts in this section are historical measurements from the
-RES-102 verification point; the later project-wide suite count is recorded at
-the later ticket's measurement point and does not replace this history.
 
 ### References
 
@@ -219,11 +235,12 @@ while an older page-2 request is still allowed to append afterward.
 
 ### Implementation
 
-Selected monotonic request-round and page tokens. T1 adds a controller round
-counter: each refresh advances the round, and refresh/load-more completions from
-older rounds no longer mutate the feed. The remaining expected-page invariant
-is now enforced by T2: load-more captures `requestedPage` before awaiting and
-advances `_page` only when both round and response page match.
+The controller now owns a monotonically increasing request round. Each refresh
+advances that round, so refresh or load-more completions from older rounds no
+longer mutate the feed. Load-more captures `requestedPage` before awaiting and
+advances `_page` only when both the round and response page match. Lifecycle
+guards and `finally` cleanup ensure that a closed controller cannot accept a
+late response and that only the current round ends shared loading state.
 
 ### Rejected alternatives
 
@@ -234,41 +251,19 @@ alone was rejected because it cannot restore ordering or identify stale rounds.
 
 ### Verification and evidence
 
-Before measurement is recorded in the answers document. T1's after measurement
-uses the identical deterministic completion order: the focused test changed
-from `[3, 4]` before the guard to `[3]` after the guard.
-
-Phase 4 added a delayed repository test seam. The first run exposed a missing
-Flutter binding in the test setup; initializing `TestWidgetsFlutterBinding`
-fixed the seam. The intended RED run then produced `Expected: [3], Actual:
-[3, 4]`, proving that an older page-2 response is appended after refresh.
-
-T2 repeats the same completion order after the page guard and keeps the focused
-GREEN test passing. A response with the wrong page is ignored without changing
-the feed or pagination metadata.
+Before measurement is recorded in the answers document. A delayed repository
+test reproduces the original failure as `Expected: [3], Actual: [3, 4]`, where
+an older page-2 response appends after refresh. With the guards applied, the
+same completion order produces `[3]`. The focused coverage also checks stale
+load-more failure, wrong response page, final-page no-op, stale append, and a
+response that completes after controller closure.
 
 ### Limitations or follow-up
 
-A separate manual Home overlap run was not claimed; the deterministic injected
-repository is the primary race evidence. A production-like request logger could
-be added as follow-up evidence if needed.
-
-T3 added lifecycle guards and `finally` cleanup for refresh/load-more. A closed
-controller no longer accepts late responses, while only the current request
-round completes the shared refresh indicator. The focused suite now includes a
-late-refresh-after-close test and passes 2 tests. Failure-edge expansion is
-covered by T4.
-
-T4 expands the deterministic suite to 6 tests: overlapping refreshes, stale
-load-more failure, wrong response page, final-page no-op, stale append, and
-late response after close. All focused tests pass. The same delayed repository
-seam was reused for T5's before/after comparison.
-
-T5 reran the identical controlled completion order and recorded the change from
-`[3, 4]` before the guard to `[3]` after it. The focused RES-104 suite passed 6
-tests, the full project suite passed 19 tests, analyzer reported no issues, and
-`git diff --check` passed. A separate manual Home overlap run was not claimed;
-the deterministic injected repository is the primary race evidence.
+The focused RES-104 suite, latest full project suite (34 tests), analyzer, and
+`git diff --check` pass. Deterministic injected-repository tests are the
+primary race evidence; Android integration coverage provides complementary
+route and wiring verification.
 
 ### References
 
@@ -297,15 +292,13 @@ still require a profile-mode trace.
 
 ### Implementation
 
-The selected plan is to split reactive boundaries, use lazy feed construction,
-and pass display-sized image decode hints. T1 moved scroll observation into
-separate app-bar and FAB `Obx` wrappers; the body observer reads feed state but
-does not depend on scroll offset. T2 replaced the main feed's eager
-`children + map` with
-`ListView.builder`, preserving the flash rail, header/filter, footer, and
-existing refresher callbacks. T3 added display-sized `memCacheWidth` and
-`memCacheHeight` hints using layout constraints and device pixel ratio, while
-leaving unconstrained dimensions unset.
+The selected plan splits reactive boundaries, uses lazy feed construction, and
+passes display-sized image decode hints. Scroll observation now lives in
+separate app-bar and FAB `Obx` wrappers, while the body observer does not read
+scroll offset. The eager `children + map` feed is now a `ListView.builder`,
+preserving the flash rail, header/filter, footer, and refresher callbacks.
+Finite image constraints and device pixel ratio supply `memCacheWidth` and
+`memCacheHeight`; unconstrained dimensions remain unset.
 
 ### Rejected alternatives
 
@@ -317,21 +310,15 @@ leaving unconstrained dimensions unset.
 
 ### Verification and evidence
 
-The Phase 2 baseline has 28 passing tests, a clean analyzer, and Flutter 3.27.0
-with DevTools 2.40.2. Android profile-mode before/after Flutter VM timeline
-measurements are now recorded in the profile baseline document. The host-GPU
+Flutter 3.27.0 with DevTools 2.40.2 was used for the recorded Android
+profile-mode before/after Flutter VM timelines. The host-GPU
 emulator's raster timing varied substantially across repeat runs, so no
-performance improvement is claimed. After T1,
-`flutter analyze` passed with no issues and the existing Home controller suite
-passed 6 tests. After T2, the same analyzer and Home regression suite passed;
-after T3, the image sizing test passed and analyzer reported no issues. T4
-captured Android emulator before/after Flutter VM timelines using the same
-scenario; source-level differences and the timeline record agree, but runtime
-performance impact remains unmeasured because the timings were not repeatable.
-T5 integrated verification on 2026-09-17 passed: image sizing (1), Home
-regression (6), full suite (29), analyzer, and diff check. Follow-up widget
-coverage now includes both lazy construction and a direct scroll-rebuild scope
-test; the later project-wide suite passes 34 tests. A Pixel
+performance improvement is claimed. Image sizing, Home regression, the latest
+full suite (34 tests), analyzer, and diff check pass. Widget coverage includes
+both lazy construction and a direct scroll-rebuild scope test. Android emulator
+before/after Flutter VM timelines used the same scenario; source-level
+differences and timeline record agree, but runtime performance impact remains
+unmeasured because timings were not repeatable. A Pixel
 6 / API 35 emulator ran both revisions in profile mode using host GPU. Its
 raster timing varied substantially between repeats, so the capture is evidence
 of the comparison method rather than a measured improvement claim.
@@ -382,7 +369,7 @@ review cover the remaining structural changes.
 
 ## RES-106 — Pickup time and today filter
 
-**Status:** Implementation complete; verification passed. Documentation audit complete.
+**Status:** Complete. Automated, Android-emulator, and documentation verification passed.
 
 ### Requirement
 Use the required Bangkok timezone and compare complete calendar dates for pickup and today filtering.
@@ -398,11 +385,10 @@ Bangkok market date.
 ### Implementation
 
 The selected approach is a centralized Bangkok market-time conversion seam with
-a fixed UTC+7 offset. T1 added `BangkokTimePolicy`, which keeps API values as
-UTC instants, projects values into Bangkok time, compares complete market dates,
-and accepts an injectable clock. T2 applies the policy to `PickupWindowModel`
-label formatting and complete-date `isToday` comparison. Other time-dependent
-behavior remains under review in later tasks.
+a fixed UTC+7 offset. `BangkokTimePolicy` keeps API values as UTC instants,
+projects values into Bangkok time, compares complete market dates, and accepts
+an injectable clock. `PickupWindowModel` uses that policy for label formatting
+and complete-date `isToday` comparison.
 
 ### Rejected alternatives
 
@@ -416,23 +402,22 @@ behavior remains under review in later tasks.
 ### Verification and evidence
 
 The evidence phase recorded the current direct-UTC label and day-only
-comparison, plus a baseline of 19 passing tests and a clean analyzer run. The
+comparison, plus a clean analyzer run. The
 new focused RED run failed for the intended reasons: `10:30 – 14:00` instead of
 `17:30 – 21:00`, and `isToday == true` for a same-day-number date in the next
-month. After implementation, T1's three policy tests, T2's two focused model
-tests, and T3's four boundary cases pass. Full verification is recorded below.
+month. After implementation, policy, model, and boundary tests pass. Full
+verification is recorded below.
 
 ### Limitations or follow-up
-T3 added fixed-clock coverage for Bangkok midnight, month-end, year-end, and
-device-timezone independence. The first run exposed that `isToday` still used
-the system clock directly; the model now delegates to the policy's injected
-clock, and all six focused RES-106 tests pass. T4 audited card, map, details,
-and Home filtering: they read model properties and contain no duplicate
-timezone arithmetic. `isOpenNow` and `untilStart` remain instant comparisons
-and were left unchanged. T5 verification on 2026-09-17 passed: focused RES-106
-tests (6), full Flutter suite (28), analyzer, and `git diff --check`. A later
-integration regression test covers the Home `Pickup today` filter with a fixed
-Bangkok clock; the Home suite now passes 7 tests and the full suite passes 30.
+Fixed-clock coverage includes Bangkok midnight, month-end, year-end, and
+device-timezone independence. It exposed that `isToday` initially read the
+system clock directly; the model now delegates to the policy's injected clock.
+The card, map, details, and Home filter read model properties and contain no
+duplicate timezone arithmetic. `isOpenNow` and `untilStart` remain instant
+comparisons and were left unchanged. Focused RES-106 tests, the latest full
+Flutter suite (34 tests), analyzer, and `git diff --check` pass. The Android
+emulator integration regression test covers the Home `Pickup today` filter with
+a fixed Bangkok clock.
 Manual runtime display measurement was not performed; the recorded evidence is
 unit and source based.
 
@@ -458,9 +443,8 @@ query parameters, while normal card navigation additionally supplies a
 `DealModel` in `Get.arguments`. The details controller currently force-casts
 that optional argument before the screen can render. `DealRepo.fetchById` and
 the simulated API already provide ID lookup, latency, and a 404 exception; deal
-42 exists in the catalog. The baseline full suite passed 9 tests and analyzer
-reported no issues on 2026-09-16. Final verification later passed 13 tests and
-included a real simulator deep-link flow.
+42 exists in the catalog. The latest full suite passes 34 tests, analyzer
+reports no issues, and verification includes a real simulator deep-link flow.
 
 ### Fix
 
@@ -477,62 +461,21 @@ The first RED test now reproduces the crash deterministically: with
 `type 'Null' is not a subtype of type 'DealModel' in type cast` before the fake
 repository can load the deal.
 
-The execution plan was split into controller input resolution, async-state
-comparison, guarded ID loading, observer safety, screen states, regression
-coverage, and final verification. All listed execution tasks are complete.
+`Get.arguments` is now treated as a runtime value: a supplied `DealModel` keeps
+the existing fast path, while a route ID resolves through `DealRepo`. Separate
+GetX observables model nullable deal, loading, and user-facing error state.
+Missing or invalid IDs and repository failures become retryable errors, and a
+closed-controller guard discards late responses. The screen renders explicit
+loading, loaded, and error branches while keeping retry in the controller.
 
-T1 treated `Get.arguments` as a runtime value: a `DealModel` keeps the existing
-fast path, while other values resolve the parsed route ID. The forced cast was
-removed.
-
-C2 selected separate GetX observables for nullable loaded deal, loading, and a
-user-facing error message. This keeps the existing architecture and makes the
-screen's loading/loaded/error branches explicit; a new sealed async abstraction
-or screen-owned `FutureBuilder` would add ownership and lifecycle complexity.
-
-T2 implements the controller loading boundary. It reads the route ID from GetX
-parameters and falls back to the current route query for direct deep-link entry.
-A valid ID sets `isLoading`, calls `DealRepo.fetchById`, and reuses the
-loaded-deal initialization path. Missing or invalid IDs and repository errors
-become retryable `errorMessage` state instead of cast or async exceptions. A
-closed-controller guard prevents late responses from mutating disposed state.
-The focused deep-link and controller regression tests passed at that stage
-(3 tests); later T5 expanded the final focused suite to 6 tests.
-
-T3 keeps the normal card-navigation fast path: a supplied `DealModel` is used
-immediately and does not trigger an initial repository fetch. The cart `ever`
-worker is created only after a loaded deal exists, and any previous worker is
-disposed before re-initialization to prevent duplicate availability requests.
-The controller close and multi-controller regression tests remain green; the
-focused controller/deep-link suite passed 4 tests at that stage and 6 after T5.
-
-T4 updates `DealDetailsScreen` to observe loading, error, and loaded state
-before reading the controller's deal. Direct links therefore show a progress
-indicator while fetching, invalid or failed links show a retryable message, and
-normal model navigation keeps the existing details layout. Retry remains
-controller-owned so the screen does not perform repository work. Focused
-controller/deep-link checks pass. Dedicated widget rendering tests remain a
-follow-up limitation; the runtime simulator check covers the loaded page.
-
-T5 adds regression coverage for valid route ID loading, normal model arguments,
-invalid IDs, repository failures, and observer cleanup. The focused suite now
-passes 6 tests. Failure coverage verifies that loading ends with no exposed deal
-and a retryable user-facing message; full analyzer and runtime verification are
-reserved for T6.
-
-T6 completed the initial checks: the full Flutter suite passed 13 tests,
-analyzer reported no issues, and `git diff --check` passed. On an iPhone 17 Pro
-Simulator, opening `rescu://open/deal?id=42&source=push` reached the details
-page for “Mystery Japanese Basket”, matching catalog deal 42. The runtime
-screenshot is stored at `docs/assessment/107/evidence/res-107-deal-42-runtime.png`.
-
-Later Android verification established that an `adb shell` command must escape
-`&` for the device shell. With `\&source=push`, a cold start on Pixel 6 / API
-35 loaded deal 42 and logged `deal_details_view` with `source: push`. While
-adding coverage for routes where GetX parameters are unavailable, a RED
-regression test found that `id` had a current-URI fallback but `source` did
-not. The controller now uses one helper for both values. The full integrated
-suite subsequently passed 32 tests.
+Regression coverage includes route-ID loading, normal model navigation, invalid
+IDs, repository failure, observer cleanup, and the source fallback when GetX
+parameters are unavailable. The latest Flutter suite passes 34 tests, analyzer
+reports no issues, and `git diff --check` passes. On an iPhone 17 Pro Simulator,
+opening `rescu://open/deal?id=42&source=push` reached “Mystery Japanese Basket”.
+The runtime screenshot is stored at
+`docs/assessment/107/evidence/res-107-deal-42-runtime.png`. Android emulator
+coverage passes all seven ticket flows.
 
 ### Rejected alternatives
 
@@ -543,8 +486,8 @@ repository and state ownership.
 ### Limitations or follow-up
 
 Dedicated widget tests for loading/error rendering and repeated deep-link
-navigation remain follow-up coverage. The controller paths and both iPhone and
-Android deal-42 flows are verified.
+navigation are optional follow-up coverage. The controller paths and both
+iPhone and Android deal-42 flows are verified.
 
 ### References
 
