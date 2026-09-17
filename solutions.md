@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | TDD RED recorded; implementation not started | Scope, source evidence, design comparison, and initial failing expiry test | Complete implementation, 100+ countdown performance evidence, and regression coverage |
+| F-1 | Execution plan ready; implementation not started | Scope, source evidence, design comparison, initial failing expiry test, and execution tasks | Complete implementation, 100+ countdown performance evidence, and regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -501,8 +501,8 @@ iPhone and Android deal-42 flows are verified.
 
 ## F-1 — Live flash-sale countdowns
 
-**Status:** TDD RED recorded; implementation not started. No runtime evidence
-yet.
+**Status:** Execution plan ready; implementation not started. An initial RED
+test exists; no runtime evidence yet.
 
 ### Requirement
 Display live countdowns, expiration behavior, and cart removal for expired flash-sale deals.
@@ -539,6 +539,7 @@ lifecycle behavior, and runtime performance remain unimplemented.
 - [F-1 evidence-backed answers](docs/assessment/f1/answers.md)
 - [F-1 options and decision](docs/assessment/f1/options.md)
 - [F-1 TDD readiness and RED result](docs/assessment/f1/tdd-readiness.md)
+- [F-1 execution task breakdown](docs/assessment/f1/task-breakdown.md)
 
 ## F-2 — Deal impression tracking
 

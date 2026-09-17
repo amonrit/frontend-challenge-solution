@@ -39,7 +39,7 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 4 — TDD readiness and initial RED test complete.
-- Next phase: Phase 5 — break the selected design into execution tasks.
+- Current phase: Phase 5 — execution plan complete.
+- Next phase: Phase 6 — execute E1, pure flash status and formatting.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.
