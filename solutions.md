@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Implementation in progress | Pure status, shared clock, cart expiry, visible notice, and all required countdown surfaces are covered by focused tests | 100+ performance evidence and regression coverage |
+| F-1 | Implementation in progress | Pure status, shared clock, cart expiry, visible notice, all required countdown surfaces, and 100-leaf rebuild scope are covered by focused tests | Runtime performance evidence and final regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -540,12 +540,15 @@ service tests pass for expired-add rejection and one-time removal/notice
 queueing. Rail tests verify both expired text and a controlled active countdown
 update. Home and details widget tests verify the expired interaction gates. The
 notice-host widget test verifies visible text and queue consumption after the
-Snackbar closes. The focused F-1 suite passes 13 tests. Performance evidence has not yet been
-produced.
+Snackbar closes. A 100-leaf widget fixture verifies one shared timer, label
+updates without rebuilding its parent, timer cancellation on disposal, and no
+exception after unmount. The focused F-1 suite passes 14 tests. Runtime
+performance evidence has not yet been produced.
 
 ### Limitations or follow-up
-100+ rebuild-scope verification, runtime performance evidence, and final
-regression coverage remain.
+Runtime performance evidence and final regression coverage remain. The
+100-leaf widget test proves the intended rebuild boundary; it is not a
+substitute for DevTools frame-time or memory measurements.
 
 ### References
 

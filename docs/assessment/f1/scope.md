@@ -39,8 +39,9 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E6 root notice host complete.
-- Next phase: Phase 6 — execute E7, verify 100-countdown rebuild scope and
-  disposal.
-- No diagnosis, option selection, test, production-code change, or runtime
-  claim has been made for F-1.
+- Current phase: Phase 6 — E7 100-countdown rebuild-scope and disposal
+  verification complete.
+- Next phase: Phase 6 — execute E8, end-to-end and performance verification.
+- Scope, evidence, option selection, and E1–E7 implementation/test claims are
+  recorded in this assessment folder. Runtime performance claims remain
+  deferred to E8 evidence.

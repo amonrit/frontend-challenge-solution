@@ -94,6 +94,17 @@ asserts that the event was consumed. This keeps `CartService` responsible for
 cart state and its event queue while the root host owns presentation and serial
 notice delivery.
 
+### E7 rebuild-scope and disposal evidence
+
+`test/flash_sale_rebuild_scope_test.dart` constructs 100 countdown leaves from
+one injected clock. A controlled one-second refresh changes every label from
+`01:00` to `00:59` while the non-reactive fixture parent remains at one build.
+The same test records one timer creation, unmounts all leaves, verifies timer
+cancellation during clock disposal, then refreshes time without a widget
+exception. The first fixture used a bare `Column` and produced a render-overflow
+test exception; wrapping the still-eager 100-leaf fixture in
+`SingleChildScrollView` fixed test layout without changing product code.
+
 ## Edge and failure cases
 
 - Null end instant and a deal already expired at initial render.
