@@ -39,7 +39,7 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 0 — scope complete.
-- Next phase: Phase 1 — write requirement and edge-case questions.
+- Current phase: Phase 1 — requirement questions complete.
+- Next phase: Phase 2 — collect evidence-backed answers.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.
