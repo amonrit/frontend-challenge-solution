@@ -574,7 +574,7 @@ neither is a substitute for DevTools performance measurements.
 
 ## F-2 — Deal impression tracking
 
-**Status:** Planning — Phase 4 initial RED test recorded. No implementation or
+**Status:** Planning — Phase 5 execution tasks prepared. No implementation or
 runtime evidence has been produced.
 
 ### Requirement
@@ -611,6 +611,7 @@ No implementation or analytics evidence was produced for this feature.
 - [F-2 evidence-backed answers](docs/assessment/f2/answers.md)
 - [F-2 options and decision](docs/assessment/f2/options.md)
 - [F-2 TDD readiness and RED test](docs/assessment/f2/tdd-readiness.md)
+- [F-2 execution task breakdown](docs/assessment/f2/task-breakdown.md)
 
 ## F-3 — Stock reservations
 

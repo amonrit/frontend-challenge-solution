@@ -46,7 +46,7 @@ screen must make recorded events observable, and scrolling must not regress.
 
 ## Workflow state
 
-- Current phase: Phase 4 — TDD readiness and initial RED test recorded.
-- Next phase: Phase 5 — split selected design into execution tasks.
+- Current phase: Phase 5 — execution task breakdown complete.
+- Next phase: Phase 6 — execute E1, deterministic visibility qualification.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-2.
