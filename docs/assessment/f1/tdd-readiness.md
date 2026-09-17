@@ -53,6 +53,14 @@ timer and asserts it was created before checking cancellation. Its remaining
 RED signal was the intended missing clock-service import/type; after E2 the
 clock tests pass.
 
+### E3 recorded RED and GREEN
+
+`test/cart_flash_expiry_test.dart` initially failed to compile because
+`CartService` had no shared-clock dependency. After E3, its two focused tests
+pass: an already-expired deal is rejected at the cart mutation boundary, and a
+cart line that expires after being added is removed once with one queued notice
+event.
+
 ### Post-change GREEN assertion
 
 The same rail fixture renders one `Expired` label and no `Ends soon` label.

@@ -21,11 +21,9 @@ or Home list every second.
 
 Introduce a single app-scoped `FlashSaleClockService` that owns the periodic
 tick, accepts an injectable `now` source for tests, and refreshes immediately
-when the application returns to the foreground. It registers active flash end
-instants and publishes a one-time expiry transition per deal. A pure
-`FlashSaleStatus` helper determines active/expired state, remaining duration,
-and the required `mm:ss` or `hh:mm:ss` label from an end instant and a supplied
-current instant.
+when the application returns to the foreground. A pure `FlashSaleStatus`
+helper determines active/expired state, remaining duration, and the required
+`mm:ss` or `hh:mm:ss` label from an end instant and a supplied current instant.
 
 Each rail/card/detail countdown becomes a small reactive leaf that reads the
 clock and rebuilds only its text each second. A separate expiry-state observer
@@ -34,11 +32,11 @@ does not depend on every clock tick. The details add action and cart add path
 both consult the same pure status rule, so a tap that races expiry is rejected
 at the mutation boundary.
 
-`CartService` remains the owner of cart mutation. On the service's one-time
-expiry transition, it removes all quantities for that deal ID and emits a
-one-shot notice event. A root-level notice host converts that event into the
-existing snackbar style, keeping business mutation separate from presentation
-and making repeated expiry notifications deduplicable.
+`CartService` remains the owner of cart mutation. It observes the shared clock,
+rejects expired additions, removes all quantities for an expired deal ID, and
+queues one notice event when that removal occurs. A root-level notice host will
+convert the event into the existing snackbar style, keeping business mutation
+separate from presentation and making repeated notifications deduplicable.
 
 ## Research notes
 
@@ -62,9 +60,8 @@ and making repeated expiry notifications deduplicable.
 - Calling `Get.snackbar` directly from the clock service is rejected because it
   mixes time/expiry policy with UI presentation and makes notice behavior harder
   to test.
-- The selected service must register and retire deal IDs carefully. Stale
-  registrations would retain data or emit irrelevant expiry transitions; the
-  execution plan must define registration ownership and cleanup.
+- The cart checks its current lines on each shared tick. That work is bounded by
+  cart size, but a future much larger cart may justify an expiry index.
 
 ## Decision limits
 

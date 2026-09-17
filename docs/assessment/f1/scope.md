@@ -39,7 +39,7 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E2 shared clock and lifecycle refresh complete.
-- Next phase: Phase 6 — execute E3, cart expiry boundary and notice event.
+- Current phase: Phase 6 — E3 cart expiry boundary and notice event complete.
+- Next phase: Phase 6 — execute E4, render the flash rail countdown.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.

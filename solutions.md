@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Implementation in progress | Pure status and shared-clock tests pass; rail expiry RED remains; no runtime evidence | Cart expiry, all-surface UI, 100+ performance evidence, and regression coverage |
+| F-1 | Implementation in progress | Pure status, shared-clock, and cart-expiry tests pass; rail expiry RED remains; no runtime evidence | All-surface UI, visible notice, 100+ performance evidence, and regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -501,9 +501,9 @@ iPhone and Android deal-42 flows are verified.
 
 ## F-1 — Live flash-sale countdowns
 
-**Status:** Implementation in progress. Pure status and shared clock behavior
-are tested; the rail expiry RED remains until its rendering task. No runtime
-evidence yet.
+**Status:** Implementation in progress. Pure status, shared clock, and cart
+expiry behavior are tested; the rail expiry RED remains until its rendering
+task. No runtime evidence yet.
 
 ### Requirement
 Display live countdowns, expiration behavior, and cart removal for expired flash-sale deals.
@@ -515,8 +515,10 @@ formatter, per-surface countdown text leaves, and one-time expiry transitions
 to the cart and root notice host. `FlashSaleStatus` now supplies immutable
 active/expired state and required formatting from a supplied end instant and
 clock. `FlashSaleClockService` now owns one app-scoped periodic timer and
-refreshes its time immediately on app resume; presentation, cart, and notice
-work remain unimplemented.
+refreshes its time immediately on app resume. `CartService` observes that
+clock, rejects expired additions, removes an expired deal's whole cart line,
+and queues one expiry notice event; presentation and visible notice work remain
+unimplemented.
 
 ### Rejected alternatives
 
@@ -530,13 +532,16 @@ The initial widget RED test pumps an already-expired flash deal in the rail and
 expects `Expired`. It still fails as intended because the current implementation
 renders no `Expired` widget. `flash_sale_status_test.dart` now passes four
 focused cases for null, active, zero/past expiry, and required time formats.
-Clock-service tests pass for one timer, disposal, and resume refresh. Performance
-evidence has not yet been produced.
+Clock-service tests pass for one timer, disposal, and resume refresh. Cart
+service tests pass for expired-add rejection and one-time removal/notice
+queueing. Performance evidence has not yet been produced.
 
 ### Limitations or follow-up
 The initial RED result still covers the static rail expiry state. Countdown
-rendering, interaction disabling, cart removal and notice, 100+ rebuild scope,
-lifecycle behavior, and runtime performance remain unimplemented.
+rendering, interaction disabling, visible notice presentation, 100+ rebuild
+scope, and runtime performance remain unimplemented. Until E5 changes the
+details action, its existing success snackbar can still appear after the cart
+boundary rejects an expired add; this is a known intermediate-task limitation.
 
 ### References
 
