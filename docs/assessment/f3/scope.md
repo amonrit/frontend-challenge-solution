@@ -46,8 +46,7 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: optional manual acceptance evidence in progress after the
-  Phase 8 documentation currency audit.
+- Current phase: Phase 8 final acceptance/documentation audit complete.
 - Android-emulator profile evidence confirms one successful first add:
   Chef's Thai Bundle logged `POST /reservations dealId=2 qty=1`, and its cart
   line displayed `Reservation expires in 02:37`.
@@ -69,5 +68,5 @@ justification in `solutions.md` after evidence and option comparison.
   410 submission; the injected controller test covers 410 recovery.
 - Automated rebuild evidence now includes a 100-leaf reservation countdown
   fixture: one shared timer advances every label without rebuilding its parent.
-- Next evidence: comparable DevTools rebuild evidence. The collected paths and
-  widget contract do not measure device frame time or memory.
+- Remaining evidence: comparable DevTools rebuild evidence. The collected paths
+  and widget contract do not measure device frame time or memory.

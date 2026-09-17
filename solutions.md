@@ -833,17 +833,19 @@ suite passes.
 
 ## Time Spent and One More Day
 
-Approximately **18–22 hours of active work** were spent across source review,
+Approximately **20–24 hours of active work** were spent across source review,
 baseline capture, TDD planning, implementation for RES-101 to RES-107,
 historical RED reruns in isolated worktrees, focused/full verification, Android
-integration testing, and documentation. This excludes waiting for emulator
-boot, Gradle builds, dependency resolution, and review pauses.
+integration testing, F-1 to F-3 delivery, manual reservation lifecycle runs,
+and documentation. This excludes waiting for emulator boot, Gradle builds,
+dependency resolution, real reservation-expiry waits, and review pauses.
 
 With one additional day, I would first capture repeatable before/after DevTools
-traces on a physical mid-range Android device for RES-105. I would then finish
-F-1 end to end: one shared ticker for countdown text, expiration-driven cart
-removal, focused tests for 100+ countdowns, and an Android integration flow.
-Only after that proof is complete would I start F-2 or F-3.
+traces on a physical mid-range Android device for RES-105. I would then obtain
+comparable DevTools evidence for F-1's 100 countdown leaves, F-2 scrolling,
+and F-3 reservation countdowns. Finally, I would capture F-2's manual
+cross-screen batch-delivery proof and add dedicated RES-107 loading/error
+widget coverage.
 
 ## DevTools Evidence — RES-105
 
