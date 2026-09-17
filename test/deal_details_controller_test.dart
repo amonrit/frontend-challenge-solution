@@ -10,6 +10,8 @@ import 'package:rescu/service/analytics_service.dart';
 import 'package:rescu/service/cart_service.dart';
 import 'package:rescu/service/fake_api_service.dart';
 
+import 'support/immediate_reservation_gateway.dart';
+
 class _CountingDealRepo extends DealRepo {
   _CountingDealRepo(this.deal) : super(api: FakeApiService());
 
@@ -90,7 +92,8 @@ void main() {
     final repo = _CountingDealRepo(deal);
     final controller = DealDetailsController(
       dealRepo: repo,
-      cartService: CartService(),
+      cartService:
+          CartService(reservationGateway: ImmediateReservationGateway()),
       analytics: AnalyticsService(),
     )..onInit();
 
@@ -100,7 +103,7 @@ void main() {
   });
 
   test('stops refreshing availability when its controller closes', () async {
-    final cart = CartService();
+    final cart = CartService(reservationGateway: ImmediateReservationGateway());
     final repo = _CountingDealRepo(deal);
     final controller = DealDetailsController(
       dealRepo: repo,
@@ -108,12 +111,12 @@ void main() {
       analytics: AnalyticsService(),
     )..onInit();
 
-    cart.add(deal);
+    await cart.add(deal);
     await Future<void>.delayed(Duration.zero);
     expect(repo.fetchByIdCalls, 1);
 
     controller.onClose();
-    cart.add(deal);
+    await cart.add(deal);
     await Future<void>.delayed(Duration.zero);
 
     expect(repo.fetchByIdCalls, 1);
@@ -121,7 +124,7 @@ void main() {
 
   test('keeps a different live controller subscribed after another closes',
       () async {
-    final cart = CartService();
+    final cart = CartService(reservationGateway: ImmediateReservationGateway());
     final firstRepo = _CountingDealRepo(deal);
     final secondRepo = _CountingDealRepo(secondDeal);
 
@@ -140,7 +143,7 @@ void main() {
     )..onInit();
 
     firstController.onClose();
-    cart.add(deal);
+    await cart.add(deal);
     await Future<void>.delayed(Duration.zero);
 
     expect(firstRepo.fetchByIdCalls, 0);
@@ -150,7 +153,7 @@ void main() {
   });
 
   test('ignores an availability response that finishes after close', () async {
-    final cart = CartService();
+    final cart = CartService(reservationGateway: ImmediateReservationGateway());
     final repo = _DelayedDealRepo();
     final controller = DealDetailsController(
       dealRepo: repo,
@@ -158,7 +161,7 @@ void main() {
       analytics: AnalyticsService(),
     )..onInit();
 
-    cart.add(deal);
+    await cart.add(deal);
     await Future<void>.delayed(Duration.zero);
     controller.onClose();
 

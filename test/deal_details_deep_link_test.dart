@@ -9,6 +9,8 @@ import 'package:rescu/service/api_exception.dart';
 import 'package:rescu/service/cart_service.dart';
 import 'package:rescu/service/fake_api_service.dart';
 
+import 'support/immediate_reservation_gateway.dart';
+
 class _DeepLinkDealRepo extends DealRepo {
   _DeepLinkDealRepo(this.loadedDeal) : super(api: FakeApiService());
 
@@ -66,7 +68,8 @@ void main() {
     final repo = _DeepLinkDealRepo(_deal(42));
     final controller = DealDetailsController(
       dealRepo: repo,
-      cartService: CartService(),
+      cartService:
+          CartService(reservationGateway: ImmediateReservationGateway()),
       analytics: AnalyticsService(),
     );
 
@@ -86,7 +89,8 @@ void main() {
     final analytics = AnalyticsService();
     final controller = DealDetailsController(
       dealRepo: _DeepLinkDealRepo(_deal(42)),
-      cartService: CartService(),
+      cartService:
+          CartService(reservationGateway: ImmediateReservationGateway()),
       analytics: analytics,
     );
 
@@ -107,7 +111,8 @@ void main() {
     final repo = _DeepLinkDealRepo(_deal(42));
     final controller = DealDetailsController(
       dealRepo: repo,
-      cartService: CartService(),
+      cartService:
+          CartService(reservationGateway: ImmediateReservationGateway()),
       analytics: AnalyticsService(),
     )..onInit();
 
@@ -122,7 +127,8 @@ void main() {
     Get.rootController.routing.current = '/deal?id=42';
     final controller = DealDetailsController(
       dealRepo: _FailingDealRepo(),
-      cartService: CartService(),
+      cartService:
+          CartService(reservationGateway: ImmediateReservationGateway()),
       analytics: AnalyticsService(),
     )..onInit();
 

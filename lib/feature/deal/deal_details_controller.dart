@@ -110,8 +110,8 @@ class DealDetailsController extends GetxController {
     _quantityLeft.value = fresh.quantityLeft;
   }
 
-  bool addToCart() {
-    if (!cartService.add(deal)) return false;
+  Future<bool> addToCart() async {
+    if (!await cartService.add(deal)) return false;
     Get.snackbar(
       'Added to bag',
       '${deal.name} — pick up ${deal.pickupWindow.label}',

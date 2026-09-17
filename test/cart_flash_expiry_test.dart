@@ -6,6 +6,8 @@ import 'package:rescu/model/pickup_window_model.dart';
 import 'package:rescu/service/cart_service.dart';
 import 'package:rescu/service/flash_sale_clock_service.dart';
 
+import 'support/immediate_reservation_gateway.dart';
+
 DealModel _flashDeal(DateTime endsAt) => DealModel(
       id: 1,
       name: 'Flash deal',
@@ -37,9 +39,12 @@ void main() {
       now: () => now,
       periodicTimer: (_, __) => Timer(const Duration(days: 1), () {}),
     )..onInit();
-    final cart = CartService(flashSaleClock: clock)..onInit();
+    final cart = CartService(
+      reservationGateway: ImmediateReservationGateway(),
+      flashSaleClock: clock,
+    )..onInit();
 
-    expect(cart.add(_flashDeal(now.subtract(const Duration(seconds: 1)))),
+    expect(await cart.add(_flashDeal(now.subtract(const Duration(seconds: 1)))),
         isFalse);
     expect(cart.items, isEmpty);
 
@@ -54,12 +59,13 @@ void main() {
       now: () => now,
       periodicTimer: (_, __) => Timer(const Duration(days: 1), () {}),
     )..onInit();
-    final cart = CartService(flashSaleClock: clock)..onInit();
+    final cart = CartService(
+      reservationGateway: ImmediateReservationGateway(),
+      flashSaleClock: clock,
+    )..onInit();
     final deal = _flashDeal(now.add(const Duration(seconds: 1)));
 
-    expect(cart.add(deal), isTrue);
-    expect(cart.add(deal), isTrue);
-    expect(cart.add(deal), isTrue);
+    expect(await cart.add(deal), isTrue);
 
     now = now.add(const Duration(seconds: 2));
     clock.refresh();

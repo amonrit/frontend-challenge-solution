@@ -5,6 +5,7 @@ import '../model/deal_model.dart';
 import '../model/flash_sale_status.dart';
 import '../util/log_service.dart';
 import 'flash_sale_clock_service.dart';
+import 'reservation_gateway.dart';
 
 class FlashSaleExpiryNotice {
   const FlashSaleExpiryNotice({
@@ -22,11 +23,14 @@ class FlashSaleExpiryNotice {
 /// backend. See the "Reservations" feature task in PROBLEM.md.
 class CartService extends GetxService {
   CartService({
+    required ReservationGateway reservationGateway,
     FlashSaleClockService? flashSaleClock,
     DateTime Function()? now,
-  })  : _flashSaleClock = flashSaleClock,
+  })  : _reservationGateway = reservationGateway,
+        _flashSaleClock = flashSaleClock,
         _now = now ?? DateTime.now;
 
+  final ReservationGateway _reservationGateway;
   final FlashSaleClockService? _flashSaleClock;
   final DateTime Function() _now;
   Worker? _flashSaleClockWorker;
@@ -45,7 +49,7 @@ class CartService extends GetxService {
     }
   }
 
-  bool add(DealModel deal) {
+  Future<bool> add(DealModel deal) async {
     if (FlashSaleStatus.fromEnd(deal.flashSaleEndsAt, now: _currentTime)
         .isExpired) {
       LogService.log('cart: cannot add expired deal ${deal.id}');
@@ -54,17 +58,28 @@ class CartService extends GetxService {
 
     final existing = items.firstWhereOrNull((i) => i.deal.id == deal.id);
     if (existing != null) {
-      if (existing.quantity >= deal.quantityLeft) {
-        LogService.log('cart: cannot add more of deal ${deal.id}');
+      LogService.log(
+          'cart: quantity replacement is not available yet for ${deal.id}');
+      return false;
+    }
+
+    final item = CartItemModel(deal: deal);
+    items.add(item);
+    _recount();
+
+    try {
+      item.reservation = await _reservationGateway.reserve(deal.id);
+      if (!items.contains(item)) {
+        await _reservationGateway.release(item.reservation!.id);
         return false;
       }
-      existing.quantity++;
       items.refresh();
-    } else {
-      items.add(CartItemModel(deal: deal));
+      return true;
+    } catch (error) {
+      LogService.error('failed to reserve deal ${deal.id}', error);
+      if (items.remove(item)) _recount();
+      return false;
     }
-    _recount();
-    return true;
   }
 
   void decrement(int dealId) {

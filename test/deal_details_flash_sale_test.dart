@@ -13,6 +13,8 @@ import 'package:rescu/service/cart_service.dart';
 import 'package:rescu/service/fake_api_service.dart';
 import 'package:rescu/service/flash_sale_clock_service.dart';
 
+import 'support/immediate_reservation_gateway.dart';
+
 class _UnusedDealRepo extends DealRepo {
   _UnusedDealRepo() : super(api: FakeApiService());
 }
@@ -50,7 +52,10 @@ void main() {
       now: () => DateTime.utc(2026, 1, 1, 12),
       periodicTimer: (_, __) => Timer(const Duration(days: 1), () {}),
     ));
-    final cart = Get.put(CartService(flashSaleClock: clock));
+    final cart = Get.put(CartService(
+      reservationGateway: ImmediateReservationGateway(),
+      flashSaleClock: clock,
+    ));
     final controller = DealDetailsController(
       dealRepo: _UnusedDealRepo(),
       cartService: cart,

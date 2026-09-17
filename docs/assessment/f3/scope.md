@@ -46,9 +46,9 @@ justification in `solutions.md` after evidence and option comparison.
 
 ## Workflow state
 
-- Current phase: Phase 4 — TDD readiness complete; initial RED failure
-  recorded.
-- Next phase: Phase 5 — split the selected reservation design into executable
-  tasks. No implementation starts in that phase.
+- Current phase: Phase 6 — E1 gateway seam and optimistic first-add rollback
+  complete.
+- Next phase: Phase 6 — execute E2 only: guard asynchronous cart mutations
+  against stale completions.
 - No F-3 diagnosis, implementation decision, test, production-code change, or
   runtime reservation claim has been made.

@@ -642,21 +642,21 @@ evidence on suitable hardware before making a performance claim.
 
 ## F-3 — Stock reservations
 
-**Status:** TDD readiness — scope, evidence, selected design, and initial RED
-test are prepared; the RED failure confirms the reservation seam is absent. No
-implementation or runtime reservation evidence exists yet.
+**Status:** Partial — E1 adds the reservation gateway and optimistic first-add
+rollback. Quantity replacement, expiry, checkout, UI feedback, and runtime
+reservation evidence remain.
 
 ### Requirement
 Reserve stock optimistically when adding to cart and release or expire reservations safely.
 
 ### Implementation
 
-Not started. The selected design makes the app-scoped `CartService` the owner
-of reservation state and asynchronous mutations through a narrow injected
-gateway. Quantity changes reserve a replacement hold before releasing the old
-hold. Expiry removes the line and requires a deliberate re-add; a checkout 410
-conservatively removes all lines from that request because the current contract
-does not identify the failed reservation.
+`CartService` now owns a narrow injected `ReservationGateway`; production
+adapts it to `OrderRepo` during app bootstrap. A first add inserts the line
+immediately, attaches the server hold on success, and removes the same line on
+reserve failure. Until E3 implements a safe replacement hold, a second add to
+the same line is rejected rather than silently increasing an unheld quantity.
+The selected expiry and 410 policies remain planned.
 
 ### Rejected alternatives
 
@@ -668,10 +668,15 @@ user action, or non-deterministic tests.
 
 ### Verification and evidence
 
-No implementation or reservation evidence was produced for this feature.
+The initial controlled 409 rollback test is GREEN. On 2026-09-17, its focused
+command together with affected CartService, deal, flash-expiry, notice, and
+bootstrap tests passed 14 tests; `fvm flutter analyze` reported no issues.
 
 ### Limitations or follow-up
-No implementation or reservation evidence was produced for this feature.
+
+E2–E7 remain: operation generations, safe quantity replacement/release,
+expiry/countdown, user feedback, checkout 410 recovery, and integrated/profile
+evidence. No runtime reservation flow has been claimed.
 
 ### References
 
@@ -681,6 +686,7 @@ No implementation or reservation evidence was produced for this feature.
 - [F-3 evidence-backed answers](docs/assessment/f3/answers.md)
 - [F-3 options and decision](docs/assessment/f3/options.md)
 - [F-3 TDD readiness and RED test](docs/assessment/f3/tdd-readiness.md)
+- [F-3 execution task breakdown](docs/assessment/f3/task-breakdown.md)
 
 ## AI Usage Log
 

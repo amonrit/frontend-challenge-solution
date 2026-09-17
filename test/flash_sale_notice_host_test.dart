@@ -3,10 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rescu/feature/shared_widget/flash_sale_notice_host.dart';
 import 'package:rescu/service/cart_service.dart';
 
+import 'support/immediate_reservation_gateway.dart';
+
 void main() {
   testWidgets('shows and consumes each queued flash-sale expiry notice',
       (tester) async {
-    final cart = CartService();
+    final cart = CartService(reservationGateway: ImmediateReservationGateway());
     cart.expiryNotices.add(const FlashSaleExpiryNotice(
       dealId: 42,
       dealName: 'Flash sushi box',

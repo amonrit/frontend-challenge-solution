@@ -10,6 +10,7 @@ import 'service/analytics_service.dart';
 import 'service/cart_service.dart';
 import 'service/fake_api_service.dart';
 import 'service/flash_sale_clock_service.dart';
+import 'service/reservation_gateway.dart';
 import 'feature/shared_widget/flash_sale_notice_host.dart';
 
 Future<void> main() async {
@@ -26,13 +27,16 @@ Future<void> initDependencies() async {
     permanent: true,
   );
   Get.put(FlashSaleClockService(), permanent: true);
+  Get.lazyPut(() => OrderRepo(api: Get.find()), fenix: true);
   Get.put(
-    CartService(flashSaleClock: Get.find<FlashSaleClockService>()),
+    CartService(
+      reservationGateway: OrderReservationGateway(Get.find<OrderRepo>()),
+      flashSaleClock: Get.find<FlashSaleClockService>(),
+    ),
     permanent: true,
   );
   Get.lazyPut(() => DealRepo(api: Get.find()), fenix: true);
   Get.lazyPut(() => StoreRepo(api: Get.find()), fenix: true);
-  Get.lazyPut(() => OrderRepo(api: Get.find()), fenix: true);
 }
 
 class RescuApp extends StatelessWidget {

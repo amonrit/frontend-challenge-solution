@@ -57,6 +57,22 @@ After the first execution task, the same test will show immediate local state,
 then an empty cart and zero count after the controlled 409. The test must not
 use fake-backend latency, mutation-counter ordering, or a real timer.
 
+### E1 recorded GREEN
+
+`ReservationGateway` now isolates CartService from the concrete repository and
+`OrderReservationGateway` adapts it to the existing `OrderRepo`. Production
+bootstrap injects that adapter into the permanent CartService. A first add
+inserts its line before awaiting `reserve`; a controlled 409 removes that same
+line and recounts the bag. The initial RED test is GREEN. On a successful
+reserve, the returned hold is attached to the existing line. If that line was
+removed while waiting, the late hold is released instead of being reinserted.
+
+On 2026-09-17, the focused F-3/E1 and affected cart/deal command passed 14
+tests, and `fvm flutter analyze` reported no issues. Quantity replacement,
+full operation-generation coverage, expiry UI, and checkout behavior remain
+later tasks; E1 deliberately rejects a second add to the same line rather than
+silently increase an unheld quantity.
+
 ## Edge and failure cases
 
 - Existing line increment, a duplicate rapid tap, and a quantity limit.
