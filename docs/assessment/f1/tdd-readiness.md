@@ -67,6 +67,15 @@ The same rail fixture renders one `Expired` label and no `Ends soon` label.
 Later tests add controlled active-countdown, disabled-interaction, cart-removal,
 notice, 100-countdown rebuild, and lifecycle coverage.
 
+### E4 recorded GREEN and fixture cleanup
+
+The rail fixture now renders `Expired` for an expired deal and changes an
+active label from `00:59` to `00:58` after a controlled clock refresh. A first
+GREEN run exposed a test-fixture lifecycle issue: `addTearDown` ran after
+Flutter's pending-timer invariant. Each test now calls the injected clock's
+`onClose` after its assertions, before that invariant runs. The clock itself
+continues to own and cancel the only periodic timer.
+
 ## Edge and failure cases
 
 - Null end instant and a deal already expired at initial render.
