@@ -57,6 +57,9 @@ justification in `solutions.md` after evidence and option comparison.
 - A first decrement received the configured 409 and visibly retained quantity
   2 and total ฿252. A retry replaced its hold successfully; removing the final
   unit rendered an empty bag and logged `DELETE /reservations/res_3`.
+- A subsequent successful checkout logged `POST /checkout items=1`, followed by
+  `DELETE /reservations/res_4`, and rendered an empty bag. Its log does not
+  reveal the request body, so reservation-id forwarding remains proven by test.
 - Next evidence: manual expiry and checkout-410 journeys, plus comparable
   DevTools rebuild evidence. The collected paths do not measure countdown
   performance or prove the remaining lifecycle branches.
