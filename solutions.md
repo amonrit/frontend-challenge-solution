@@ -285,7 +285,7 @@ the deterministic injected repository is the primary race evidence.
 
 ## RES-105 — Home feed performance
 
-**Status:** Partial. Implementation complete and automated checks passed; required comparable Android DevTools evidence is still unavailable.
+**Status:** Partial. Implementation and Android before/after timeline capture are complete; repeatable physical-device frame and memory evidence remain.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -321,8 +321,10 @@ leaving unconstrained dimensions unset.
 ### Verification and evidence
 
 The Phase 2 baseline has 28 passing tests, a clean analyzer, and Flutter 3.27.0
-with DevTools 2.40.2. No profile-mode before/after DevTools measurements have
-been captured yet, so no performance improvement is claimed. After T1,
+with DevTools 2.40.2. Android profile-mode before/after Flutter VM timeline
+measurements are now recorded in the profile baseline document. The host-GPU
+emulator's raster timing varied substantially across repeat runs, so no
+performance improvement is claimed. After T1,
 `flutter analyze` passed with no issues and the existing Home controller suite
 passed 6 tests. After T2, the same analyzer and Home regression suite passed;
 after T3, the image sizing test passed and analyzer reported no issues. T4
@@ -330,20 +332,20 @@ compared the source-level before/after behavior and recorded that no Android
 profile trace was possible in this environment; runtime performance impact
 remains unmeasured. T5 integrated verification on 2026-09-17 passed: image
 sizing (1), Home regression (6), full suite (29), analyzer, and diff check.
-Follow-up widget coverage then passed the lazy feed test; the full suite now
-passes 32 tests. A Pixel 6 / API 35 emulator installed and launched the app in
-profile mode, but the host forced Software GL because of memory pressure. Its
-frame data is therefore unsuitable for the required mid-range comparison.
+Follow-up widget coverage now includes both lazy construction and a direct
+scroll-rebuild scope test; the full suite is re-run after this change. A Pixel
+6 / API 35 emulator ran both revisions in profile mode using host GPU. Its
+raster timing varied substantially between repeats, so the capture is evidence
+of the comparison method rather than a measured improvement claim.
 
 ### Limitations or follow-up
-The implementation has no comparable Android profile numbers because the only
-available Android target is a host-memory-constrained emulator using Software
-GL. DevTools profiling on a suitable mid-range Android device remains the
-follow-up needed before claiming measured jank or memory improvement.
-`test/home_feed_list_test.dart` directly verifies lazy
-construction for a 100-deal feed. A dedicated scroll-rebuild instrumentation
-test remains follow-up coverage; image sizing tests and source review cover the
-other structural changes.
+The implementation has before/after timeline data but no repeatable Android
+frame or memory improvement measurement. A physical mid-range Android device
+is needed before claiming measured jank, memory, or image-cache improvement.
+`test/home_feed_list_test.dart` directly verifies lazy construction for a
+100-deal feed, while `test/home_screen_rebuild_scope_test.dart` verifies that
+scroll state does not rebuild `HomeFeedList`. Image sizing tests and source
+review cover the remaining structural changes.
 
 ### References
 
@@ -607,7 +609,7 @@ accepted.
 | Tool | Use | Verification |
 | --- | --- | --- |
 | Codex | Repository analysis, test design, implementation, and documentation. | Focused controller/deep-link tests, full test suite, analyzer, runtime checks, and source review. |
-| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 32 full-suite tests passed; analyzer reported no issues. |
+| Flutter 3.27.0 and Dart CLI | Ran focused/full tests, analyzer, and formatter using the pinned toolchain. | 33 full-suite tests passed; analyzer reported no issues. |
 | `xcrun simctl` and `cliclick` | Opened the deep link and confirmed the loaded deal on iPhone 17 Pro Simulator. | Runtime screenshot matches catalog deal 42. |
 
 ### Incorrect or Misleading AI Suggestions
@@ -664,9 +666,9 @@ to end before starting F-2 or F-3.
 
 ## DevTools Evidence — RES-105
 
-No comparable profile-mode baseline or after-fix trace was captured. A Pixel 6
-/ API 35 emulator is now available, but it uses Software GL under host memory
-pressure and cannot provide defensible mid-range evidence. The limitation and
-reproducibility contract are recorded in
-[profile-baseline.md](docs/assessment/105/profile-baseline.md); source-level
-changes and automated evidence are recorded in the RES-105 section.
+Android profile-mode before/after timeline traces were captured on a Pixel 6 /
+API 35 AVD using host GPU. The reproducibility contract and both results are
+recorded in [profile-baseline.md](docs/assessment/105/profile-baseline.md).
+The AVD's raster timing was not repeatable enough to claim an improvement; a
+physical mid-range Android repeat with memory/image-cache evidence remains the
+final performance follow-up.

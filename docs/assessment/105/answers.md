@@ -18,7 +18,7 @@
 | Flutter toolchain | Flutter 3.27.0, Dart 3.6.0, DevTools 2.40.2 | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter --version` |
 | Full test suite | 28 tests passed | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter test` |
 | Static analysis | No issues found | `/Users/amonrit/fvm/versions/3.27.0/bin/flutter analyze` |
-| Profile DevTools baseline | Not captured; environment limitation recorded | [Profile baseline record](profile-baseline.md) |
+| Profile DevTools baseline | Android before/after VM timeline captured; raster timing was not repeatable enough for an improvement claim | [Profile baseline record](profile-baseline.md) |
 
 ## Implementation evidence
 
@@ -58,7 +58,7 @@
 
 ## Follow-up limits
 
-1. Capture a profile-mode trace on one repeatable mid-range Android device with
+1. Repeat the profile-mode trace on one physical, repeatable mid-range Android device with
    fixed item count, image inputs, and scroll gesture before selecting an
    optimization.
 2. Measure frame timing, widget rebuilds, and image/memory cache behavior in

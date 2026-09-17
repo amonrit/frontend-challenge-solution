@@ -37,9 +37,11 @@ supported by comparable before/after DevTools evidence.
 
 ## Workflow state
 
-- Current phase: Follow-up coverage update — lazy-construction widget test added.
-- Next step: Android DevTools profile evidence and direct scroll-rebuild test
-  when suitable tooling is available.
-- Production code and tests: Home feed extraction and lazy-construction coverage
-  were added; the available Pixel 6 emulator is unsuitable for performance
-  profiling because it runs with Software GL under host memory pressure.
+- Current phase: Android before/after timeline and direct scroll-rebuild test
+  completed.
+- Next step: repeat the timeline and capture memory/image-cache evidence on a
+  physical mid-range Android device.
+- Production code and tests: Home feed extraction, lazy-construction coverage,
+  and a widget test that proves scroll state does not rebuild `HomeFeedList`
+  are complete. The Pixel 6 AVD uses host GPU, but its raster timing is not
+  repeatable enough for a measured improvement claim.
