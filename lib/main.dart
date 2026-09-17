@@ -22,7 +22,10 @@ Future<void> initDependencies() async {
   await Get.putAsync(() => FakeApiService().init(), permanent: true);
   Get.put(AnalyticsService(), permanent: true);
   Get.put(FlashSaleClockService(), permanent: true);
-  Get.put(CartService(flashSaleClock: Get.find()), permanent: true);
+  Get.put(
+    CartService(flashSaleClock: Get.find<FlashSaleClockService>()),
+    permanent: true,
+  );
   Get.lazyPut(() => DealRepo(api: Get.find()), fenix: true);
   Get.lazyPut(() => StoreRepo(api: Get.find()), fenix: true);
   Get.lazyPut(() => OrderRepo(api: Get.find()), fenix: true);

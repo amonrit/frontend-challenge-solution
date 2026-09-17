@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Implementation in progress | Pure status, shared clock, cart expiry, visible notice, all required countdown surfaces, and 100-leaf rebuild scope are covered by focused tests | Runtime performance evidence and final regression coverage |
+| F-1 | **Implementation complete; acceptance evidence incomplete** | Flutter 3.27.0: 49 tests, analyzer, bootstrap regression test, Android profile-mode launch; focused countdown, expiry, notice, and 100-leaf rebuild tests | Comparable DevTools frame-time, Dart heap, and image-cache evidence for 100+ visible countdowns |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -501,8 +501,9 @@ iPhone and Android deal-42 flows are verified.
 
 ## F-1 — Live flash-sale countdowns
 
-**Status:** Implementation in progress. Pure status, shared clock, cart expiry,
-and all required countdown surfaces are tested. No runtime evidence yet.
+**Status:** Implementation complete; acceptance evidence incomplete. Flutter
+3.27.0 automated verification and Android profile-mode launch passed, but no
+comparable DevTools performance capture exists yet.
 
 ### Requirement
 Display live countdowns, expiration behavior, and cart removal for expired flash-sale deals.
@@ -522,7 +523,10 @@ of presentation code. The flash rail now uses `FlashSaleCountdown`, an `Obx` lea
 reads the shared clock and rebuilds only its label. Home cards and details use
 the same leaf plus an expiry gate that disables interaction only when a deal
 crosses into expiry. The details controller honors a rejected cart mutation and
-does not show its existing success snackbar in that case.
+does not show its existing success snackbar in that case. During Android
+profile verification, an optional constructor parameter caused `Get.find()` to
+infer a nullable clock type; the app now requests the registered non-null clock
+type explicitly during bootstrap.
 
 ### Rejected alternatives
 
@@ -542,13 +546,19 @@ update. Home and details widget tests verify the expired interaction gates. The
 notice-host widget test verifies visible text and queue consumption after the
 Snackbar closes. A 100-leaf widget fixture verifies one shared timer, label
 updates without rebuilding its parent, timer cancellation on disposal, and no
-exception after unmount. The focused F-1 suite passes 14 tests. Runtime
-performance evidence has not yet been produced.
+exception after unmount. A bootstrap regression test reproduces and prevents
+the nullable GetX type lookup found by the Android profile run. Final
+verification with Flutter 3.27.0 passed 49 tests and `flutter analyze` with no
+issues. The Android emulator built and foregrounded the profile-mode app at
+`dev.rescu.rescu.MainActivity`, and its current-process log had normal backend
+startup with no clock type-lookup exception. This launch proves functional
+wiring, not countdown performance.
 
 ### Limitations or follow-up
-Runtime performance evidence and final regression coverage remain. The
-100-leaf widget test proves the intended rebuild boundary; it is not a
-substitute for DevTools frame-time or memory measurements.
+Comparable DevTools frame-time, Dart heap, and image-cache evidence for a
+100+ visible-countdown scenario remains. The 100-leaf widget test proves the
+intended rebuild boundary and the Android profile launch proves startup wiring;
+neither is a substitute for DevTools performance measurements.
 
 ### References
 

@@ -39,9 +39,10 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E7 100-countdown rebuild-scope and disposal
-  verification complete.
-- Next phase: Phase 6 — execute E8, end-to-end and performance verification.
+- Current phase: Phase 6 — E8 verification complete with runtime-performance
+  acceptance evidence still incomplete.
+- Next phase: No further F-1 execution task. Capture comparable DevTools
+  frame-time and memory evidence before claiming full acceptance.
 - Scope, evidence, option selection, and E1–E7 implementation/test claims are
   recorded in this assessment folder. Runtime performance claims remain
   deferred to E8 evidence.

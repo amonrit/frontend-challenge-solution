@@ -46,26 +46,32 @@ void main() {
   testWidgets('disables the expired detail action', (tester) async {
     Get.testMode = true;
     final deal = _expiredDeal();
-    Get.rootController.routing.args = deal;
     final clock = Get.put(FlashSaleClockService(
       now: () => DateTime.utc(2026, 1, 1, 12),
       periodicTimer: (_, __) => Timer(const Duration(days: 1), () {}),
     ));
     final cart = Get.put(CartService(flashSaleClock: clock));
-    final controller = Get.put(DealDetailsController(
+    final controller = DealDetailsController(
       dealRepo: _UnusedDealRepo(),
       cartService: cart,
       analytics: AnalyticsService(),
-    ));
+    );
+    Get.lazyPut(() => controller);
 
-    await tester.pumpWidget(const GetMaterialApp(home: DealDetailsScreen()));
+    await tester.pumpWidget(const GetMaterialApp(home: Scaffold()));
+    unawaited(Get.to<void>(() => const DealDetailsScreen(), arguments: deal));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
 
-    final button = tester.widget<FilledButton>(
-      find.ancestor(
-        of: find.text('Expired'),
-        matching: find.byType(FilledButton),
+    final buttonFinder = find.ancestor(
+      of: find.text('Expired'),
+      matching: find.byWidgetPredicate(
+        (widget) => widget is ButtonStyleButton,
+        description: 'a Material button',
       ),
     );
+    expect(buttonFinder, findsOneWidget);
+    final button = tester.widget<ButtonStyleButton>(buttonFinder);
     expect(button.onPressed, isNull);
     expect(cart.items, isEmpty);
 

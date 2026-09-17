@@ -105,6 +105,24 @@ exception. The first fixture used a bare `Column` and produced a render-overflow
 test exception; wrapping the still-eager 100-leaf fixture in
 `SingleChildScrollView` fixed test layout without changing product code.
 
+### E8 runtime and bootstrap evidence
+
+Android profile-mode launch under Flutter 3.27.0 first exposed a startup
+failure: `Get.find()` was inferred as the nullable
+`FlashSaleClockService?` type because `CartService` accepts an optional clock.
+GetX registrations are keyed by exact type, so the registered non-null service
+could not be found. `test/app_dependencies_test.dart` records this as RED; it
+then passes after `main.dart` requests `Get.find<FlashSaleClockService>()`
+explicitly. The test also explicitly deletes the permanent test services so
+Flutter can verify that the periodic timer has been cancelled.
+
+The final Flutter 3.27.0 verification passed 49 tests and `flutter analyze`
+with no issues. The Android emulator built and foregrounded the profile-mode
+app at `dev.rescu.rescu.MainActivity`; its current-process log recorded normal
+`FakeApiService` startup without the previous type-lookup exception. This is
+functional/profile-launch evidence only. No comparable DevTools frame-time,
+Dart heap, or image-cache capture was produced.
+
 ## Edge and failure cases
 
 - Null end instant and a deal already expired at initial render.
