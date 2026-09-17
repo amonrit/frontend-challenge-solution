@@ -44,6 +44,15 @@ On 2026-09-17, `flutter test test/flash_deals_section_test.dart` failed at
 candidate` and `Found 0 widgets with text "Expired"`. The test reached the
 assertion; no production code was changed to produce this result.
 
+### E2 test-seam correction
+
+The first clock-service RED test also used a `late` fake-timer variable that
+the Dart compiler could not prove was assigned by the injected callback. That
+was a test-seam error, not product behavior. The test now uses a nullable fake
+timer and asserts it was created before checking cancellation. Its remaining
+RED signal was the intended missing clock-service import/type; after E2 the
+clock tests pass.
+
 ### Post-change GREEN assertion
 
 The same rail fixture renders one `Expired` label and no `Ends soon` label.

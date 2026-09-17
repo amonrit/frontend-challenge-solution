@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Implementation in progress | Pure status/formatting unit tests pass; rail expiry RED remains; no runtime evidence | Shared clock, cart expiry, all-surface UI, 100+ performance evidence, and regression coverage |
+| F-1 | Implementation in progress | Pure status and shared-clock tests pass; rail expiry RED remains; no runtime evidence | Cart expiry, all-surface UI, 100+ performance evidence, and regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -501,8 +501,9 @@ iPhone and Android deal-42 flows are verified.
 
 ## F-1 — Live flash-sale countdowns
 
-**Status:** Implementation in progress. Pure status and formatting are tested;
-the rail expiry RED remains until its rendering task. No runtime evidence yet.
+**Status:** Implementation in progress. Pure status and shared clock behavior
+are tested; the rail expiry RED remains until its rendering task. No runtime
+evidence yet.
 
 ### Requirement
 Display live countdowns, expiration behavior, and cart removal for expired flash-sale deals.
@@ -513,7 +514,9 @@ The selected design is one app-scoped clock service, a pure flash-status
 formatter, per-surface countdown text leaves, and one-time expiry transitions
 to the cart and root notice host. `FlashSaleStatus` now supplies immutable
 active/expired state and required formatting from a supplied end instant and
-clock; the clock, presentation, cart, and notice work remain unimplemented.
+clock. `FlashSaleClockService` now owns one app-scoped periodic timer and
+refreshes its time immediately on app resume; presentation, cart, and notice
+work remain unimplemented.
 
 ### Rejected alternatives
 
@@ -527,7 +530,8 @@ The initial widget RED test pumps an already-expired flash deal in the rail and
 expects `Expired`. It still fails as intended because the current implementation
 renders no `Expired` widget. `flash_sale_status_test.dart` now passes four
 focused cases for null, active, zero/past expiry, and required time formats.
-Performance evidence has not yet been produced.
+Clock-service tests pass for one timer, disposal, and resume refresh. Performance
+evidence has not yet been produced.
 
 ### Limitations or follow-up
 The initial RED result still covers the static rail expiry state. Countdown

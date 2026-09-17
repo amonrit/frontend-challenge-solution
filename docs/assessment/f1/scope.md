@@ -39,7 +39,7 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E1 pure flash status and formatting complete.
-- Next phase: Phase 6 — execute E2, shared clock and lifecycle refresh.
+- Current phase: Phase 6 — E2 shared clock and lifecycle refresh complete.
+- Next phase: Phase 6 — execute E3, cart expiry boundary and notice event.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.
