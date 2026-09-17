@@ -39,9 +39,11 @@ supported by comparable before/after DevTools evidence.
 
 - Current phase: Android before/after timeline and direct scroll-rebuild test
   completed.
-- Next step: repeat the timeline and capture memory/image-cache evidence on a
-  physical mid-range Android device.
+- Next step: use Flutter DevTools over USB on a physical mid-range Android
+  device to capture repeatable frame, memory, and image-cache evidence.
 - Production code and tests: Home feed extraction, lazy-construction coverage,
   and a widget test that proves scroll state does not rebuild `HomeFeedList`
   are complete. The Pixel 6 AVD uses host GPU, but its raster timing is not
-  repeatable enough for a measured improvement claim.
+  repeatable enough for a measured improvement claim. The latest Android
+  emulator integration regression suite passed all seven ticket flows; it is
+  functional evidence, not performance evidence.

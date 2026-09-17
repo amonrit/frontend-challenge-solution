@@ -27,8 +27,8 @@ bytes). Use the identical contract before and after each implementation task.
 
 ## Before/after timeline attempt
 
-The trace was captured from the Flutter VM timeline streams used by DevTools:
-`Dart`, `Embedder`, `GC`, `Isolate`, and `API`. The same AVD, profile mode,
+The emulator trace was captured from the Flutter VM timeline streams used by
+DevTools: `Dart`, `Embedder`, `GC`, `Isolate`, and `API`. The same AVD, profile mode,
 viewport, and six 350 ms upward swipes were used for the pre-RES-105 worktree
 (`d4b3024`) and the current revision. The list was warmed before a timeline
 reset; the final six swipes were the measured window.
@@ -45,10 +45,10 @@ performance improvement.
 
 ## Result
 
-T0 now has genuine Android before/after timeline evidence. It is insufficient
-for a measured jank or memory-improvement claim because the host-GPU emulator
-does not produce repeatable raster timing and no image-cache/RSS comparison was
-captured.
+T0 now has Android-emulator before/after Flutter VM timeline evidence. It is
+insufficient for a measured jank or memory-improvement claim because the
+host-GPU emulator does not produce repeatable raster timing and no image-cache
+or RSS comparison was captured.
 
 ## Physical-device Perfetto capture
 

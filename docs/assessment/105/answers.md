@@ -16,9 +16,9 @@
 | Check | Result | Command / environment |
 | --- | --- | --- |
 | Flutter toolchain | Flutter 3.27.0, Dart 3.6.0, DevTools 2.40.2 | `flutter --version` |
-| Full test suite | 28 tests passed | `flutter test` |
+| Full test suite at baseline | 28 tests passed | `flutter test` |
 | Static analysis | No issues found | `flutter analyze` |
-| Profile DevTools baseline | Android before/after VM timeline captured; raster timing was not repeatable enough for an improvement claim | [Profile baseline record](profile-baseline.md) |
+| Profile baseline | Android-emulator before/after Flutter VM timelines captured; raster timing was not repeatable enough for an improvement claim | [Profile baseline record](profile-baseline.md) |
 
 ## Implementation evidence
 
@@ -33,17 +33,23 @@
 | Scroll reactivity | One `Obx` covered the whole `Scaffold` and read scroll offset. | App bar and FAB observe scroll offset in separate wrappers; body does not read it. | Source diff and analyzer |
 | Feed construction | Main feed used `ListView(children: [...map(...)])`. | Main feed uses `ListView.builder` with the same item order and callbacks. | Source diff and Home regression tests |
 | Image decode sizing | No `memCacheWidth/Height` values were passed. | Finite layout dimensions are scaled by device pixel ratio and passed as hints. | Focused widget test |
-| Runtime frame/memory metrics | Not captured. | Not captured; no comparable Android target was available. | Explicit limitation |
+| Runtime frame/memory metrics | No baseline frame/memory claim. | Emulator VM timelines and physical Perfetto traces were captured, but neither yielded reliable comparable frame or memory metrics. | [Profile baseline record](profile-baseline.md) |
 
 ## Integrated verification
 
 - Image sizing focused test: 1 passed.
 - Home controller regression suite: 6 passed.
-- Full Flutter suite: 29 passed.
+- Full Flutter suite at the T5 checkpoint: 29 passed; the later project-wide
+  suite passes 34 tests.
 - `flutter analyze`: no issues found.
 - `git diff --check`: passed.
-- Manual device flow and profile-mode metrics remain unperformed because no
-  comparable Android target was available.
+- Latest Android-emulator regression run (2026-09-17): all seven independent
+  flows in `integration_test/res_101_107_smoke_test.dart` passed. This confirms
+  functional behavior only; it is not used as a performance metric.
+- Android emulator VM timelines and physical-device Perfetto fallback traces
+  were captured. Flutter DevTools frame, Dart heap, and image-cache metrics
+  remain unavailable because Wireless debugging did not provide a usable VM
+  Service and the available USB cable was charge-only.
 - `test/home_feed_list_test.dart` now verifies that a 100-deal feed initially
   builds fewer than 100 `DealCard` widgets, providing direct lazy-construction
   coverage.
@@ -58,9 +64,9 @@
 
 ## Follow-up limits
 
-1. Repeat the profile-mode trace on one physical, repeatable mid-range Android device with
-   fixed item count, image inputs, and scroll gesture before selecting an
-   optimization.
+1. Use Flutter DevTools through a USB data connection on one physical,
+   repeatable mid-range Android device with fixed item count, image inputs, and
+   scroll gesture.
 2. Measure frame timing, widget rebuilds, and image/memory cache behavior in
    DevTools; do not infer those numbers from debug mode or source inspection.
 3. Verify that any list/image change preserves refresh, pagination, filter,

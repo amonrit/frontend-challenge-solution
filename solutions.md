@@ -325,15 +325,22 @@ performance improvement is claimed. After T1,
 `flutter analyze` passed with no issues and the existing Home controller suite
 passed 6 tests. After T2, the same analyzer and Home regression suite passed;
 after T3, the image sizing test passed and analyzer reported no issues. T4
-compared the source-level before/after behavior and recorded that no Android
-profile trace was possible in this environment; runtime performance impact
-remains unmeasured. T5 integrated verification on 2026-09-17 passed: image
-sizing (1), Home regression (6), full suite (29), analyzer, and diff check.
-Follow-up widget coverage now includes both lazy construction and a direct
-scroll-rebuild scope test; the full suite is re-run after this change. A Pixel
+captured Android emulator before/after Flutter VM timelines using the same
+scenario; source-level differences and the timeline record agree, but runtime
+performance impact remains unmeasured because the timings were not repeatable.
+T5 integrated verification on 2026-09-17 passed: image sizing (1), Home
+regression (6), full suite (29), analyzer, and diff check. Follow-up widget
+coverage now includes both lazy construction and a direct scroll-rebuild scope
+test; the later project-wide suite passes 34 tests. A Pixel
 6 / API 35 emulator ran both revisions in profile mode using host GPU. Its
 raster timing varied substantially between repeats, so the capture is evidence
 of the comparison method rather than a measured improvement claim.
+
+The latest regression check on 2026-09-17 passed: `flutter test` (34 tests),
+`flutter analyze` (no issues), and the seven independent flows in
+`integration_test/res_101_107_smoke_test.dart` on the Android emulator. The
+integration run confirms that the lazy Home feed remains usable; it is not a
+frame-time or memory benchmark.
 
 ### Physical-device measurement decision
 
@@ -710,9 +717,12 @@ Only after that proof is complete would I start F-2 or F-3.
 
 ## DevTools Evidence — RES-105
 
-Android profile-mode before/after timeline traces were captured on a Pixel 6 /
-API 35 AVD using host GPU. The reproducibility contract and both results are
-recorded in [profile-baseline.md](docs/assessment/105/profile-baseline.md).
-The AVD's raster timing was not repeatable enough to claim an improvement; a
-physical mid-range Android repeat with memory/image-cache evidence remains the
-final performance follow-up.
+Android emulator profile-mode before/after Flutter VM timeline traces were
+captured on a Pixel 6 / API 35 AVD using host GPU. Separate physical Android
+Perfetto fallback traces were also captured over Wireless debugging. The
+reproducibility contracts and data-quality limits are recorded in
+[profile-baseline.md](docs/assessment/105/profile-baseline.md). Neither trace
+set supports an improvement claim: the AVD raster timing was not repeatable,
+and the physical traces have data-loss warnings. A USB DevTools capture with
+frame, Dart heap, and image-cache evidence remains the final performance
+follow-up.
