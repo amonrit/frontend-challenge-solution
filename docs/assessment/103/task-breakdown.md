@@ -10,6 +10,8 @@ only one task per user-approved `next`.
 | E3 | Add a multi-controller regression test. | `test/deal_details_controller_test.dart` | E2 | Closing controller A does not stop live controller B; cart change fetches only B. | Complete: 2 focused tests passed |
 | E4 | Run targeted and project verification. | tests, `solutions.md` | E3 | Focused test, full suite, analyzer, and diff check pass. | Complete: focused 2, full 7, analyzer clean |
 | E5 | Repeat the manual request-count flow. | `solutions.md`, assessment evidence | E4 | After deals 1–3 close and deal 4 adds to bag, only `GET /deals/4` appears. | Complete: only `/deals/4` logged |
+| E6 | Add deterministic late-response coverage and discard results after closure. | `deal_details_controller.dart`, `test/deal_details_controller_test.dart` | E5 | A response completing after `onClose()` cannot change `quantityLeft`. | Complete: RED at baseline, GREEN with 4 focused tests |
+| E7 | Exercise repeated real Android Home-to-detail navigation. | `integration_test/deal_navigation_test.dart` | E6 | Open and leave a Home deal three times without a route-lifecycle failure. | Complete on `emulator-5554` |
 
 ## E1 implementation variants
 
@@ -49,10 +51,15 @@ git diff --check
 
 | Check | Result |
 | --- | --- |
-| Focused controller test | 2 passed |
-| Full project suite | 7 passed |
-| Static analysis | No issues found |
+| Historical focused controller test | 2 passed |
+| Historical full project suite | 7 passed |
+| Historical static analysis | No issues found |
 | Diff check | Passed; `ios/Podfile.lock` remains an unrelated uncommitted user change and was not included in RES-103 commits. |
+| Late-response regression | Baseline failed `Expected: <5>; Actual: <0>`; current implementation passed. |
+| Android integration | Passed: Home → detail → Back, repeated three times. |
+| Current focused controller suite | 4 passed on 2026-09-17. |
+| Current full project suite | 34 passed on 2026-09-17. |
+| Current static analysis | No issues found on 2026-09-17. |
 
 ## E5 manual result
 

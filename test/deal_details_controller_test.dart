@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:rescu/feature/deal/deal_details_controller.dart';
@@ -19,6 +21,15 @@ class _CountingDealRepo extends DealRepo {
     fetchByIdCalls++;
     return deal;
   }
+}
+
+class _DelayedDealRepo extends DealRepo {
+  _DelayedDealRepo() : super(api: FakeApiService());
+
+  final response = Completer<DealModel>();
+
+  @override
+  Future<DealModel> fetchById(int id) => response.future;
 }
 
 void main() {
@@ -53,7 +64,7 @@ void main() {
     originalPrice: 100,
     price: 50,
     currencyCode: 'THB',
-    quantityLeft: 5,
+    quantityLeft: 0,
     storeId: 2,
     storeName: 'Second test store',
     storeAddress: '',
@@ -136,5 +147,24 @@ void main() {
     expect(secondRepo.fetchByIdCalls, 1);
 
     secondController.onClose();
+  });
+
+  test('ignores an availability response that finishes after close', () async {
+    final cart = CartService();
+    final repo = _DelayedDealRepo();
+    final controller = DealDetailsController(
+      dealRepo: repo,
+      cartService: cart,
+      analytics: AnalyticsService(),
+    )..onInit();
+
+    cart.add(deal);
+    await Future<void>.delayed(Duration.zero);
+    controller.onClose();
+
+    repo.response.complete(secondDeal);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(controller.quantityLeft, deal.quantityLeft);
   });
 }

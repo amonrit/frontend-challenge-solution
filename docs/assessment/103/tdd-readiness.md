@@ -8,6 +8,8 @@
    `DealRepo.fetchById` for its deal.
 3. Every active detail controller owns only its own observer; closing one does
    not stop refreshes for a different live controller.
+4. If availability refresh starts before closure, its successful result cannot
+   change the closed controller's `quantityLeft`.
 
 ## Test design
 

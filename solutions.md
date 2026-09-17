@@ -151,7 +151,8 @@ For the complete requirement questions, evidence, research, and method compariso
 
 ## RES-103 — Requests pile up while browsing
 
-**Status:** Complete for the documented back-navigation flow.
+**Status:** Complete for the documented back-navigation flow and a late
+availability response after route closure.
 
 ### Diagnosis
 
@@ -170,6 +171,12 @@ The controller now stores the `Worker` returned by `ever(...)` and disposes it
 in `onClose()` before calling `super.onClose()`. This gives the subscription
 the same owner and lifetime as the controller that created it.
 
+Disposing the Worker stops future callbacks, but it cannot cancel a
+`fetchById` future that has already begun. `_recheckAvailability()` therefore
+checks `_isClosed` after its `await` and discards a late result. This retains
+the small controller-owned lifecycle boundary without adding cancellation
+support that the repository API does not expose.
+
 A mounted/closed guard was rejected because it leaves the subscription alive.
 Moving availability refresh to a shared cart-level service was rejected because
 it changes ownership and scope beyond this ticket.
@@ -179,21 +186,23 @@ it changes ownership and scope beyond this ticket.
 | Check | Result |
 | --- | --- |
 | RED controller test | After `onClose()`, a second cart mutation produced a second repository call: expected 1, actual 2. |
-| Focused GREEN tests | 2 passed: closed controller stays silent; a separate live controller still refreshes. |
-| Full suite | 7 passed. |
-| Static analysis | `flutter analyze`: no issues. |
+| Focused GREEN tests | 4 passed: closed controller stays silent; a separate live controller still refreshes; a late response cannot mutate closed controller state. |
+| Historical full suite at original RES-103 fix | 7 passed. |
+| Current full suite | 34 passed on 2026-09-17. |
+| Static analysis | `flutter analyze`: no issues on 2026-09-17. |
 | Manual comparison | After closing deals 1–3, adding deal 4 logged exactly `GET /deals/4`; no request for deals 1–3. |
+| Android integration | Passed on the Android emulator: opened the first Home deal and returned to Home three times without a route-lifecycle failure. |
+| Late-response before/after | The new deterministic test failed at baseline with `Expected: <5>; Actual: <0>`, then passed after the closed guard was added. |
 
-The fix prevents future callbacks after cleanup. It does not cancel an
-availability request that began before `onClose()`; no runtime evidence showed
-that an in-flight response caused a visible error, so cancellation was kept out
-of this focused ticket.
+The integration test validates real app startup and repeated navigation. The
+delayed-repository unit test owns the precise late-response assertion; an
+end-to-end test alone cannot reliably force that completion order.
 
 ### Limitations or follow-up
 
-An in-flight availability request is allowed to finish after route closure;
-cancelling that request was outside the ticket and was not observed to cause a
-user-visible error.
+An in-flight availability request is allowed to finish after route closure,
+but its successful result is ignored. The repository has no cancellation API,
+so actively aborting transport work remains outside this ticket.
 
 ### References
 
@@ -205,6 +214,7 @@ Detailed questions and evidence are kept in:
 - [RES-103 options and decision](docs/assessment/103/options.md)
 - [RES-103 TDD readiness and RED evidence](docs/assessment/103/tdd-readiness.md)
 - [RES-103 execution tasks](docs/assessment/103/task-breakdown.md)
+- [RES-103 Android navigation integration test](integration_test/deal_navigation_test.dart)
 
 
 ## RES-104 — Home pagination and refresh consistency

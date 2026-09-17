@@ -106,6 +106,7 @@ class DealDetailsController extends GetxController {
   Future<void> _recheckAvailability() async {
     LogService.log('re-checking availability for deal ${deal.id}');
     final fresh = await dealRepo.fetchById(deal.id);
+    if (_isClosed) return;
     _quantityLeft.value = fresh.quantityLeft;
   }
 

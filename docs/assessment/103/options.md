@@ -53,14 +53,18 @@ so detail controllers only observe their own state.
 
 ## Decision
 
-Select **Option A**. The controller creates the observer, so it should retain
-and dispose that Worker in its own `onClose()`. This prevents new cart-change
-callbacks from closed detail controllers while preserving the current
-availability refresh behavior for a live controller.
+Select **Option A**, with a closed-state response guard. The controller creates
+the observer, so it retains and disposes that Worker in its own `onClose()`.
+This prevents new cart-change callbacks from closed detail controllers while
+preserving the current availability refresh behavior for a live controller. A
+guard after the asynchronous repository call also prevents a previously
+started request from changing closed controller state.
 
-The initial scope does not cancel an already in-flight `fetchById` future. A
-later response-safety test may be added only if runtime or test evidence shows
-that a disposed controller can still mutate state or surface an error.
+Worker disposal does not cancel an already in-flight `fetchById` future. The
+controller therefore checks its closed state after awaiting the response and
+discards a late successful result. The delayed-repository regression test
+proved this guard is necessary. Transport cancellation remains out of scope
+because `DealRepo` exposes no cancellation handle.
 
 ## Rejected alternatives
 

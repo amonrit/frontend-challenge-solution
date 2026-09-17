@@ -30,6 +30,8 @@ inspection, automated tests, and runtime logs.
 | 6.3 | A fake `DealRepo` can count `fetchById` calls, and a controllable `CartService`/observable can trigger the observer without real network latency. | Constructor injection in `DealDetailsController`; `DealRepo` API. |
 | 6.5 | The RED signal occurred as expected: after `onClose()`, a second cart mutation increased the counted `fetchById` calls from one to two. | Focused controller test before the fix, 2026-09-16. |
 | 6.9 | The existing full suite passes before RES-103 work: `flutter test` completed with 5 passing tests. | Flutter 3.27.0 run, 2026-09-16. |
+| 3.9 / 6.7 | Disposing the Worker prevents future cart callbacks, but does not stop a `fetchById` future already awaiting. A closed-state check after that await is required to prevent a late successful response changing controller state. | Deterministic delayed-repository RED/GREEN test, 2026-09-17. |
+| 6.10 | The current focused controller suite has 4 passing tests, the current project unit/widget suite has 34, and the Android integration route test passes. | Flutter 3.27.0 runs on 2026-09-17. |
 
 ## Read-only evidence collection run
 
@@ -55,13 +57,14 @@ detail controllers, including the three routes that had already been closed.
   after the fix.
 - Route-level automated coverage beyond the documented Back flow remains a
   follow-up opportunity.
-- In-flight responses are not cancelled; the ticket prevents future observer
-  callbacks after controller cleanup.
+- In-flight responses are not cancelled. Their successful results are ignored
+  once the controller closes; transport cancellation is not available through
+  the current repository API.
 
 ## Scope decisions recorded
 
-- In-flight request cancellation is deliberately out of scope: this fix stops
-  future observer callbacks, and no evidence showed a visible error from an
-  already-started response.
+- Transport cancellation is deliberately out of scope: the repository offers
+  no cancellation handle. A closed-state guard prevents an already-started
+  successful response from mutating controller state.
 - List-child removal and app background/resume were not made acceptance
   criteria because the ticket documents the Back-navigation flow.
