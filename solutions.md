@@ -17,7 +17,7 @@ passed all seven ticket flows.
 | RES-105 | **Implementation complete; acceptance evidence incomplete** | Rebuild-scope, lazy-construction, and image-sizing tests; Android emulator VM timelines; physical Android Perfetto fallback; latest full suite and emulator flow | Repeatable physical-device Flutter DevTools capture of frame timing, Dart heap, and image cache through a USB data connection |
 | RES-106 | Complete | Fixed-clock Bangkok boundary tests, Home filter test, Android emulator flow, latest full suite | None for the ticket scope |
 | RES-107 | Complete | Deep-link controller tests, iPhone Simulator check, Android emulator flow, latest full suite | Optional loading/error widget rendering coverage |
-| F-1 | Discovery in progress | Scope, source evidence, and requirement questions recorded; no implementation or runtime evidence | Complete implementation, 100+ countdown performance evidence, and regression coverage |
+| F-1 | Design selected; implementation not started | Scope, source evidence, requirements, and option comparison recorded; no runtime evidence | Complete implementation, 100+ countdown performance evidence, and regression coverage |
 | F-2 | Not started | Requirements and assessment planning only | Complete implementation, batching/deduplication evidence, and regression coverage |
 | F-3 | Not started | Requirements and assessment planning only | Complete implementation, reservation lifecycle evidence, and regression coverage |
 
@@ -501,15 +501,23 @@ iPhone and Android deal-42 flows are verified.
 
 ## F-1 — Live flash-sale countdowns
 
-**Status:** Discovery in progress. Scope recorded; no implementation or runtime
-evidence yet.
+**Status:** Design selected; implementation not started. No runtime evidence
+yet.
 
 ### Requirement
 Display live countdowns, expiration behavior, and cart removal for expired flash-sale deals.
 
+### Implementation
+
+The selected design is one app-scoped clock service, a pure flash-status
+formatter, per-surface countdown text leaves, and one-time expiry transitions
+to the cart and root notice host. It is documented, but not yet implemented.
+
 ### Rejected alternatives
 
-No approach was selected because implementation was not started.
+Per-widget timers, route-owned tickers, and a global rebuilding Home observer
+were rejected because they multiply lifecycle ownership or rebuild more than
+the changing text. The detailed comparison records the trade-offs.
 
 ### Verification and evidence
 
@@ -524,6 +532,7 @@ No implementation or performance evidence was produced for this feature.
 - [F-1 scope](docs/assessment/f1/scope.md)
 - [F-1 requirement questions](docs/assessment/f1/questions.md)
 - [F-1 evidence-backed answers](docs/assessment/f1/answers.md)
+- [F-1 options and decision](docs/assessment/f1/options.md)
 
 ## F-2 — Deal impression tracking
 

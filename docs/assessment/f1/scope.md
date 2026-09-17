@@ -39,8 +39,7 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 2 — evidence-backed answers complete.
-- Next phase: Phase 3 — compare implementation options and research framework
-  behavior needed for the decision.
+- Current phase: Phase 3 — option comparison and design decision complete.
+- Next phase: Phase 4 — define deterministic RED tests and readiness gate.
 - No diagnosis, option selection, test, production-code change, or runtime
   claim has been made for F-1.
