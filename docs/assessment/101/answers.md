@@ -1,7 +1,9 @@
 # RES-101 — Evidence-Backed Answers
 
-This document records facts supported by source inspection, read-only test
-runs, and the runtime request log.
+This document records the pre-implementation facts supported by source
+inspection, read-only test runs, and the runtime request log. It is retained as
+the diagnosis snapshot; the delivered behavior and current verification state
+are recorded in [`solutions.md`](../../../solutions.md).
 
 ## Required outcome and current behavior
 

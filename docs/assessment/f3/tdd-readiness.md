@@ -129,7 +129,7 @@ Focused notice and expiry widget tests passed; analyzer passed.
 CartController now blocks checkout until every line has a confirmed,
 unexpired hold. An injected message seam makes deterministic controller tests
 independent of snackbar animation: 410 clears the submitted cart and 502
-retains it for retry. The latest full suite passed 76 tests and analyzer found
+retains it for retry. The latest shared suite passed 77 tests and analyzer found
 no issues. A direct 100-leaf reservation countdown widget contract verifies one
 shared timer and unchanged parent build count after a tick. Manual add,
 replacement, rollback, removal, checkout, and expiry flows have been captured

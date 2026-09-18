@@ -39,7 +39,8 @@ second; the result requires DevTools performance evidence.
 
 ## Workflow state
 
-- Current phase: Phase 6 — E8 verification complete. Android profile-mode
+- Current phase: Phase 8 — final acceptance/documentation audit complete.
+  Android profile-mode
   observation confirmed a ticking active countdown in the rail, Home card, and
   details screen; the final focused F-1 suite (16 tests) and analyzer passed.
   Runtime-performance acceptance evidence remains incomplete.

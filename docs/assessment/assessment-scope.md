@@ -2,7 +2,9 @@
 
 ## Purpose
 
-This folder records the work before implementation. It separates what the assessment asks for from hypotheses, solution options, research, and verification results.
+This folder records assessment work from initial investigation through final
+verification. It separates what the assessment asks for from hypotheses,
+solution options, research, and verification results.
 
 Each ticket or feature will have its own file and follow this sequence:
 
@@ -15,11 +17,16 @@ Each ticket or feature will have its own file and follow this sequence:
 7. Complete the TDD and execution-readiness checklists.
 8. Implement only after the approach and success criteria are clear.
 
-The files record plans and evidence. They do not claim a root cause or a completed fix until the behavior has been reproduced and verified.
+The files retain planning and evidence snapshots. They do not claim a root
+cause or a completed fix until the behavior has been reproduced and verified.
 
 ## Required Pre-Execution Gates
 
 Every selected ticket or feature must include these sections before its execution tasks:
+
+The unchecked lists below preserve the original planning template; completed
+per-item gate evidence is recorded in each item's `tdd-readiness.md` and
+`task-breakdown.md`.
 
 ### TDD Checklist
 
@@ -83,14 +90,15 @@ At submission, create `solutions.md` at the repository root with:
 - Commit one logical change at a time with the ticket prefix, for example `[RES-101] Ignore stale search responses`.
 - Submit a public repository with the full commit history and `solutions.md`.
 
-## Planned File Order
+## Document Organization
 
-| File | Purpose | Status |
+| Location | Purpose | Status |
 | --- | --- | --- |
 | `assessment-scope.md` | Requirements and investigation workflow | Complete |
-| `01-res-102-questions.md` | RES-102 questions before task breakdown | Complete |
-| `02-res-102-answers.md` | Evidence-backed RES-102 answers before task breakdown | Complete |
-| `03-res-102-task-breakdown.md` | RES-102 tasks and method-comparison plan | Complete |
-| Later files | One file per selected ticket or feature | Not started |
+| `101/` through `107/` | One standard document set for each bug ticket | Documented |
+| `f1/` through `f3/` | One standard document set for each feature | Documented |
+| `regression-matrix.md` | RED/GREEN and Android regression evidence | Complete |
 
-The next RES-102 file will cover reproduction, solution options, research, and test design only after the remaining questions have evidence or an explicit scope decision.
+The canonical per-item files are `scope.md`, `questions.md`, `answers.md`,
+`options.md`, `tdd-readiness.md`, and `task-breakdown.md`. Current delivery and
+acceptance-evidence status is maintained in [`../../solutions.md`](../../solutions.md).

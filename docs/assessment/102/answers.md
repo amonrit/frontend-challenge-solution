@@ -1,6 +1,10 @@
 # RES-102 — Evidence-Backed Answers
 
-This file answers only questions supported by the ticket, current source, or primary Flutter/Dart documentation. Question numbers refer to [RES-102 questions](questions.md).
+This file records the pre-implementation answers supported by the ticket,
+source snapshot, or primary Flutter/Dart documentation. It is retained as the
+diagnosis record; the delivered behavior and current verification state are in
+[`solutions.md`](../../../solutions.md). Question numbers refer to
+[RES-102 questions](questions.md).
 
 ## 1. Required Outcome
 

@@ -39,11 +39,10 @@ replace the newer query's results, including after the input is cleared.
 
 ## Documentation currency audit
 
-Audited on 2026-09-16 after E5. All RES-101 execution tasks are complete and
-their evidence is reflected in the scope, answers, options, TDD record,
-execution task list, and `solutions.md`. The seven-test figure in the answers
-document is intentionally the pre-change baseline; the nine-test figure is the
-post-change full-suite result. Pending entries elsewhere in `solutions.md`
-refer to RES-105, RES-106, or DevTools work and are not unfinished RES-101
-work. The modified `ios/Podfile.lock` is unrelated to RES-101 and remains
-excluded from this ticket's commits.
+Audited through the shared 2026-09-18 verification. All RES-101 execution
+tasks are complete and their evidence is reflected in the scope, answers,
+options, TDD record, execution task list, and `solutions.md`. The seven-test
+figure in the answers document is intentionally the pre-change baseline; the
+nine-test figure is the then-current post-change full-suite result. The latest
+shared suite passes 77 tests. Remaining acceptance-evidence entries in
+`solutions.md` concern RES-105 and F-1 through F-3, not RES-101.

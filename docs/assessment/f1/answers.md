@@ -1,6 +1,11 @@
 # F-1 — Live Flash-Sale Countdowns: Evidence-Backed Answers
 
-## Source evidence
+## Pre-implementation source evidence
+
+The findings below are retained as the investigation snapshot that informed the
+selected design. Delivered behavior and current verification status are
+summarized in [`solutions.md`](../../../solutions.md) and the later records in
+[`tdd-readiness.md`](tdd-readiness.md).
 
 | Question area | Answer | Evidence |
 | --- | --- | --- |

@@ -36,4 +36,7 @@ follow-up limits rather than completed evidence.
 
 Update the relevant document after each workflow phase or execution task. Keep
 the summary in [`../../solutions.md`](../../solutions.md) ordered by ticket ID;
-record actual completion order in its `Work order` section.
+use its status summary as the current delivery record. Investigation answers
+preserve the source snapshot from their evidence-collection phase. When such a
+row says “current”, it refers to that recorded snapshot; the scope, task
+breakdown, and `solutions.md` record the delivered state.

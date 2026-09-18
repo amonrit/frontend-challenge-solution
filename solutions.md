@@ -260,8 +260,9 @@ response that completes after controller closure.
 
 ### Limitations or follow-up
 
-The focused RES-104 suite, latest full project suite (34 tests), analyzer, and
-`git diff --check` pass. Deterministic injected-repository tests are the
+The focused RES-104 suite, its then-current full project suite (34 tests),
+analyzer, and `git diff --check` passed; the latest shared suite passes 77
+tests. Deterministic injected-repository tests are the
 primary race evidence; Android integration coverage provides complementary
 route and wiring verification.
 
@@ -277,7 +278,9 @@ route and wiring verification.
 
 ## RES-105 — Home feed performance
 
-**Status:** Partial. Implementation and Android before/after timeline capture are complete; repeatable physical-device frame and memory evidence remain.
+**Status:** Implementation complete; acceptance evidence incomplete. Android
+before/after timeline capture is complete; repeatable physical-device frame and
+memory evidence remain.
 
 ### Requirement
 Reduce unnecessary rebuilds and image memory use, with comparable DevTools evidence.
@@ -313,8 +316,9 @@ Finite image constraints and device pixel ratio supply `memCacheWidth` and
 Flutter 3.27.0 with DevTools 2.40.2 was used for the recorded Android
 profile-mode before/after Flutter VM timelines. The host-GPU
 emulator's raster timing varied substantially across repeat runs, so no
-performance improvement is claimed. Image sizing, Home regression, the latest
-full suite (34 tests), analyzer, and diff check pass. Widget coverage includes
+performance improvement is claimed. Image sizing, Home regression, the
+then-current full suite (34 tests), analyzer, and diff check passed; the latest
+shared suite passes 77 tests. Widget coverage includes
 both lazy construction and a direct scroll-rebuild scope test. Android emulator
 before/after Flutter VM timelines used the same scenario; source-level
 differences and timeline record agree, but runtime performance impact remains
@@ -323,8 +327,8 @@ unmeasured because timings were not repeatable. A Pixel
 raster timing varied substantially between repeats, so the capture is evidence
 of the comparison method rather than a measured improvement claim.
 
-The latest regression check on 2026-09-17 passed: `flutter test` (34 tests),
-`flutter analyze` (no issues), and the seven independent flows in
+The 2026-09-17 regression check passed: `flutter test` (34 tests), `flutter
+analyze` (no issues), and the seven independent flows in
 `integration_test/res_101_107_smoke_test.dart` on the Android emulator. The
 integration run confirms that the lazy Home feed remains usable; it is not a
 frame-time or memory benchmark.
@@ -414,8 +418,9 @@ device-timezone independence. It exposed that `isToday` initially read the
 system clock directly; the model now delegates to the policy's injected clock.
 The card, map, details, and Home filter read model properties and contain no
 duplicate timezone arithmetic. `isOpenNow` and `untilStart` remain instant
-comparisons and were left unchanged. Focused RES-106 tests, the latest full
-Flutter suite (34 tests), analyzer, and `git diff --check` pass. The Android
+comparisons and were left unchanged. Focused RES-106 tests, the then-current
+full Flutter suite (34 tests), analyzer, and `git diff --check` passed; the
+latest shared suite passes 77 tests. The Android
 emulator integration regression test covers the Home `Pickup today` filter with
 a fixed Bangkok clock.
 Manual runtime display measurement was not performed; the recorded evidence is
@@ -443,8 +448,9 @@ query parameters, while normal card navigation additionally supplies a
 `DealModel` in `Get.arguments`. The details controller currently force-casts
 that optional argument before the screen can render. `DealRepo.fetchById` and
 the simulated API already provide ID lookup, latency, and a 404 exception; deal
-42 exists in the catalog. The latest full suite passes 34 tests, analyzer
-reports no issues, and verification includes a real simulator deep-link flow.
+42 exists in the catalog. Its then-current full suite passed 34 tests and the
+analyzer reported no issues; the latest shared suite passes 77 tests.
+Verification includes a real simulator deep-link flow.
 
 ### Fix
 
@@ -470,8 +476,9 @@ loading, loaded, and error branches while keeping retry in the controller.
 
 Regression coverage includes route-ID loading, normal model navigation, invalid
 IDs, repository failure, observer cleanup, and the source fallback when GetX
-parameters are unavailable. The latest Flutter suite passes 34 tests, analyzer
-reports no issues, and `git diff --check` passes. On an iPhone 17 Pro Simulator,
+parameters are unavailable. Its then-current Flutter suite passed 34 tests,
+the analyzer reported no issues, and `git diff --check` passed; the latest
+shared suite passes 77 tests. On an iPhone 17 Pro Simulator,
 opening `rescu://open/deal?id=42&source=push` reached “Mystery Japanese Basket”.
 The runtime screenshot is stored at
 `docs/assessment/107/evidence/res-107-deal-42-runtime.png`. Android emulator
@@ -707,8 +714,8 @@ analyzer also passed. E4's focused reservation/expiry/countdown/flash command
 passed 11 tests; analyzer passed.
 E5's focused notice and expiry widget tests passed; analyzer passed.
 E6's deterministic controller tests verify that 410 clears the submitted cart
-and 502 retains its confirmed hold for retry. The latest full suite passed 76
-tests and analyzer reported no issues. A direct widget contract creates 100
+and 502 retains its confirmed hold for retry. The latest shared suite passed 77
+tests and the analyzer reported no issues. A direct widget contract creates 100
 `ReservationCountdown` leaves, verifies one shared timer, and proves a tick
 updates labels without rebuilding their parent. Android emulator profile-mode built,
 installed, and reached Home with Fake API bootstrap logs. In that same profile

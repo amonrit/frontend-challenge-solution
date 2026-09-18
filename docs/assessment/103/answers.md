@@ -1,7 +1,9 @@
 # RES-103 — Evidence-Backed Answers
 
-This document records answers supported by the current source, dependency
-inspection, automated tests, and runtime logs.
+This document records the pre-implementation source snapshot, dependency
+inspection, automated tests, and runtime logs. It is retained as the diagnosis
+record; the delivered behavior and current verification state are in
+[`solutions.md`](../../../solutions.md).
 
 ## Required outcome and current source behavior
 

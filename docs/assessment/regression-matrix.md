@@ -2,10 +2,12 @@
 
 This matrix separates deterministic defect proof from Android route smoke
 coverage. Each **RED baseline** was rerun in a detached worktree at the commit
-that introduced that ticket's failing test. Each **GREEN current** run used
-Flutter 3.27.0 on the current `main` revision on 2026-09-17.
+that introduced that ticket's failing test. Each **GREEN recorded** run used
+Flutter 3.27.0 on the then-current `main` revision on 2026-09-17. A later
+shared suite on 2026-09-18 passed 77 tests; this matrix retains each ticket's
+focused historical proof count.
 
-| Ticket | Unit/widget proof | RED baseline rerun | GREEN current rerun | Android integration coverage |
+| Ticket | Unit/widget proof | RED baseline rerun | GREEN recorded rerun | Android integration coverage |
 | --- | --- | --- | --- | --- |
 | RES-101 | `test/search_deals_controller_test.dart` | `cbc87e7`: older result replaced latest result. | 2 passed. | Search route accepts rapid replacement input and renders the final-query result state. |
 | RES-102 | `test/pickup_countdown_test.dart` | `3fcffc2`: `setState() called after dispose()` and a pending periodic timer. | 4 passed. | Orders mounts a `PickupCountdown`, then Back leaves the route without a framework exception. |
@@ -19,12 +21,12 @@ Flutter 3.27.0 on the current `main` revision on 2026-09-17.
 
 ```sh
 # Current unit/widget suite
-flutter test
+fvm flutter test
 
 # Android integration tests
-flutter test \
+fvm flutter test \
   integration_test/deal_navigation_test.dart -d emulator-5554
-flutter test \
+fvm flutter test \
   integration_test/res_101_107_smoke_test.dart -d emulator-5554
 ```
 

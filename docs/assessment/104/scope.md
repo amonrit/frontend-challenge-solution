@@ -37,7 +37,8 @@ stale data from a newer refresh round.
 
 ## Workflow state
 
-- Current phase: T5 complete; before/after measurements and final checks pass.
-- Next phase: Phase 8 — documentation currency audit.
+- Current phase: Phase 8 — documentation currency audit complete; ready for
+  delivery.
+- Next phase: None for RES-104.
 - Production code and tests: RES-104 implementation and regression coverage are
   complete; protected files remain unchanged.
