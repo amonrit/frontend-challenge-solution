@@ -787,10 +787,11 @@ accepted.
 
 | Tool | Use | Verification |
 | --- | --- | --- |
-| Codex | Inspected source, formed hypotheses, proposed alternatives, wrote focused tests, implementation changes, and assessment documentation. | Every accepted change was checked against source, a RED/GREEN test, runtime observation, or a review of the diff. |
+| Codex | Inspected source, formed hypotheses, compared alternatives, wrote focused tests and implementation changes, recorded manual evidence, and maintained assessment documentation. | Every accepted change was checked against source, a RED/GREEN test, runtime observation, or a review of the diff. |
 | Git worktrees | Re-ran each RES-101 to RES-107 RED test against its historical pre-fix commit without changing `main`. | The resulting baseline failures and current GREEN results are recorded in the [regression evidence matrix](docs/assessment/regression-matrix.md). |
-| Flutter 3.27.0 and Dart CLI | Ran focused/current suites, analyzer, formatter, and Android integration tests using the pinned toolchain. | Current unit/widget suite: 34 passed; analyzer: no issues; Android regression suite: 7 passed. |
-| Android emulator and Flutter integration binding | Exercised startup, bindings, routing, fake API wiring, countdown disposal, Home filtering, and simulated deep-link flow. | `integration_test/res_101_107_smoke_test.dart` passed seven independently launched ticket flows. |
+| Flutter 3.27.0 and Dart CLI | Ran focused/current suites, analyzer, formatter, and Android integration tests using the pinned toolchain. | Latest shared unit/widget suite: 77 passed; focused final F-1 suite: 16 passed; analyzer: no issues; Android regression suite: seven ticket flows passed. |
+| Android emulator and Flutter integration binding | Exercised startup, bindings, routing, fake API wiring, countdown disposal, Home filtering, simulated deep links, and F-1 to F-3 runtime flows. | `integration_test/res_101_107_smoke_test.dart` passed seven independently launched ticket flows. Android profile observations recorded active F-1 countdowns, F-2 delivery/debug state, and the F-3 reservation lifecycle. |
+| Flutter DevTools and Perfetto | Attempted comparable performance measurement for RES-105 and assessed whether Android runtime traces were fit for an improvement claim. | Emulator Flutter VM timelines were not repeatable and Wireless-debugging Perfetto traces had data-loss warnings; neither is used to claim a frame-time, memory, or image-cache improvement. |
 
 ### Incorrect or Misleading AI Suggestions
 
@@ -862,15 +863,17 @@ suite passes.
 Approximately **20–24 hours of active work** were spent across source review,
 baseline capture, TDD planning, implementation for RES-101 to RES-107,
 historical RED reruns in isolated worktrees, focused/full verification, Android
-integration testing, F-1 to F-3 delivery, manual reservation lifecycle runs,
-and documentation. This excludes waiting for emulator boot, Gradle builds,
-dependency resolution, real reservation-expiry waits, and review pauses.
+integration testing, F-1 to F-3 delivery, Android profile/manual evidence,
+DevTools/Perfetto measurement attempts, and documentation consistency audits.
+This excludes waiting for emulator boot, Gradle builds, dependency resolution,
+real reservation-expiry waits, and review pauses.
 
 With one additional day, I would first capture repeatable before/after DevTools
 traces on a physical mid-range Android device for RES-105. I would then obtain
 comparable DevTools evidence for F-1's 100 countdown leaves, F-2 scrolling,
 and F-3 reservation countdowns. Finally, I would add dedicated RES-107
-loading/error widget coverage.
+loading/error widget coverage and rerun the complete acceptance suite on that
+same device configuration.
 
 ## DevTools Evidence — RES-105
 
